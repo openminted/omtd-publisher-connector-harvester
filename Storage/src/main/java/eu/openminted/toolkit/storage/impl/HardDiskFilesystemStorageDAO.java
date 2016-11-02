@@ -1,6 +1,7 @@
 package eu.openminted.toolkit.storage.impl;
 
 import eu.openminted.toolkit.storage.StorageDAO;
+import eu.openminted.toolkit.storage.exceptions.FileDoesNotExistException;
 import eu.openminted.toolkit.storage.exceptions.StorageException;
 import java.io.File;
 import java.io.IOException;
@@ -68,5 +69,24 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
 //        System.out.println("gene = " + gene);
 //        System.out.println("l=" + gene.length());
 //    }
+    @Override
+    public String getFileContents(String filename) throws FileDoesNotExistException,StorageException {
+        String directoryPath = STORAGE_BASE_PATH;
+        File directory = new File(directoryPath);
+
+        if (!directoryPath.endsWith("/")) {
+            directoryPath += "/";
+        }
+        File file = new File(directoryPath + filename);
+        if (!file.exists()) {
+            throw new FileDoesNotExistException("File " + filename + "does not exist");
+        }
+        try {
+            return FileUtils.readFileToString(file, "UTF-8");
+        } catch (IOException iOException) {
+            logger.log(Level.ALL, "IO exception", iOException);
+            throw new StorageException("IO exception", iOException);
+        }
+    }
 
 }
