@@ -78,5 +78,8 @@ public class CrawlVisit {
         this.filename = filename;
     }
 
-    
+    @Override
+    public String toString() {
+        return "CrawlVisit{" + "id=" + id + ", url=" + url + ", parentUrl=" + parentUrl + ", timeCrawled=" + timeCrawled + ", level=" + level + ", filename=" + filename + '}';
+    }
 }

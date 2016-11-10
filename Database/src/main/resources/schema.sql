@@ -10,3 +10,16 @@ CREATE TABLE IF NOT EXISTS `elsevier`.`sitemaps_crawling` (
     `level` INT NOT NULL , 
     `filename` VARCHAR(256) NOT NULL 
 ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `elsevier`.`node_processing` (
+    `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+    `url_processed` VARCHAR(512) NOT NULL,
+    `time_started` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `time_finished` TIMESTAMP ,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `elsevier`.`items` (
+    `parent_url_id` INT(11) NOT NULL COMMENT 'id of the url from node_processing',
+    `url_item` VARCHAR(512) NOT NULL COMMENT 'url of book chapter or journal article'
+) ENGINE = InnoDB;
