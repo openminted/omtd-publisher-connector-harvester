@@ -72,8 +72,9 @@ public class MySQLSitemapCrawlDAO implements SitemapCrawlDAO {
                 crawlVisit.setId(rs.getInt(1));
                 crawlVisit.setUrl(rs.getString(2));
                 crawlVisit.setParentUrl(rs.getString(3));
-                crawlVisit.setLevel(rs.getInt(4));
-                crawlVisit.setFilename(rs.getString(5));
+                crawlVisit.setTimeCrawled(rs.getTimestamp(4));
+                crawlVisit.setLevel(rs.getInt(5));
+                crawlVisit.setFilename(rs.getString(6));
                 return crawlVisit;
             }
         };
