@@ -41,13 +41,21 @@ public class LeafNodeParser {
 
     public List<WebUrl> parseLinks(String htmlContent) {
         try {
-            ArticleResponse articleResponse = (ArticleResponse) unmarshaller.unmarshal(IOUtils.toInputStream(htmlContent, "UTF-8"));
+            ArticleResponse articleResponse = getArticleResponseObjectFromHtmlContent(htmlContent);
             List<WebUrl> parsedUrls = articleResponse.getBody().getWebUrls();
             return parsedUrls;
         } catch (IOException | JAXBException exception) {
             logger.error("Cannot parse html of leaf node " + exception.getMessage());
             return null;
         }
+    }
+    
+    private ArticleResponse getArticleResponseObjectFromHtmlContent(String htmlContent) throws JAXBException,IOException{
+        //unformatted html (non-ending BR elements), remove 
+        htmlContent = htmlContent.replaceAll("\\<BR\\>", "");
+        
+        ArticleResponse articleResponse = (ArticleResponse) unmarshaller.unmarshal(IOUtils.toInputStream(htmlContent, "UTF-8"));
+        return articleResponse;
     }
 
     public List<String> getArticleUrls(String htmlContent) {
