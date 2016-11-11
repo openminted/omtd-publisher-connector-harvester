@@ -1,5 +1,6 @@
 package eu.openminted.toolkit.storage.impl;
 
+import eu.openminted.toolkit.storage.StorageConfiguration;
 import eu.openminted.toolkit.storage.StorageDAO;
 import eu.openminted.toolkit.storage.exceptions.FileDoesNotExistException;
 import eu.openminted.toolkit.storage.exceptions.StorageException;
@@ -9,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +22,10 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
 
     private static final Logger logger = Logger.getLogger(HardDiskFilesystemStorageDAO.class.getName());
 
-    private static final String STORAGE_BASE_PATH = "./sitemaps-storage";
+    @Autowired
+    StorageConfiguration storageConfiguration;
+    
+    private final String STORAGE_BASE_PATH = storageConfiguration.STORAGE_BASE_PATH;
 
     public String storeSitemapFile(Integer id, int level, String url, String contents) throws StorageException {
         String sfilename = generateFilesystemFilename(level, url, contents);
