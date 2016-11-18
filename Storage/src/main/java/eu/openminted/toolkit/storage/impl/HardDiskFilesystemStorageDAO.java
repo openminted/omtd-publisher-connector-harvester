@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,13 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
 
     @Autowired
     StorageConfiguration storageConfiguration;
-    
-    private final String STORAGE_BASE_PATH = storageConfiguration.STORAGE_BASE_PATH;
+
+    @PostConstruct
+    private void init() {
+        STORAGE_BASE_PATH = storageConfiguration.STORAGE_BASE_PATH;
+    }
+
+    private String STORAGE_BASE_PATH;// = storageConfiguration.STORAGE_BASE_PATH;
 
     public String storeSitemapFile(Integer id, int level, String url, String contents) throws StorageException {
         String sfilename = generateFilesystemFilename(level, url, contents);
@@ -75,7 +81,7 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
 //        System.out.println("l=" + gene.length());
 //    }
     @Override
-    public String getFileContents(String filename) throws FileDoesNotExistException,StorageException {
+    public String getFileContents(String filename) throws FileDoesNotExistException, StorageException {
         String directoryPath = STORAGE_BASE_PATH;
         File directory = new File(directoryPath);
 

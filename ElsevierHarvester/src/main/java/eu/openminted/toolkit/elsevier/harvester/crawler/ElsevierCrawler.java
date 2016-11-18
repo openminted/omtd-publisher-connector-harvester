@@ -47,6 +47,9 @@ public class ElsevierCrawler extends WebCrawler {
             return false;
         }
         
+//        if (this.currentDepth == 4 && ){
+//            //send to queue
+//        }
         return true;
     }
     

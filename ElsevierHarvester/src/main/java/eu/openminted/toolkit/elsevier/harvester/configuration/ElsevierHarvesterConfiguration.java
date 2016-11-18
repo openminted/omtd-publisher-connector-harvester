@@ -9,52 +9,69 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import eu.openminted.toolkit.elsevier.harvester.CrawlerCrawlerControllerFactory;
 import eu.openminted.toolkit.elsevier.harvester.crawler.ElsevierRobotsServer;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  *
  * @author lucasanastasiou
  */
 @Configuration
-@ComponentScan(basePackages = {"eu.openminted.elsevier.harvester"})
+@ComponentScan(basePackages = {"eu.openminted.toolkit.elsevier.harvester"})
+@PropertySource(value = {"classpath:elsevier-harvester.properties"})
 public class ElsevierHarvesterConfiguration {
-    
+
+    @Value("${elsevier.harvester.numberOfCrawlers:'1'}")
+    public String numberOfCrawlers;
+
+    @Value("${elsevier.harvester.crawlStorageFolder:'./storage'}")
+    private String crawlStorageFolder;
+
+    @Value("${elsevier.harvester.politenessDelay:'25'}")
+    private String politenessDelay;
+
+    @Value("${elsevier.harvester.maxDepthOfCrawling:'4'}")
+    private String maxDepthOfCrawling;
+
+    @Value("${elsevier.harvester.resumableCrawling:'true'}")
+    private String resumableCrawling;
+
+    @Value("${elsevier.harvester.seed:'http://api.elsevier.com/sitemap/page/sitemap/index.html'}")
+    private String seed;
+    @Value("${elsevier.harvester.proxyHost}")
+    private String proxyHost;
+    @Value("${elsevier.harvester.proxyPort}")
+    private String proxyPort;
+
     @Bean
     public CrawlerCrawlerControllerFactory crawlerCrawlerControllerFactory() {
         CrawlerCrawlerControllerFactory factory = new CrawlerCrawlerControllerFactory();
         return factory;
     }
-    
+
     @Bean
     public CrawlController crawler() throws Exception {
 
-        // Configure CrawController accordingly...
-        // configure elsevier crawler
-        int numberOfCrawlers = 1;
-        String crawlStorageFolder = "./storage";
+        // Configure elsevier crawler
         CrawlConfig config = new CrawlConfig();
-        config.setCrawlStorageFolder(crawlStorageFolder);
-        config.setPolitenessDelay(25);
-        
-        config.setMaxDepthOfCrawling(3);
 
-//        config.setMaxPagesToFetch(1000);
+        config.setCrawlStorageFolder(this.crawlStorageFolder);
+        config.setPolitenessDelay(Integer.parseInt(this.politenessDelay));
+        config.setMaxDepthOfCrawling(Integer.parseInt(this.maxDepthOfCrawling));
         config.setIncludeBinaryContentInCrawling(false);
-        config.setProxyHost("wwwcache.open.ac.uk");
-        config.setProxyPort(80);
+        if (this.proxyHost != null && !this.proxyHost.isEmpty() && this.proxyPort != null && !this.proxyPort.isEmpty()) {
+            config.setProxyHost(this.proxyHost);
+            config.setProxyPort(Integer.parseInt(this.proxyPort));
+        }
         config.setResumableCrawling(true);
-        
+
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-//        RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
         ElsevierRobotsServer elsevierRobotsServer = new ElsevierRobotsServer();
-        
+
         CrawlController controller = new CrawlController(config, pageFetcher, elsevierRobotsServer);
-//        controller.addSeed("http://api.elsevier.com/sitemap/page/sitemap/index.html");
+        controller.addSeed(this.seed);
 
-        controller.addSeed("http://api.elsevier.com/sitemap/page/sitemap/m.html");
-
-//    CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
-//        controller.startNonBlocking(factory, numberOfCrawlers);
         return controller;
     }
 }

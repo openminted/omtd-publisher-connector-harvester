@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
  * @author lucasanastasiou
  */
 @Configuration
-@ComponentScan(basePackages = {"eu.openminted.toolkit.storage"})
+@ComponentScan(basePackages = {"eu.openminted.toolkit"})
 @PropertySource(value = {"classpath:storage.properties"})
 public class StorageConfiguration {
 
