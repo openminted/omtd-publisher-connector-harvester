@@ -14,17 +14,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleRetrieverService {
 
-    void retrieveArticle(String articleUrl) throws ElsevierProcessorException {
+    private String retrieveFile(String articleUrl) throws ElsevierProcessorException {
         InputStream in = null;
         try {
             in = new URL(articleUrl).openStream();
 
-            System.out.println(IOUtils.toString(in));
+            return IOUtils.toString(in);
         } catch (IOException iOException) {
             throw new ElsevierProcessorException("Cannot retrieve url :" + articleUrl, iOException);
         } finally {
             IOUtils.closeQuietly(in);
         }
+    }
+    
+    public String retrieveArticleMetadata(String articleUrl) throws ElsevierProcessorException {
+        String metadataArticleUrl = articleUrl+"?httpAccept=application/xml";
+        return retrieveFile(metadataArticleUrl);
+    }
+    
+    public String retrieveArticlePdf(String articleUrl) throws ElsevierProcessorException {
+        String pdfArticleUrl = articleUrl+"?httpAccept=application/pdf";
+        return retrieveFile(pdfArticleUrl);
     }
 
 }

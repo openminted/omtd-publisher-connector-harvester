@@ -26,7 +26,6 @@ public class App {
 //        for (String bean : beanNames){
 //            System.out.println("bean = " + bean);
 //        }
-        
-        
+
     }
 }

@@ -3,6 +3,7 @@ package eu.openminted.toolkit.elsevier.processor;
 import eu.openminted.toolkit.database.model.CrawlVisit;
 import eu.openminted.toolkit.elsevier.beans.leafnode.ArticleResponse;
 import eu.openminted.toolkit.elsevier.beans.leafnode.WebUrl;
+import eu.openminted.toolkit.queue.LeafNode;
 import eu.openminted.toolkit.storage.StorageDAO;
 import eu.openminted.toolkit.storage.exceptions.StorageException;
 import java.io.IOException;
@@ -69,6 +70,12 @@ public class LeafNodeParser {
             }
         }
         return articleUrls;
+    }
+    
+    public List<String> getArticleUrls(LeafNode leafNode) {
+        String filename = leafNode.getFilename();
+        String content = getFileContents(filename);
+        return getArticleUrls(content);
     }
 
     public List<String> getArticleUrls(CrawlVisit crawlVisit) {
