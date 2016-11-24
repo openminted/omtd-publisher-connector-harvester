@@ -24,4 +24,14 @@ public class RabbitMQQueueServiceImpl implements QueueService {
         String message = gson.toJson(leafNode);
         rabbitTemplate.convertAndSend(QueueConstants.EXCHANGE_NAME, QueueConstants.ROUTING_KEY, message);
     }
+
+    @Override
+    public LeafNode getLeafNode() {
+
+        Object msg = rabbitTemplate.receiveAndConvert(QueueConstants.QUEUE_NAME);
+        String msgString = new String((byte[]) msg);
+        Gson gson = new Gson();
+        LeafNode leafNode = gson.fromJson(msgString, LeafNode.class);
+        return leafNode;
+    }
 }

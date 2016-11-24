@@ -9,4 +9,6 @@ import eu.openminted.toolkit.queue.LeafNode;
 public interface QueueService {
     
     public void pushLeafNode(LeafNode leafNode);
+    
+    public LeafNode getLeafNode();
 }
