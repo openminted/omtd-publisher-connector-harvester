@@ -17,4 +17,13 @@ public class StorageConfiguration {
     @Value("${STORAGE_BASE_PATH}")
     public String STORAGE_BASE_PATH;
     
+    
+    @Value("${STORAGE_SITEMAPS_PATH}")
+    public String STORAGE_SITEMAPS_PATH;
+    
+    @Value("${STORAGE_METADATA_PATH}")
+    public String STORAGE_METADATA_PATH;
+    
+    @Value("${STORAGE_PDF_PATH}")
+    public String STORAGE_PDF_PATH;
 }

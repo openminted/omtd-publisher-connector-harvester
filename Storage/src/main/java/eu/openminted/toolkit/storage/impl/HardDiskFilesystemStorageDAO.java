@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,20 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
     @PostConstruct
     private void init() {
         STORAGE_BASE_PATH = storageConfiguration.STORAGE_BASE_PATH;
+        STORAGE_SITEMAPS_PATH = storageConfiguration.STORAGE_SITEMAPS_PATH;
+        STORAGE_METADATA_PATH = storageConfiguration.STORAGE_METADATA_PATH;
+        STORAGE_PDF_PATH = storageConfiguration.STORAGE_PDF_PATH;
     }
 
     private String STORAGE_BASE_PATH;// = storageConfiguration.STORAGE_BASE_PATH;
+    private String STORAGE_SITEMAPS_PATH;
+    private String STORAGE_METADATA_PATH;
+    private String STORAGE_PDF_PATH;
 
     public String storeSitemapFile(Integer id, int level, String url, String contents) throws StorageException {
-        String sfilename = generateFilesystemFilename(level, url, contents);
+        String sfilename = generateSitemapFilesystemFilename(level, url, contents);
         try {
-            storeFile(STORAGE_BASE_PATH, sfilename, contents);
+            storeFile(STORAGE_BASE_PATH + STORAGE_SITEMAPS_PATH, sfilename, contents);
         } catch (IOException iOException) {
             logger.log(Level.ALL, iOException.getMessage());
             throw new StorageException("Error while writing to disk.", iOException.fillInStackTrace());
@@ -47,10 +54,8 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
     private void storeFile(String directoryPath, String filename, String fileContent) throws IOException {
         System.out.println("Storing in " + directoryPath + " " + filename + " ");
 
-        File directory = new File(directoryPath);
-        if (!directory.exists()) {
-            directory.mkdir();
-        }
+        createFolderIfNotExists(directoryPath);
+
         if (!directoryPath.endsWith("/")) {
             directoryPath += "/";
         }
@@ -62,15 +67,50 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
         return name;
     }
 
+    public String encodeToFilesystemSafe(String doi) {
+        byte[] bytesEncoded = Base64.encodeBase64(doi.getBytes());
+        String encodedBase64String = new String(bytesEncoded);
+        String safeEncodedBase64String = encodedBase64String.replace("/", "_");
+        safeEncodedBase64String = encodedBase64String.replace("+", "-");
+        return new String(safeEncodedBase64String);
+    }
+
+    public String decodeFromFilesystemSafe(String filename) {
+        String pureBase64 = filename.replace("_", "/");
+        pureBase64 = filename.replace("-", "+");
+        byte[] bytesDecoded = Base64.decodeBase64(pureBase64.getBytes());
+        String decodeBase64String = new String(bytesDecoded);
+        return new String(bytesDecoded);
+    }
+
     private String sha1(String contents) {
         return DigestUtils.sha1Hex(contents);
     }
 
-    private String generateFilesystemFilename(int level, String url, String contents) {
+    private String generateSitemapFilesystemFilename(int level, String url, String contents) {
         String filename = "L" + level + "_" + safeForFilesystem(url) + "_" + sha1(contents) + ".sitemap.xml";
         return filename;
     }
 
+    private String generateMetadataFilesystemFilename(String articleUrl) {
+        String filename = encodeToFilesystemSafe(articleUrl) + ".xml";
+        return filename;
+    }
+
+    private String generatePdfFilesystemFilename(String articleUrl) {
+        String filename = encodeToFilesystemSafe(articleUrl) + ".pdf";
+        return filename;
+    }
+
+    private String generateFilesystemFilename(String doi) {
+        String filename = encodeToFilesystemSafe(doi);
+        return filename;
+    }
+
+    private String getDoiFromFilename(String filename) {
+        String doi = decodeFromFilesystemSafe(filename);
+        return doi;
+    }
 //    //very quick test
 //    public static void main(String args[]) {
 //        String url = "http://api.elsevier.com/sitemap/page/sitemap/serial/journals/w/01722190/Volume_20_Issue_1.html";
@@ -80,17 +120,28 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
 //        System.out.println("gene = " + gene);
 //        System.out.println("l=" + gene.length());
 //    }
+
     @Override
-    public String getFileContents(String filename) throws FileDoesNotExistException, StorageException {
+    public String getSitemapFileContents(String filename) throws StorageException {
         String directoryPath = STORAGE_BASE_PATH;
-        File directory = new File(directoryPath);
 
         if (!directoryPath.endsWith("/")) {
             directoryPath += "/";
         }
-        File file = new File(directoryPath + filename);
+
+        String sitemap = STORAGE_SITEMAPS_PATH;
+        String fullDirectoryPath = directoryPath + sitemap;
+        if (!fullDirectoryPath.endsWith("/")) {
+            fullDirectoryPath += "/";
+        }
+        return getFileContents(fullDirectoryPath + filename);
+    }
+
+    @Override
+    public String getFileContents(String fullPath) throws FileDoesNotExistException, StorageException {
+        File file = new File(fullPath);
         if (!file.exists()) {
-            throw new FileDoesNotExistException("File " + filename + "does not exist");
+            throw new FileDoesNotExistException("File " + fullPath + "does not exist");
         }
         try {
             return FileUtils.readFileToString(file, "UTF-8");
@@ -98,6 +149,48 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
             logger.log(Level.ALL, "IO exception", iOException);
             throw new StorageException("IO exception", iOException);
         }
+    }
+
+    private String selectBucket(String articleUrl) {
+        String hash = sha1(articleUrl);
+        // we want around 5000 files per folder
+        // while we expect up to 20m files in total
+        // so number of buckets = 20m / 5k = 4000
+        // so we select the first log_16(4000)~=3 digits of the hash
+        return hash.substring(0, 3);
+    }
+
+    private void createFolderIfNotExists(String subFolder) {
+        File dir = new File(subFolder);
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+    }
+
+    @Override
+    public String storeMetadataFile(String articleUrl, String articleMetadata) throws StorageException {
+        String sfilename = generateMetadataFilesystemFilename(articleUrl);
+        String subFolder = selectBucket(articleUrl);
+        try {
+            storeFile(STORAGE_BASE_PATH + STORAGE_METADATA_PATH + subFolder, sfilename, articleMetadata);
+        } catch (IOException iOException) {
+            logger.log(Level.ALL, iOException.getMessage());
+            throw new StorageException("Error while writing to disk.", iOException.fillInStackTrace());
+        }
+        return sfilename;
+    }
+
+    @Override
+    public String storePdfFile(String articleUrl, String articlePdfContents) throws StorageException {
+        String sfilename = generatePdfFilesystemFilename(articleUrl);
+        String subFolder = selectBucket(articleUrl);
+        try {
+            storeFile(STORAGE_BASE_PATH + STORAGE_PDF_PATH + subFolder, sfilename, articlePdfContents);
+        } catch (IOException iOException) {
+            logger.log(Level.ALL, iOException.getMessage());
+            throw new StorageException("Error while writing to disk.", iOException.fillInStackTrace());
+        }
+        return sfilename;
     }
 
 }
