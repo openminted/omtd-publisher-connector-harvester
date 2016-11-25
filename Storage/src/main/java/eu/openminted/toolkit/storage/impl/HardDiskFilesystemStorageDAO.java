@@ -177,7 +177,7 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
             logger.log(Level.ALL, iOException.getMessage());
             throw new StorageException("Error while writing to disk.", iOException.fillInStackTrace());
         }
-        return sfilename;
+        return subFolder + "/" + sfilename;
     }
 
     @Override
@@ -190,7 +190,7 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
             logger.log(Level.ALL, iOException.getMessage());
             throw new StorageException("Error while writing to disk.", iOException.fillInStackTrace());
         }
-        return sfilename;
+        return subFolder + "/" + sfilename;
     }
 
 }

@@ -50,43 +50,46 @@ public class LeafNodeParser {
             return null;
         }
     }
-    
-    private ArticleResponse getArticleResponseObjectFromHtmlContent(String htmlContent) throws JAXBException,IOException{
+
+    private ArticleResponse getArticleResponseObjectFromHtmlContent(String htmlContent) throws JAXBException, IOException {
         //unformatted html (non-ending BR elements), remove 
         htmlContent = htmlContent.replaceAll("\\<BR\\>", "");
-        
+
         ArticleResponse articleResponse = (ArticleResponse) unmarshaller.unmarshal(IOUtils.toInputStream(htmlContent, "UTF-8"));
         return articleResponse;
     }
 
     public List<String> getArticleUrls(String htmlContent) {
         List<WebUrl> parsedUrls = parseLinks(htmlContent);
+
         // first url is usually the self-reference link
         List<String> articleUrls = new ArrayList<>();
-        for (WebUrl parsedUrl : parsedUrls) {
-            String href = parsedUrl.getHref().toLowerCase();
-            if (href.contains("article") && !href.contains("nonserial")) {
-                articleUrls.add(href);
+        if (parsedUrls != null) {
+            for (WebUrl parsedUrl : parsedUrls) {
+                String href = parsedUrl.getHref().toLowerCase();
+                if (href.contains("article") && !href.contains("nonserial")) {
+                    articleUrls.add(href);
+                }
             }
         }
         return articleUrls;
     }
-    
+
     public List<String> getArticleUrls(LeafNode leafNode) {
         String filename = leafNode.getFilename();
-        String content = getFileContents(filename);
+        String content = getSitemapFileContents(filename);
         return getArticleUrls(content);
     }
 
     public List<String> getArticleUrls(CrawlVisit crawlVisit) {
         String filename = crawlVisit.getFilename();
-        String htmlContent = getFileContents(filename);
+        String htmlContent = getSitemapFileContents(filename);
         return getArticleUrls(htmlContent);
     }
 
-    public String getFileContents(String filename) {
+    public String getSitemapFileContents(String filename) {
         try {
-            String contents = storageDAO.getFileContents(filename);
+            String contents = storageDAO.getSitemapFileContents(filename);
             return contents;
         } catch (StorageException exception) {
             logger.error("Cannot get contents of file " + filename, exception);

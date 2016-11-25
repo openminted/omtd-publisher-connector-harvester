@@ -28,7 +28,7 @@ public class ArticleMetadataParser {
         }
     }
 
-    private FullTextRetrievalResponse getFullTextRetrievalResponse(String htmlContent) throws JAXBException, IOException {
+    public FullTextRetrievalResponse getFullTextRetrievalResponse(String htmlContent) throws JAXBException, IOException {
 
         FullTextRetrievalResponse articleResponse = (FullTextRetrievalResponse) unmarshaller.unmarshal(IOUtils.toInputStream(htmlContent, "UTF-8"));
         return articleResponse;
@@ -46,5 +46,6 @@ public class ArticleMetadataParser {
         }
         return false;
     }
+
 
 }

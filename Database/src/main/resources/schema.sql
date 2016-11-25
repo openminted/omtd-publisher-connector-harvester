@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS `elsevier`.`node_processing` (
 -- ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `elsevier`.`files` (
-    `id` VARCHAR(512) NOT NULL COMMENT 'id of the article irl from node_processing',
+    `id` VARCHAR(512) NOT NULL COMMENT 'id of the article url from node_processing',
     `doi` VARCHAR(512) NULL COMMENT '',
-`metadata_filename` VARCHAR(512) NULL COMMENT 'filename of metadata of article',
+    `metadata_filename` VARCHAR(512) NULL COMMENT 'filename of metadata of article',
     `pdf_filename` VARCHAR(512) NULL COMMENT 'filename of pdf of article -if any'
 ) ENGINE = InnoDB;
