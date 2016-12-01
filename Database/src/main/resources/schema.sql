@@ -2,14 +2,25 @@
 
 -- CREATE USER 'elsevier'@'%' IDENTIFIED WITH mysql_native_password BY '***';GRANT USAGE ON *.* TO 'elsevier'@'%' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
 -- GRANT USAGE ON `elsevier`.* TO 'elsevier'@'%';
-CREATE TABLE IF NOT EXISTS `elsevier`.`sitemaps_crawling` ( 
-    `id` INT NOT NULL , 
-    `url` VARCHAR(512) NOT NULL , 
-    `parent_url` VARCHAR(512) NOT NULL , 
-    `time_crawled` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
-    `level` INT NOT NULL , 
-    `filename` VARCHAR(256) NOT NULL 
-) ENGINE = InnoDB;
+-- CREATE TABLE IF NOT EXISTS `elsevier`.`sitemaps_crawling` ( 
+--     `id` INT NOT NULL , 
+--     `url` VARCHAR(512) NOT NULL , 
+--     `parent_url` VARCHAR(512) NOT NULL , 
+--     `time_crawled` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+--     `level` INT NOT NULL , 
+--     `filename` VARCHAR(256) NOT NULL 
+-- ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `elsevier`.`sitemaps_crawling` (
+ `id` int(11) NOT NULL,
+ `url` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
+ `url_hex_hash` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+ `parent_url` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
+ `time_crawled` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `level` int(11) NOT NULL,
+ `filename` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+ PRIMARY KEY (`url_hex_hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `elsevier`.`node_processing` (
     `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,

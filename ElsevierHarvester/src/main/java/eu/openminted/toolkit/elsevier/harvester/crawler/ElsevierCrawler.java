@@ -48,6 +48,11 @@ public class ElsevierCrawler extends WebCrawler {
             return false;
         }
         
+        //if this url has already been visited
+        if (this.currentDepth == 3 && sitemapCrawlDAO.getSitemapByUrl(href)!=null){
+            return false;
+        }
+        
 //        if (this.currentDepth == 4 && ){
 //            //send to queue
 //        }

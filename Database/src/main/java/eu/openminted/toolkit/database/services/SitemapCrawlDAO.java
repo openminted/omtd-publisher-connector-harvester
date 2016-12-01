@@ -15,4 +15,6 @@ public interface SitemapCrawlDAO {
     public void addSitemapCrawling(Integer id, String url, String parent_url, int level, String filename) throws DatabaseException;
 
     public List<CrawlVisit> getCrawlVisitsByLevel(int level, int size) throws DatabaseException;
+
+    public CrawlVisit getSitemapByUrl(String href);
 }
