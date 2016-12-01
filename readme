@@ -1,3 +1,4 @@
-to run:
+Spring Boot Applications:
+can run:
 cd /data/dit/bin
 java -Xmx1g -jar ElsevierProcessor-1.0-SNAPSHOT-shaded.jar

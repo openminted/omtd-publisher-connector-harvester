@@ -193,4 +193,20 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
         return subFolder + "/" + sfilename;
     }
 
+    @Override
+    public String getMetadataFileLocation(String articleUrl) {
+        String sfilename = generateMetadataFilesystemFilename(articleUrl);
+        String subFolder = selectBucket(articleUrl);
+
+        return STORAGE_BASE_PATH + STORAGE_METADATA_PATH + subFolder + File.separator + sfilename;
+    }
+
+    @Override
+    public String getPdfFileLocation(String articleUrl) {
+        String sfilename = generatePdfFilesystemFilename(articleUrl);
+        String subFolder = selectBucket(articleUrl);
+
+        return STORAGE_BASE_PATH + STORAGE_PDF_PATH + subFolder + File.separator + sfilename;
+    }
+
 }

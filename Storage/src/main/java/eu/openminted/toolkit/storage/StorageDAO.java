@@ -15,7 +15,11 @@ public interface StorageDAO {
     
     public String getFileContents(String filename) throws FileDoesNotExistException,StorageException;
 
+    public String getMetadataFileLocation(String articleUrl);
+    
     public String storeMetadataFile(String articleUrl, String articleMetadata) throws StorageException;
+    
+    public String getPdfFileLocation(String articleUrl);
     
     public String storePdfFile(String articleUrl, String articlePdf) throws StorageException;
 }

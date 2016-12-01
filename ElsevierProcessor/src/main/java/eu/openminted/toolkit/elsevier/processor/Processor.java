@@ -54,22 +54,29 @@ public class Processor {
             for (String articleUrl : articleUrls) {
                 try {
                     
-                    String articleMetadata = articleRetrieverService.retrieveArticleMetadata(articleUrl);
+                    String metadataFileLocation = storageDAO.getMetadataFileLocation(articleUrl);
                     
-                    String mFilename = storageDAO.storeMetadataFile(articleUrl, articleMetadata);
+                    //
+                    articleRetrieverService.retrieveArticleMetadata(articleUrl,metadataFileLocation);
+                    //
+//                    String mFilename = storageDAO.storeMetadataFile(articleUrl, articleMetadata);
                     
                     FullTextRetrievalResponse fArticle = null;
                     
-                    fArticle = articleMetadataParser.getFullTextRetrievalResponse(articleMetadata);
+                    String articleMetadataContent = storageDAO.getFileContents(metadataFileLocation);
+                    fArticle = articleMetadataParser.getFullTextRetrievalResponse(articleMetadataContent);
                     String doi = fArticle.getCoredata().getDoi();
                     articleFilesDAO.insertNewArticleFiles(dbId, doi);
-                    articleFilesDAO.setMetadataFilename(dbId, doi, mFilename);
+                    articleFilesDAO.setMetadataFilename(dbId, doi, metadataFileLocation);
                     
                     if (fArticle.getCoredata().isOpenaccessArticle()) {
-                        String articlePdf = articleRetrieverService.retrieveArticlePdf(articleUrl);
+                        String pdfFileLocation = storageDAO.getPdfFileLocation(articleUrl);
                         
-                        String pFilename = storageDAO.storePdfFile(articleUrl, articlePdf);
-                        articleFilesDAO.setPdfFilename(dbId, doi, pFilename);
+                        //
+                        articleRetrieverService.retrieveArticlePdf(articleUrl,pdfFileLocation);
+                        //
+                        
+                        articleFilesDAO.setPdfFilename(dbId, doi, pdfFileLocation);
                         
                     }
                     

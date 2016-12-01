@@ -39,6 +39,7 @@ public class ElsevierCrawler extends WebCrawler {
     
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
+        
         this.currentDepth = url.getDepth();
         String href = url.getURL().toLowerCase();
 
@@ -55,6 +56,7 @@ public class ElsevierCrawler extends WebCrawler {
     
     @Override
     public void visit(Page page) {
+        
         int docid = page.getWebURL().getDocid();
         String url = page.getWebURL().getURL();
         String domain = page.getWebURL().getDomain();
@@ -88,19 +90,8 @@ public class ElsevierCrawler extends WebCrawler {
                 logger.log(Level.ALL, "Storage exception : " + storageException.getMessage());
             } catch (DatabaseException databaseException) {
                 logger.log(Level.ALL, "Database exception : " + databaseException.getMessage());
-            }
-//            LOGGER.log(Level.FINE,"Page's html:{0}",new String[]{html});
-//            Set<WebURL> links = htmlParseData.getOutgoingUrls();
-//            links.forEach(System.out::println);
+            } 
         }
-//
-//        Header[] responseHeaders = page.getFetchResponseHeaders();
-//        if (responseHeaders != null) {
-////            LOGGER.log(record);
-//            for (Header header : responseHeaders) {
-//                
-//            }
-//        }
     }
     
 }

@@ -62,5 +62,12 @@ public class HardDiskFilesystemStorageDAOTest {
 
         Assert.assertTrue(decodedString.equals(expectedDecodedString));
     }
+    
+    @Test
+    public void arbitrary(){
+        String tbd = "aHR0cDovL2FwaS5lbHNldmllci5jb20vY29udGVudC9hcnRpY2xlL3BpaS8wMjY2MzUzODg3OTAwNjg2";
+        String ds = hardDiskFilesystemStorageDAO.decodeFromFilesystemSafe(tbd);
+        System.out.println("ds = " + ds);
+    }
 
 }
