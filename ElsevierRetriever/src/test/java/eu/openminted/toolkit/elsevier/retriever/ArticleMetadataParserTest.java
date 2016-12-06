@@ -1,12 +1,11 @@
-package eu.openminted.toolkit.elsevier;
+package eu.openminted.toolkit.elsevier.retriever;
+
+
 
 import eu.openminted.toolkit.elsevier.beans.article.FullTextRetrievalResponse;
-import eu.openminted.toolkit.elsevier.beans.leafnode.ArticleResponse;
-import eu.openminted.toolkit.elsevier.beans.leafnode.WebUrl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

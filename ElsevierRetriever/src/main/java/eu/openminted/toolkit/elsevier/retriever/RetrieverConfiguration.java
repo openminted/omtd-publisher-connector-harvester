@@ -1,4 +1,4 @@
-package eu.openminted.toolkit.elsevier.processor;
+package eu.openminted.toolkit.elsevier.retriever;
 
 import eu.openminted.toolkit.queue.QueueConstants;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -14,16 +14,16 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackages = {"eu.openminted.toolkit"})
-public class ProcessorConfiguration {
+public class RetrieverConfiguration {
 
-    @Bean
-    Processor processor(){
-        return new Processor();
+        @Bean
+    Retriever processor(){
+        return new Retriever();
     }
     
     @Bean
-    MessageListenerAdapter listenerAdapter(Processor receiver) {
-        return new MessageListenerAdapter(receiver, "receiveMessage");
+    MessageListenerAdapter listenerAdapter(Retriever retriever) {
+        return new MessageListenerAdapter(retriever, "receiveMessage");
     }
     
         @Bean
@@ -31,7 +31,7 @@ public class ProcessorConfiguration {
             MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(QueueConstants.QUEUE_NAME);
+        container.setQueueNames(QueueConstants.ARTICLES_URLS_QUEUE_NAME);
         container.setMessageListener(listenerAdapter);
         return container;
     }

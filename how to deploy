@@ -1,0 +1,40 @@
+how to deploy
+
+1. create dirs
+
+mkdir -p /data/dit/data/elsevier/sitemaps-storage/
+mkdir -p /data/dit/data/elsevier/metadata/
+mkdir -p /data/dit/data/elsevier/pdf
+mkdir -p /data/dit/data/elsevier/crawler-storage
+
+sudo chmod -R 777 /data/dit/data/elsevier/
+
+
+2. change properties in:
+
+queue.properties (Queue module)
+storage.properties (Storage module)
+database.properties (Database module)
+elsevier-harvester.properties (ElsevierHarvester module)
+
+3. clean and build 
+
+4. copy jars to the server
+
+scp ElsevierProcessor/target/ElsevierProcessor-1.0-SNAPSHOT-shaded.jar  fs:/data/dit/bin/
+scp ElsevierHarvester/target/ElsevierHarvester-1.0-SNAPSHOT-shaded.jar   fs:/data/dit/bin/
+
+5.
+rename exisiting tables in db
+
+6. 
+start processes:
+java -jar /data/dit/bin/ElsevierHarvester-1.0-SNAPSHOT-shaded.jar >> /data/dit/bin/elsevier_harvester.log
+java -jar /data/dit/bin/ElsevierProcessor-1.0-SNAPSHOT-shaded.jar > /data/dit/bin/elsevier_processor_5.log
+
+
+Progress:
+time	Size (total)	Size(md)	Size(pdf)	Count(md)	Count(pdf)	Count(items in queue)
+15:29	1600			47			410			12788		992			30000
+15:41	2100			75			458			22850		1129		37732
+16:40	4.5G			316M		827M		71260		2697		121005

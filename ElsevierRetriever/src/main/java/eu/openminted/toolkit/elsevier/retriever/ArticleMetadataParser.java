@@ -1,4 +1,4 @@
-package eu.openminted.toolkit.elsevier.processor;
+package eu.openminted.toolkit.elsevier.retriever;
 
 import eu.openminted.toolkit.elsevier.beans.article.FullTextRetrievalResponse;
 import java.io.IOException;
@@ -30,6 +30,10 @@ public class ArticleMetadataParser {
 
     public FullTextRetrievalResponse getFullTextRetrievalResponse(String htmlContent) throws JAXBException, IOException {
 
+        System.out.println("---");
+        System.out.println("htmlContent = " + htmlContent);
+        System.out.println("---");
+        
         FullTextRetrievalResponse articleResponse = (FullTextRetrievalResponse) unmarshaller.unmarshal(IOUtils.toInputStream(htmlContent, "UTF-8"));
         return articleResponse;
     }

@@ -1,6 +1,7 @@
 package eu.openminted.toolkit.queue.services.impl;
 
 import com.google.gson.Gson;
+import eu.openminted.toolkit.queue.ArticleUrl;
 import eu.openminted.toolkit.queue.LeafNode;
 import eu.openminted.toolkit.queue.QueueConstants;
 import eu.openminted.toolkit.queue.services.QueueService;
@@ -33,5 +34,21 @@ public class RabbitMQQueueServiceImpl implements QueueService {
         Gson gson = new Gson();
         LeafNode leafNode = gson.fromJson(msgString, LeafNode.class);
         return leafNode;
+    }
+
+    @Override
+    public void pushArticleUrl(ArticleUrl articleUrl) {
+        Gson gson = new Gson();
+        String message = gson.toJson(articleUrl);
+        rabbitTemplate.convertAndSend(QueueConstants.EXCHANGE_NAME, QueueConstants.ARTICLES_ROUTING_KEY, message);
+    }
+
+    @Override
+    public ArticleUrl getArticleUrl() {
+        Object msg = rabbitTemplate.receiveAndConvert(QueueConstants.ARTICLES_URLS_QUEUE_NAME);
+        String msgString = new String((byte[]) msg);
+        Gson gson = new Gson();
+        ArticleUrl articleUrl = gson.fromJson(msgString, ArticleUrl.class);
+        return articleUrl;
     }
 }

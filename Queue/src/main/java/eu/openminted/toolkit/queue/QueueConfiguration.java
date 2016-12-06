@@ -40,12 +40,16 @@ public class QueueConfiguration {
         // declare queues, exchanges, binding
         TopicExchange exchange = new TopicExchange(QueueConstants.EXCHANGE_NAME, true, false);
         Queue queue = new Queue(QueueConstants.QUEUE_NAME, true, false, false);
+        Queue articlesQueue = new Queue(QueueConstants.ARTICLES_URLS_QUEUE_NAME, true, false, false);
 
         admin.declareExchange(exchange);
         admin.declareQueue(queue);
+        admin.declareQueue(articlesQueue);
 
         Binding binding = BindingBuilder.bind(queue).to(exchange).with(QueueConstants.ROUTING_KEY);
+        Binding articlesBinding = BindingBuilder.bind(articlesQueue).to(exchange).with(QueueConstants.ARTICLES_ROUTING_KEY);
         admin.declareBinding(binding);
+        admin.declareBinding(articlesBinding);
 
         return admin;
     }

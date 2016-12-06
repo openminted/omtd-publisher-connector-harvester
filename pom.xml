@@ -13,7 +13,8 @@
         <module>Database</module>
         <module>Storage</module>
         <module>ElsevierHarvester</module>
-        <module>ElsevierProcessor</module>        
+        <module>ElsevierProcessor</module>
+        <module>ElsevierRetriever</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -1,4 +1,6 @@
-package eu.openminted.toolkit.elsevier;
+package eu.openminted.toolkit.elsevier.retriever;
+
+
 
 import eu.openminted.toolkit.elsevier.beans.article.CoreData;
 import eu.openminted.toolkit.elsevier.beans.article.FullTextRetrievalResponse;

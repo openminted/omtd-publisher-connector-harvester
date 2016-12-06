@@ -1,4 +1,4 @@
-package eu.openminted.toolkit.elsevier.processor;
+package eu.openminted.toolkit.elsevier.retriever;
 
 import eu.openminted.toolkit.elsevier.processor.exceptions.ElsevierProcessorException;
 import java.io.File;

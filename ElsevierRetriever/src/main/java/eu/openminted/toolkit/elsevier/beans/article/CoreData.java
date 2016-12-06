@@ -26,7 +26,7 @@ public class CoreData {
     @XmlElement(name = "eid")
     String eid;
 
-    @XmlElement(name = "doi")
+    @XmlElement(name = "doi", namespace = "http://prismstandard.org/namespaces/basic/2.0/")
     String doi;
 
     @XmlElement(name = "pii")

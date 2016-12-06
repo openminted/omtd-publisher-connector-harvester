@@ -79,7 +79,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>eu.openminted.elsevier.harvester.App</mainClass>
+                            <mainClass>eu.openminted.toolkit.elsevier.harvester.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
