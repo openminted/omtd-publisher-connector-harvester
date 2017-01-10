@@ -1,18 +1,42 @@
 = Accessing content from Publishers - Mechanisms and limitations
 
-Creating an interoperable layer for machine access to OA content from publishers for TDM
-
 == Overview
-Todo
+
+Purpose of this document is to present harvesting capabilities of major scientific literature publishers via machine protocols and highlight limitations of accessing content in large scale through these interfaces. A possible harvesting approach is presented for each publisher and how each publisher's data can be mapped to https://github.com/openminted/omtd-share_metadata_schema[OpenMinTeD publication schema]. Ultimate goal is to create an  interoperable layer for machine access to OA content from publishers for TDM purposes.
+
+This is an dynamic page, should be updated every time a machine interface of a publisher is altered.
+
 
 == Elsevier
 === Publisher APIs
+Elsevier offers a license-based approach enabling researchers to text mine Elsevier content for non-commercial research purposes.
 //From: https://docs.google.com/document/d/1xFpoXGd0kQ-9FcjqgMe38pdsChvl2-JGAVXv09f3cZA
 //What does the publisher API actually offers
-Elsevier provides us with all their items with no restriction by API key.
+Elsevier recommends the registration for an API key (through its http://dev.elsevier.com/[developers portal])
+
+==== Retrieval
+
+All items can be retrieved through the DOI retrieval function \http://api.elsevier.com/content/article/doi/[DOI] (even withouth the use of API).
+
+==== Content discovery
+
+Elsevier's API offers a search functionality. In it's simplest form this looks like:
+
+\http://api.elsevier.com/content/search/scidir?query=[query]
+\http://api.elsevier.com/content/search/scopus?query=[query]
+
+You can filter further your search request by additional parameters e.g. search within a metadata field:
+\http://api.elsevier.com/content/search/scidir?query=heart&field=dc:title,dc:creator,prism:publicationName,prism:coverDate,dc:description,prism:doi
+or get extented views of the bibliographic data:
+http://api.elsevier.com/content/search/scopus?query=heart&view=COMPLETE
+or set up the result set page size, etc.
+
+However this method cannot be used to harvest the full (everything) corpus of it as it is bounded to (the natural problem of any ranked search system) deep pagination. Attempts to partition the result sets to small enough subsets (to be fully retrievable even with pagination) was not successfull (observed limit was 50000).
+
+
 
 ==== Initial data import
-Provides a sitemap listing all items by Journal (alphabetically) +
+To overcome the above issue a different approach can be followed, to discover full set of identifiers through traditionally crawling sitemaps. Sitemaps of journals and book titles are provided in API's webpage, providing a listing of all items by Journal (alphabetically) +
 http://api.elsevier.com/sitemap/page/sitemap/index.html
 
 The sitemap structure is:
@@ -27,9 +51,11 @@ An open access item can be determined by checking:
 [source,xml]
 <full-text-retrieval-response>
   <coredata>
+	...
     <openaccess>1</openaccess>
     <openaccessArticle>true</openaccessArticle>
     <openaccessType>Full</openaccessType>
+	...
   </coredata>
 </full-text-retrieval-response>
 
@@ -102,3 +128,9 @@ For the Springer API, it would be best to get content via the CrossRef API
 === Proposed improvements
 
 === OMTD Schema Mapping
+
+== CrossRef
+== Wiley
+== PubMed
+== PLoS
+== arXiv
