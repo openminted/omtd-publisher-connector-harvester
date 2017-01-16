@@ -6,16 +6,23 @@ Purpose of this document is to present harvesting capabilities of major scientif
 
 This is an dynamic page, should be updated every time a machine interface of a publisher is altered.
 
-== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/[Elsevier]
+== Key publishers
 
-== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/springer.adoc[Springer]
+We investigate, analyse and document the functionality exposed by APIs of publishers with respect to being able to aggregate open access content from them. We aim at implementing custom solutions for aggregating content from the following key publishers:
 
-== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/CrossRef.adoc[CrossRef]
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/[Elsevier]
 
-== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/Wiley.adoc[Wiley]
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/springer.adoc[Springer]
 
-== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/PubMed.adoc[PubMed]
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/Wiley.adoc[Wiley]
 
-== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/PLoS.adoc[PLoS]
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/TaylorFrancis.adoc[TaylorFrancis]
 
-== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/arXiv.adoc[arXiv]
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/PLoS.adoc[PLoS]
+
+== Other publishers
+
+The content from many publishers not covered in the section above can still be collected using an approach in which we make use of the CrossRef service. 
+
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/CrossRef.adoc[CrossRef]
+
