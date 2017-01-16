@@ -1,12 +1,3 @@
-= Accessing content from Publishers - Mechanisms and limitations
-
-== Overview
-
-Purpose of this document is to present harvesting capabilities of major scientific literature publishers via machine protocols and highlight limitations of accessing content in large scale through these interfaces. A possible harvesting approach is presented for each publisher and how each publisher's data can be mapped to https://github.com/openminted/omtd-share_metadata_schema[OpenMinTeD publication schema]. Ultimate goal is to create an  interoperable layer for machine access to OA content from publishers for TDM purposes.
-
-This is an dynamic page, should be updated every time a machine interface of a publisher is altered.
-
-
 == Elsevier
 === Publisher APIs
 Elsevier offers a license-based approach enabling researchers to text mine Elsevier content for non-commercial research purposes.
@@ -111,26 +102,3 @@ Mapping of fields to the OMTD schema (i.e. towards achieving content interoperab
 maybe we can make our life easier by saying that we rely on the CrossRef TDM service to
 harmonize the metadata and we can then only comment on the conversion of CrossRef TDM schema to the OMTD schema
 
-== Springer
-
-=== Publisher APIs
-The API provided by springer only allows 5,000 requests / API key / day. The search only allows a maximum of 20 items per request. Also, it is impossible to retrieve the 10,000th page if we were to iterate over a query of * of 20 items / page. Springer reports over 295,000 Open Access items.
-
-http://api.springer.com/openaccess/app?api_key=fdcc8721a1359724c6260b04d2ced9b2&q=*&s=10000&p=20&
-
-
-For the Springer API, it would be best to get content via the CrossRef API
-
-=== Harvesting approach
-
-=== Limitations
-
-=== Proposed improvements
-
-=== OMTD Schema Mapping
-
-== CrossRef
-== Wiley
-== PubMed
-== PLoS
-== arXiv

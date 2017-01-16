@@ -1,0 +1,21 @@
+= Accessing content from Publishers - Mechanisms and limitations
+
+== Overview
+
+Purpose of this document is to present harvesting capabilities of major scientific literature publishers via machine protocols and highlight limitations of accessing content in large scale through these interfaces. A possible harvesting approach is presented for each publisher and how each publisher's data can be mapped to https://github.com/openminted/omtd-share_metadata_schema[OpenMinTeD publication schema]. Ultimate goal is to create an  interoperable layer for machine access to OA content from publishers for TDM purposes.
+
+This is an dynamic page, should be updated every time a machine interface of a publisher is altered.
+
+== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/[Elsevier]
+
+== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/springer.adoc[Springer]
+
+== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/CrossRef.adoc[CrossRef]
+
+== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/Wiley.adoc[Wiley]
+
+== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/PubMed.adoc[PubMed]
+
+== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/PLoS.adoc[PLoS]
+
+== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer/arXiv.adoc[arXiv]
