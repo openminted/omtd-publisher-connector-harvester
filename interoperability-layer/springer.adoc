@@ -16,26 +16,3 @@ For the Springer API, it would be best to get content via the CrossRef API
 
 === OMTD Schema Mapping
 
-== CrossRef
-CrossRef is the prominent DOI Registration Agency*
-iscovery of DOIs
-We use CrossRef Metadata API (CrossRef is the prominent DOI Registration Agency*) to discover doi s of published articles of the big publishers
-The way to do this:
-
-
-Discover member, e.g. discover springer:
-http://api.crossref.org/members?query=springer
-
-
-Retireve prefixes from results
-message->items[]->prefixes[]
-E.g. retrieve works by springer (springer different than Springer Nature)
-http://api.crossref.org/works?filter=prefix:10.1891
-You can paginate over results by rows and offset parameters e.g
-http://api.crossref.org/works?filter=prefix:10.1891,rows:10,offset:1000
-However if you try to navigate to more than 10k then you encounter the deep paging problem. In such case you can use a cursor to navigate into large result sets, e.g.:
-1st request:
-http://api.crossref.org/works?filter=prefix:10.1891&cursor=*
-The response gives a next-cursor which if followed can retrieve the next page (then retireve the next cursor to retrieve next page etc.). This is essentially the equivalent of resumptionToken of OAI-PMH protocol
-http://api.crossref.org/works?filter=prefix:10.1891&cursor=AoE/CWh0dHA6Ly9keC5kb2kub3JnLzEwLjE4OTEvMDE5OC04Nzk0LjI4LjM=
-
