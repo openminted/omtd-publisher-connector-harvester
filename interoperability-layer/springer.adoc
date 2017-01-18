@@ -1,18 +1,29 @@
 == Springer
 
 === Publisher APIs
-The API provided by springer only allows 5,000 requests / API key / day. The search only allows a maximum of 20 items per request. Also, it is impossible to retrieve the 10,000th page if we were to iterate over a query of * of 20 items / page. Springer reports over 295,000 Open Access items.
+The API provided by springer only allows 5,000 requests / API key / day.  Springer reports over 295,000 Open Access items.
 
 http://api.springer.com/openaccess/app?api_key=fdcc8721a1359724c6260b04d2ced9b2&q=*&s=10000&p=20&
 
 
-For the Springer API, it would be best to get content via the CrossRef API
-
 === Harvesting approach
+
+As described in the generic approach to perform a full harvest we need as an initial step the full list of all identifiers (in case of incremental update since the last update). We propose here two different approaches:
+
+1. Crawling sitemaps (traditional approach similar to approach followed for other publishers e.g. Elsever)
+Springer's sitemaps (found http://link.springer.com/sitemap-index.xml[here]) lists daily sub-sitemaps (e.g. for Jan 1st 2017 : http://link.springer.com/sitemap_2017-01-01_1.txt) which in turn contain a full list of journal articles and book chapters entered in Springer database that day.
+
+2. Sliced harvesting from CrossRef
+In CrossRef section a method is described to discover each publisher's list of DOIs following a certain methodology. However due to Springer's enormous size, you will possibly encounter rate limit throttling and deep paging problems (if you apply a straight forward approach without cursors). You can extend this method via
 
 === Limitations
 
+The search only allows a maximum of 20 items per request. Also, it is impossible to retrieve the 10,000th page if we were to iterate over a query of * of 20 items / page.
+
 === Proposed improvements
+
+
 
 === OMTD Schema Mapping
 
+To be determined upon releasing (finalising) of OMTD-schema
