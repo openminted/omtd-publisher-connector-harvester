@@ -11,10 +11,15 @@ http://api.springer.com/openaccess/app?api_key=fdcc8721a1359724c6260b04d2ced9b2&
 As described in the generic approach to perform a full harvest we need as an initial step the full list of all identifiers (in case of incremental update since the last update). We propose here two different approaches:
 
 1. Crawling sitemaps (traditional approach similar to approach followed for other publishers e.g. Elsever)
-Springer's sitemaps (found http://link.springer.com/sitemap-index.xml[here]) lists daily sub-sitemaps (e.g. for Jan 1st 2017 : http://link.springer.com/sitemap_2017-01-01_1.txt) which in turn contain a full list of journal articles and book chapters entered in Springer database that day.
+Springer's sitemaps (found http://link.springer.com/sitemap-index.xml[here]) lists daily sub-sitemaps (e.g. for Jan 1st 2017 : http://link.springer.com/sitemap_2017-01-01_1.txt) which in turn contain a full list of journal articles and book chapters entered in Springer database that day. From the list obtained from each sitemap the doi can easily be inferred.  Examples URLs look like:
+http://link.springer.com/article/10.1007/s11356-016-8315-4 (infered doi : 10.1007/s11356-016-8315-4)
+http://link.springer.com/book/10.1057/9781137476449 (infered doi : 10.1057/9781137476449)
+
 
 2. Sliced harvesting from CrossRef
-In CrossRef section a method is described to discover each publisher's list of DOIs following a certain methodology. However due to Springer's enormous size, you will possibly encounter rate limit throttling and deep paging problems (if you apply a straight forward approach without cursors). You can extend this method via
+In CrossRef section a method is described to discover each publisher's list of DOIs following a certain methodology. However due to Springer's enormous size, you will possibly encounter rate limit throttling and deep paging problems (if you apply a straight forward approach without cursors). You can extend this method via filtering in small-enough time periods to retrieve the full corpus by collecting small chunks (using only pagination and avoiding cursors). An example of such query - retrieving first page of "Springer Nature" indexed on 1st Jan 2017:
+http://api.crossref.org/members/297/works?filter=from-index-date:2017-01-01,until-index-date:2017-01-02
+
 
 === Limitations
 
