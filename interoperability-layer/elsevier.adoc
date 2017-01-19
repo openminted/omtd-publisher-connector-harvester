@@ -93,12 +93,12 @@ Description of the approach we take to harvest the publisher
 |====
 
 === Proposed improvements
+
 Recommendations for the publisher on improvements (e.g. increase the rate limits,
   provide a solution for discoverability of DOIs, provide these necessary metadata fields,
   license metadata are missing in CrossRef)
 
 === OMTD Schema Mapping
-Mapping of fields to the OMTD schema (i.e. towards achieving content interoperability) -
-maybe we can make our life easier by saying that we rely on the CrossRef TDM service to
-harmonize the metadata and we can then only comment on the conversion of CrossRef TDM schema to the OMTD schema
+
+OMTD-schema (described https://github.com/openminted/omtd-share_metadata_schema[here] is work in progress. Mappings between Elsevier's format and OMTD-schema will appear here upon completion.
 
