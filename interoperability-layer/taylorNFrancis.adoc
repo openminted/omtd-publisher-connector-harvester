@@ -1,0 +1,15 @@
+== Taylor and Francis
+
+=== Publisher APIs
+
+Taylor and Francis appears to not offer an API or any programmatical method to access its publications. It is hoewever one of the founding partners of CrossRef and its content appears there.
+
+=== Harvesting approach
+
+Harvesting of Taylor and Francis can be approached through the generic CrossRef approach
+
+=== Limitations
+
+=== Proposed improvements
+
+=== OMTD Schema Mapping

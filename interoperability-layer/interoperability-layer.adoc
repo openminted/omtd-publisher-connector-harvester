@@ -23,7 +23,7 @@ We investigate, analyse and document the functionality exposed by APIs of publis
 
 === https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/Wiley.adoc[Wiley]
 
-=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/TaylorFrancis.adoc[TaylorFrancis]
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/taylorNFrancis.adoc[TaylorFrancis]
 
 === https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/PLoS.adoc[PLoS]
 
