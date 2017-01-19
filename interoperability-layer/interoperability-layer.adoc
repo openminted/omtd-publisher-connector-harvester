@@ -31,5 +31,5 @@ We investigate, analyse and document the functionality exposed by APIs of publis
 
 The content from many publishers not covered in the section above can still be collected using an approach in which we make use of the CrossRef service.
 
-=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/CrossRef.adoc[CrossRef]
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/crossref.adoc[CrossRef]
 
