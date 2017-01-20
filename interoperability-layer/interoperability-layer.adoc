@@ -2,7 +2,7 @@
 
 == Overview
 
-Purpose of this document is to present harvesting capabilities of major scientific literature publishers and data providers via machine protocols and highlight limitations of accessing content in large scale through these interfaces. A possible harvesting approach is presented for each publisher and how each publisher's data can be mapped to https://github.com/openminted/omtd-share_metadata_schema[OpenMinTeD publication schema]. Ultimate goal is to create an  interoperable layer for machine access to OA content from publishers for TDM purposes.
+Purpose of this document is to present harvesting capabilities of major scientific literature publishers and data providers via machine protocols and highlight limitations of accessing content in large scale through these interfaces. A possible harvesting approach is presented for each publisher. Ultimate goal is to create an  interoperable layer for machine access to OA content from publishers for TDM purposes.
 
 This is an dynamic page, should be updated every time a machine interface of a publisher is altered.
 
