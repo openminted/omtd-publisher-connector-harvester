@@ -55,5 +55,4 @@ From time to time Crossref needs to impose rate limits to ensure that the free A
 
 === Proposed improvements
 
-=== OMTD Schema Mapping
 
