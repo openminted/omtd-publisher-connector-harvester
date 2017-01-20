@@ -100,5 +100,5 @@ Recommendations for the publisher on improvements (e.g. increase the rate limits
 
 === OMTD Schema Mapping
 
-OMTD-schema (described https://github.com/openminted/omtd-share_metadata_schema[here] is work in progress. Mappings between Elsevier's format and OMTD-schema will appear here upon completion.
+OMTD-schema (described https://github.com/openminted/omtd-share_metadata_schema[here]) is work in progress. Mappings between Elsevier's format and OMTD-schema will appear here upon completion.
 
