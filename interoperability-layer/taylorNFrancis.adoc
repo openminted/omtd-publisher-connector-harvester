@@ -2,7 +2,7 @@
 
 === Publisher APIs
 
-Taylor and Francis appears to not offer an API or any programmatical method to access its publications. It is hoewever one of the founding partners of CrossRef and its content appears there.
+Taylor and Francis appears to not offer an API or any programmatical method to access its publications. It is however one of the founding partners of CrossRef and its content appears there.
 
 === Harvesting approach
 

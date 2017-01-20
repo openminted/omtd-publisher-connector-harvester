@@ -6,6 +6,28 @@
 
 === Limitations
 
+[cols="3*"]
+|====
+|Task|Limitation|Solution
+
+|Doi discovery
+|a
+|aa
+
+|Incremental update
+|b
+|bb
+
+|Imposed limits
+|c
+|cc
+
+|Response formats
+|d
+|dd
+
+|====
+
 === Proposed improvements
 
 === OMTD Schema Mapping

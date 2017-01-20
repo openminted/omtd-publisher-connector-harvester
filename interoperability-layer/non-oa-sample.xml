@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<full-text-retrieval-response xmlns="http://www.elsevier.com/xml/svapi/article/dtd" xmlns:bk="http://www.elsevier.com/xml/bk/dtd" xmlns:cals="http://www.elsevier.com/xml/common/cals/dtd" xmlns:ce="http://www.elsevier.com/xml/common/dtd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:ja="http://www.elsevier.com/xml/ja/dtd" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:prism="http://prismstandard.org/namespaces/basic/2.0/" xmlns:sa="http://www.elsevier.com/xml/common/struct-aff/dtd" xmlns:sb="http://www.elsevier.com/xml/common/struct-bib/dtd" xmlns:tb="http://www.elsevier.com/xml/common/table/dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xocs="http://www.elsevier.com/xml/xocs/dtd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <coredata>
+      <prism:url>http://api.elsevier.com/content/article/pii/S8755461598900111</prism:url>
+      <dc:identifier>doi:10.1016/S8755-4615(98)90011-1</dc:identifier>
+      <eid>1-s2.0-S8755461598900111</eid>
+      <prism:doi>10.1016/S8755-4615(98)90011-1</prism:doi>
+      <pii>S8755-4615(98)90011-1</pii>
+      <dc:title>Opening spaces: Writing technologies and critical research practices Patricia Sullivan and James E. Porter. (1997). Greenwich, CT: Ablex Publishing Corporation, 215 pp.</dc:title>
+      <prism:publicationName>Computers and Composition</prism:publicationName>
+      <prism:aggregationType>Journal</prism:aggregationType>
+      <pubType>Book review</pubType>
+      <prism:issn>87554615</prism:issn>
+      <prism:volume>15</prism:volume>
+      <prism:issueIdentifier>3</prism:issueIdentifier>
+      <prism:startingPage>429</prism:startingPage>
+      <prism:endingPage>432</prism:endingPage>
+      <prism:pageRange>429-432</prism:pageRange>
+      <prism:number>3</prism:number>
+      <dc:format>application/xml</dc:format>
+      <prism:coverDate>1998-12-31</prism:coverDate>
+      <prism:coverDisplayDate>1998</prism:coverDisplayDate>
+      <prism:copyright>Copyright © 1998 Published by Elsevier Inc.</prism:copyright>
+      <prism:publisher>Published by Elsevier Inc.</prism:publisher>
+      <dc:creator>Bridgeford, Tracy</dc:creator>
+      <dc:description />
+      <openaccess>0</openaccess>
+      <openaccessArticle>false</openaccessArticle>
+      <openaccessType />
+      <openArchiveArticle>false</openArchiveArticle>
+      <openaccessSponsorName />
+      <openaccessSponsorType />
+      <openaccessUserLicense />
+      <link rel="self" href="http://api.elsevier.com/content/article/pii/S8755461598900111" />
+      <link rel="scidir" href="http://www.sciencedirect.com/science/article/pii/S8755461598900111" />
+   </coredata>
+   <originalText>
+      <xocs:doc>
+         <xocs:meta>
+            <xocs:open-access>
+               <xocs:oa-article-status is-open-access="0" is-open-archive="0" />
+            </xocs:open-access>
+            <xocs:available-online-date xmlns:xoe="http://www.elsevier.com/xml/xoe/dtd" yyyymmdd="20020418">2002-04-18</xocs:available-online-date>
+         </xocs:meta>
+      </xocs:doc>
+   </originalText>
+</full-text-retrieval-response>
