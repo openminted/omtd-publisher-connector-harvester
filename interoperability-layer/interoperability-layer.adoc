@@ -1,4 +1,4 @@
-= Accessing content from Publishers - Mechanisms and limitations
+= Expertise directory on machine access to content from publishers - Mechanisms and limitations
 
 == Overview
 
