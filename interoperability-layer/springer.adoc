@@ -29,7 +29,5 @@ The search only allows a maximum of 20 items per request. Also, it is impossible
 
 
 
-=== OMTD Schema Mapping
 
-OMTD-schema (described https://github.com/openminted/omtd-share_metadata_schema[here]) is work in progress. Mappings between Springer's format and OMTD-schema will appear here upon completion.
 
