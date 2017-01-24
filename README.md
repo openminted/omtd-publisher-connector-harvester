@@ -1,8 +1,10 @@
 # Publisher connector harvester
 
-![publisher architecture diagram](interoperability-layer/Publisher%20harvesting%20architecture.png "Publishers' harvesting architecture")
+## Technical documentation
 
-## Knowledge base / expertise directory
+[Documentation](tech-documentation/Documentation.md) how the omtd-publisher connector works, how to build, instantiate, deploy and run.
+
+## Expertise directory on Machine Access to Scholarly Publications
 
 A summary of mechanisms of accessing content from scholar publishers can be found here:
 
