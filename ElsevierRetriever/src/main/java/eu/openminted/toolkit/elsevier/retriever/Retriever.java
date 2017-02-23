@@ -10,7 +10,6 @@ import eu.openminted.toolkit.queue.ArticleUrl;
 import eu.openminted.toolkit.storage.StorageDAO;
 import eu.openminted.toolkit.storage.exceptions.StorageException;
 import java.io.IOException;
-import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
