@@ -2,13 +2,39 @@
 
 === Publisher APIs
 
-Taylor and Francis appears to not offer an API or any programmatical method to access its publications. It is however one of the founding partners of CrossRef and its content appears there.
+Taylor and Francis does not explicity advertise an API but does have content on 
+the Crossref API. According to a survey completed in 2016, T&F will provide FTP
+access on request.
 
 === Harvesting approach
 
-Harvesting of Taylor and Francis can be approached through the generic CrossRef approach
+Harvesting Taylor and Francis can be accessed through Crossref
 
 === Limitations
+
+=== Limitations
+
+[cols="3*"]
+|====
+|Task|Limitation|Solution
+
+|Doi discovery
+|a
+|aa
+
+|Incremental update
+|b
+|bb
+
+|Imposed limits
+|c
+|cc
+
+|Response formats
+|d
+|dd
+
+|====
 
 === Proposed improvements
 
