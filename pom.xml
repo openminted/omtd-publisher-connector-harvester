@@ -15,6 +15,9 @@
         <module>ElsevierHarvester</module>
         <module>ElsevierProcessor</module>
         <module>ElsevierRetriever</module>
+        <module>CrossRefRetriever</module>
+        <module>SpringerHarvester</module>
+        <module>dit-api</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
