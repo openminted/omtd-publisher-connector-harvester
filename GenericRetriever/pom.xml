@@ -6,26 +6,33 @@
         <artifactId>DataInteroperabilityToolkit</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>SpringerHarvester</artifactId>
+    <artifactId>GenericRetriever</artifactId>
     <packaging>jar</packaging>
-    
-    <name>DIT - SpringerHarvester</name>
+    <name>DIT - Generic Retriever</name>
     <dependencies>
-        <dependency>
-            <groupId>eu.openminted</groupId>
-            <artifactId>CrossRefRetriever</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
         <dependency>
             <groupId>eu.openminted</groupId>
             <artifactId>Queue</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>eu.openminted</groupId>
+            <artifactId>Database</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>eu.openminted</groupId>
+            <artifactId>Storage</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
 </project>

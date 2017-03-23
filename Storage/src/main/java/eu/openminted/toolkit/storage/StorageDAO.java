@@ -22,4 +22,7 @@ public interface StorageDAO {
     public String getPdfFileLocation(String articleUrl);
     
     public String storePdfFile(String articleUrl, String articlePdf) throws StorageException;
+    
+    public String getPdfFileLocation(String publisherPrefix, String doi,String articleUrl) throws StorageException;
+    public String getMetadataFileLocation(String publisherPrefix, String doi,String articleUrl) throws StorageException;
 }

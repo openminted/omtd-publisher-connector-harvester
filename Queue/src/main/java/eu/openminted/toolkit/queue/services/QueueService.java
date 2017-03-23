@@ -2,6 +2,7 @@ package eu.openminted.toolkit.queue.services;
 
 import eu.openminted.toolkit.queue.ArticleUrl;
 import eu.openminted.toolkit.queue.LeafNode;
+import eu.openminted.toolkit.queue.ScheduledArticle;
 
 /**
  *
@@ -16,4 +17,6 @@ public interface QueueService {
     public void pushArticleUrl(ArticleUrl articleUrl);
     
     public ArticleUrl getArticleUrl();
+    
+    public void scheduleArticle(ScheduledArticle scheduledArticle);
 }

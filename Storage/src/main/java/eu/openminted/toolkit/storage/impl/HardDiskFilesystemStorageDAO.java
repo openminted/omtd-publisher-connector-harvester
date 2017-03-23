@@ -200,7 +200,7 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
 
         //create subfolder if does not exist
         this.createFolderIfNotExists(STORAGE_BASE_PATH + STORAGE_METADATA_PATH + subFolder);
-        
+
         return STORAGE_BASE_PATH + STORAGE_METADATA_PATH + subFolder + File.separator + sfilename;
     }
 
@@ -210,9 +210,28 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
         String subFolder = selectBucket(articleUrl);
 
         this.createFolderIfNotExists(STORAGE_BASE_PATH + STORAGE_PDF_PATH + subFolder);
-        
-        
+
         return STORAGE_BASE_PATH + STORAGE_PDF_PATH + subFolder + File.separator + sfilename;
+    }
+
+    @Override
+    public String getPdfFileLocation(String publisherPrefix, String doi, String articleUrl) throws StorageException {
+        String sfilename = generatePdfFilesystemFilename(articleUrl);
+        String subFolder = selectBucket(articleUrl);
+
+        this.createFolderIfNotExists(STORAGE_BASE_PATH + publisherPrefix + "/" + STORAGE_PDF_PATH + subFolder);
+
+        return STORAGE_BASE_PATH + publisherPrefix + "/" + STORAGE_PDF_PATH + subFolder + File.separator + sfilename;
+    }
+
+    @Override
+    public String getMetadataFileLocation(String publisherPrefix, String doi, String articleUrl) throws StorageException {
+        String sfilename = generateMetadataFilesystemFilename(articleUrl);
+        String subFolder = selectBucket(articleUrl);
+
+        this.createFolderIfNotExists(STORAGE_BASE_PATH + publisherPrefix + "/" + STORAGE_METADATA_PATH + subFolder);
+
+        return STORAGE_BASE_PATH + publisherPrefix + "/" + STORAGE_METADATA_PATH + subFolder + File.separator + sfilename;
     }
 
 }

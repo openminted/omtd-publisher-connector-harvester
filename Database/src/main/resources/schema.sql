@@ -41,3 +41,14 @@ CREATE TABLE IF NOT EXISTS `elsevier`.`files` (
     `metadata_filename` VARCHAR(512) NULL COMMENT 'filename of metadata of article',
     `pdf_filename` VARCHAR(512) NULL COMMENT 'filename of pdf of article -if any'
 ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `elsevier`.`generic_files` (
+    `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+    `publisher_prefix` VARCHAR(128) NOT NULL,
+    `doi` VARCHAR(256) NOT NULL,
+    `metadata` TEXT NULL,
+    `metadata_filename` VARCHAR(512) NULL COMMENT 'filename of metadata of article',
+    `pdf_filename` VARCHAR(512) NULL COMMENT 'filename of pdf of article -if any',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+

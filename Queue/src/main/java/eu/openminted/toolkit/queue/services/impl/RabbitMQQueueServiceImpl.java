@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import eu.openminted.toolkit.queue.ArticleUrl;
 import eu.openminted.toolkit.queue.LeafNode;
 import eu.openminted.toolkit.queue.QueueConstants;
+import eu.openminted.toolkit.queue.ScheduledArticle;
 import eu.openminted.toolkit.queue.services.QueueService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,4 +52,12 @@ public class RabbitMQQueueServiceImpl implements QueueService {
         ArticleUrl articleUrl = gson.fromJson(msgString, ArticleUrl.class);
         return articleUrl;
     }
+    
+    @Override
+    public void scheduleArticle(ScheduledArticle scheduledArticle){
+        Gson gson = new Gson();
+        String message = gson.toJson(scheduledArticle);
+        rabbitTemplate.convertAndSend(QueueConstants.SCHEDULED_ARTICLES_EXCHANGE, QueueConstants.SCHEDULED_ARTICLES_ROUTING_KEY, message);
+    }
+
 }
