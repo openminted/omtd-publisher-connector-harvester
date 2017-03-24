@@ -45,6 +45,8 @@ public class QueueConfiguration {
         Queue scheduledArticlesQueue = new Queue(QueueConstants.SCHEDULED_ARTICLES_QUEUE_NAME, true, false, false);
 
         admin.declareExchange(exchange);
+        admin.declareExchange(aExchange);        
+        
         admin.declareQueue(queue);
         admin.declareQueue(articlesQueue);
         admin.declareQueue(scheduledArticlesQueue);

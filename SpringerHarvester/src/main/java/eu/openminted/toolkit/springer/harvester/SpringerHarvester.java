@@ -1,26 +1,31 @@
 package eu.openminted.toolkit.springer.harvester;
 
 import com.google.gson.Gson;
-import eu.openminted.crossref.model.works.Link;
-import eu.openminted.crossref.model_tmp.Item;
-import eu.openminted.crossref.retriever.CrossRefClient;
+import eu.openminted.toolkit.crossref.model.works.Link;
+import eu.openminted.toolkit.crossref.model.multiple_works.Item;
+import eu.openminted.toolkit.crossref.CrossRefClient;
 import eu.openminted.toolkit.queue.ScheduledArticle;
 import eu.openminted.toolkit.queue.services.QueueService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author lucasanastasiou
  */
+@Component
 public class SpringerHarvester {
 
     @Autowired
     CrossRefClient crossRefClient;
-    
+
     @Autowired
     QueueService queueService;
+
+    private static final Logger logger = Logger.getLogger("SpringerHarvester");
 
     //
     // TODO make single-prefix able 
@@ -28,10 +33,16 @@ public class SpringerHarvester {
         for (String prefix : SpringerConstants.SPRINGER_PREFIXES) {
             for (String month : this.getMonths()) {
                 List<Item> monthItems = crossRefClient.getPublisherMonthsItemByLicense(prefix, month, SpringerConstants.SPRINGER_TDM_LICENSE_URL);
-                monthItems.forEach(item -> scheduleItem(prefix,item));
+                monthItems.forEach(item -> scheduleItem(prefix, item));
 
             }
         }
+    }
+
+    public void schedulePrefixMonthPublications(String prefix, String month) {
+        logger.info(String.format("Harvesting for prefix : %s for month : %s", prefix, month));
+        List<Item> monthItems = crossRefClient.getPublisherMonthsItemByLicense(prefix, month, SpringerConstants.SPRINGER_TDM_LICENSE_URL);
+        monthItems.forEach(item -> scheduleItem(prefix, item));
     }
 
     private List<String> getMonths() {
@@ -51,20 +62,21 @@ public class SpringerHarvester {
     }
 
     private void scheduleItem(String publisherPrefix, Item item) {
-        
+
+        logger.info(String.format("Scheduling (pushing to queue) item : %s",item.getDOI()));
         Gson gson = new Gson();
         String metadata = gson.toJson(item);
-                
+
         // field "Link" is a list of links (not just a single link)
         //item.getLink().forEach(linkItem -> System.out.println("Scheduling ...:"+linkItem.getURL()));
         for (Link link : item.getLink()) {
-            ScheduledArticle article  = new ScheduledArticle();
+            ScheduledArticle article = new ScheduledArticle();
             article.setDoi(item.getdOI());
             article.setDownloadUrl(link.getURL());
             article.setPublisherPrefix(publisherPrefix);
             article.setMetadata(metadata);
             queueService.scheduleArticle(article);
         }
-        
+
     }
 }
