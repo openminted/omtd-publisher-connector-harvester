@@ -60,13 +60,24 @@ public class GenericRetriever {
         }
     }
 
-    private void downloadAndStore(ScheduledArticle article) throws StorageException, GenericRetrieverException {
+    private void downloadAndStore(ScheduledArticle article) throws StorageException, GenericRetrieverException, DatabaseException {
         String fileLocation = "";
         if (article.getDownloadUrl().endsWith("xml") || article.getDownloadUrl().endsWith("html")) {
             fileLocation = storageDAO.getMetadataFileLocation(article.getPublisherPrefix(), article.getDoi(), article.getDownloadUrl());
-        }else {
+        } else {
             fileLocation = storageDAO.getPdfFileLocation(article.getPublisherPrefix(), article.getDoi(), article.getDownloadUrl());
         }
+
         genericArticleRetrieverService.retrieveUrlToFile(article.getDownloadUrl(), fileLocation);
+
+        genericArticleFileDAO.updateMetadata(article.getDoi(), article.getMetadata());
+        if (article.getDownloadUrl().endsWith("xml")
+                || article.getDownloadUrl().endsWith("html")) {
+            genericArticleFileDAO.updateMetaFileLocation(article.getDoi(), fileLocation);
+
+        } else {
+            genericArticleFileDAO.updatePdfFileLocation(article.getDoi(), fileLocation);
+        }
+
     }
 }
