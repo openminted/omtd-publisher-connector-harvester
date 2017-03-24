@@ -11,6 +11,7 @@ public class ScheduledArticle {
     public String doi;
     public String downloadUrl;
 
+    public ScheduledArticle(){}
     public ScheduledArticle(String metadata, String publisherPrefix, String doi, String downloadUrl) {
         this.metadata = metadata;
         this.publisherPrefix = publisherPrefix;
