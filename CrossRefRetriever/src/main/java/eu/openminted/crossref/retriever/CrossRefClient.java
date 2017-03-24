@@ -114,10 +114,10 @@ public class CrossRefClient {
      * @return
      */
     public List<eu.openminted.crossref.model_tmp.Item> getPublisherMonthsItemByLicense(String publisherPrefix, String month, String license) {
-        String fromMonth = "";
-        String untilMonth = "";
-        String from_deposit_date = "from-deposit-date:" + fromMonth;
-        String until_deposit_date = "until-deposit-date:" + untilMonth;
+        List<eu.openminted.crossref.model_tmp.Item> resultItems  = new ArrayList<>();
+        
+        String from_deposit_date = "from-deposit-date:" + month;
+        String until_deposit_date = "until-deposit-date:" + month;
         String license_filter = "license.url:" + license;
 
         List<String> filters = new ArrayList<>();
@@ -139,13 +139,20 @@ public class CrossRefClient {
             Gson gson = new Gson();
             MultipleWorksResponse multipleWorksResponse = gson.fromJson(responseString, MultipleWorksResponse.class);
             nextCursor = multipleWorksResponse.getMessage().getNextCursor();
+            
+            multipleWorksResponse.getMessage().getItems().forEach(item -> {
+                if (item.getLink() != null && !item.getLink().isEmpty()) {
+                    item.getLink().forEach(linkItem -> System.out.println("Scheduling ...:"+linkItem.getURL()));
+                    resultItems.add(item);
+                }
+            });
+            
             if (multipleWorksResponse.getMessage().getItems().isEmpty()){
                 break;
             }
         }
         
-        
-        return null;
+        return resultItems;
     }
 
     public void filterByLicense(String license) {
@@ -155,7 +162,7 @@ public class CrossRefClient {
             System.out.println("\n" + i + " request\n=============\n");
             WebTarget webTarget = client.target(CROSSREF_ENDPOINT)
                     .path("works")
-                    .queryParam("filter", "license.url:" + license)
+                    .queryParam("filter", "from-pub-date:2002-01,until-pub-date:2002-01,license.url:" + license)
                     .queryParam("cursor", nextCursor);
 
             Response lResponse = webTarget.request().get();
@@ -192,7 +199,7 @@ public class CrossRefClient {
         CrossRefClient cl = new CrossRefClient();
 //        List<Prefix> prefixes = cl.getPublisherPrefixes("springer");
 //        cl.a();
-//        cl.filterByLicense("http://www.springer.com/tdm");
-        cl.testDois();
+        cl.filterByLicense("http://www.springer.com/tdm");
+//        cl.testDois();
     }
 }
