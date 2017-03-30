@@ -1,6 +1,6 @@
 = Expertise directory on machine access to content from publishers - Mechanisms and limitations
 
-== Overview Overview
+== Overview 
 
 Purpose of this document is to present harvesting capabilities of major scientific literature publishers and data providers via machine protocols and highlight limitations of accessing content in large scale through these interfaces. A possible harvesting approach is presented for each publisher. Ultimate goal is to create an  interoperable layer for machine access to OA content from publishers for TDM purposes.
 
