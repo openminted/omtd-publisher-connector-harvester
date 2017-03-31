@@ -13,9 +13,9 @@ The global corpus of all research papers, i.e. the collection of human knowledge
 Although the TDM benefits listed here are important, nonetheless there are barriers that need to overcome; legal, policies, technological and infrastructure barriers. With regards to the latter two, we have implemented a publisher connector, which will harvest/aggregate the openly available resources from each publisher and will expose them using a standardised and harmonised API.  
 
 The aim of the connector is to:
-* _Create a seamless layer for accessing content across publishers_. Addresses the issue with the increasingly heterogenous nature of publisher APIs and saves time to a TDM miner in collecting data.
-* _Provide a generic centralised point of access to all the available resources_. This is essential as many TDM applications require local access to a large (or even full) corpus of scientific publications therefore cannot rely on TDM APIs already provided by some publishers. 
-* _Provide a high performance and up-to-date access interface_. Harvesting large datasets of scientific content takes considerable time and computational resources. Creating an up-to-date cache of scientific documents readily available for processing lowers the barriers for TDM of scientific literature.
++ _Create a seamless layer for accessing content across publishers_. Addresses the issue with the increasingly heterogenous nature of publisher APIs and saves time to a TDM miner in collecting data.
++ _Provide a generic centralised point of access to all the available resources_. This is essential as many TDM applications require local access to a large (or even full) corpus of scientific publications therefore cannot rely on TDM APIs already provided by some publishers. 
++ _Provide a high performance and up-to-date access interface_. Harvesting large datasets of scientific content takes considerable time and computational resources. Creating an up-to-date cache of scientific documents readily available for processing lowers the barriers for TDM of scientific literature.
 
 
 
