@@ -1,14 +1,10 @@
 # Publisher connector harvester
 
 ## Technical documentation
-
-[Documentation](tech-documentation/Documentation.md) how the omtd-publisher connector works, how to build, instantiate, deploy and run.
-
 In this section you will find all the related [documentation](tech-documentation/Documentation.md) on how to work with the connector; how to build the software modules, instantiate, deploy and run the connector.  
 
 
 ## Expertise directory on Machine Access to Scholarly Publications
-
 That section provides a summary on how to access scientific content from scholarly publishers. More specifically: 
 
 * Illustrates the importance of this connector in the TDM field
