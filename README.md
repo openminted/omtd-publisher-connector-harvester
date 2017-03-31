@@ -14,4 +14,4 @@ That section provides a summary on how to access scientific content from scholar
 * Suggests recommendations towards publishers to improve their machine accessible interfaces. 
 
 
-[Publishers mechanisms and limitations](https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer.adoc)
+[Go to the directory](https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/interoperability-layer.adoc)
