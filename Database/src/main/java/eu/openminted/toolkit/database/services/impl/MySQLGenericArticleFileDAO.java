@@ -7,11 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author lucasanastasiou
  */
+@Service
 public class MySQLGenericArticleFileDAO implements GenericArticleFileDAO {
 
     @Autowired
@@ -33,7 +35,7 @@ public class MySQLGenericArticleFileDAO implements GenericArticleFileDAO {
     @Override
     public boolean isArticleDownloaded(String publisherPrefix, String doi) throws DatabaseException {
         Integer cnt = jdbcTemplate.queryForObject(
-                "SELECT count(*) FROM generic_files WHERE doi = ? AND pdf_filename IS NOT NULL)", Integer.class, doi);
+                "SELECT count(*) FROM generic_files WHERE doi = ? AND pdf_filename IS NOT NULL", Integer.class, doi);
         return (cnt != null && cnt > 0);
     }
 
