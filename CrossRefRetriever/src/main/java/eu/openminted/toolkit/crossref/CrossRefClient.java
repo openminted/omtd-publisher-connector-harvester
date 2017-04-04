@@ -119,8 +119,8 @@ public class CrossRefClient {
     public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherMonthsItemByLicense(String publisherPrefix, String month, String license) {
         List<eu.openminted.toolkit.crossref.model.multiple_works.Item> resultItems = new ArrayList<>();
 
-        String from_deposit_date = "from-deposit-date:" + month;
-        String until_deposit_date = "until-deposit-date:" + month;
+        String from_deposit_date = "from-pub-date:" + month;
+        String until_deposit_date = "until-pub-date:" + month;
         String license_filter = "license.url:" + license;
 
         List<String> filters = new ArrayList<>();
@@ -135,7 +135,7 @@ public class CrossRefClient {
             WebTarget webTarget = client.target(CROSSREF_ENDPOINT)
                     .path("prefixes/" + publisherPrefix + "/works")
                     .queryParam("filter", filterParam)
-                    .queryParam("cursor", "*");
+                    .queryParam("cursor", nextCursor);
 
             logger.info(String.format("Hitting HTTP GET : %s", webTarget.getUri().toString()));
 
@@ -146,6 +146,20 @@ public class CrossRefClient {
             MultipleWorksResponse multipleWorksResponse = gson.fromJson(responseString, MultipleWorksResponse.class);
             nextCursor = multipleWorksResponse.getMessage().getNextCursor();
 
+            if (multipleWorksResponse == null) {
+                break;
+            }
+            if (multipleWorksResponse.getMessage() == null) {
+                break;
+            }
+            if (multipleWorksResponse.getMessage().getItems() == null) {
+                break;
+            }
+
+            if (multipleWorksResponse.getMessage().getItems().isEmpty()) {
+                break;
+            }
+
             multipleWorksResponse.getMessage().getItems().forEach(item -> {
                 if (item.getLink() != null && !item.getLink().isEmpty()) {
 //                    item.getLink().forEach(linkItem -> System.out.println("Scheduling ...:" + linkItem.getURL()));
@@ -153,9 +167,6 @@ public class CrossRefClient {
                 }
             });
 
-            if (multipleWorksResponse.getMessage().getItems().isEmpty()) {
-                break;
-            }
         }
 
         return resultItems;

@@ -45,6 +45,22 @@ public class SpringerHarvester {
         monthItems.forEach(item -> scheduleItem(prefix, item));
     }
 
+    public List<String> getMonthsFromYearToYear(int fromYear, int toYear){
+        List<String> months = new ArrayList<>();
+        for (int year = fromYear; year <= toYear; year++) {
+            for (int monthPrefix = 1; monthPrefix <= 12; monthPrefix++) {
+                String monthDate = "" + year + "-";
+                if (monthPrefix < 10) {
+                    monthDate += "0" + monthPrefix;
+                } else {
+                    monthDate += "" + monthPrefix;
+                }
+                months.add(monthDate);
+            }
+        }
+        return months;
+    }
+    
     private List<String> getMonths() {
         List<String> months = new ArrayList<>();
         for (int year = 1980; year <= 2017; year++) {
