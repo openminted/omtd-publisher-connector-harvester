@@ -8,13 +8,11 @@ import eu.openminted.toolkit.storage.StorageDAO;
 import eu.openminted.toolkit.storage.exceptions.StorageException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author lucasanastasiou
  */
-@Component
 public class GenericRetriever {
 
     @Autowired
@@ -27,9 +25,6 @@ public class GenericRetriever {
     StorageDAO storageDAO;
 
     private final Logger logger = Logger.getLogger("GenericRetriever");
-
-    public GenericRetriever() {
-    }
 
     public void receiveMessage(String message) {
         try {
@@ -68,6 +63,8 @@ public class GenericRetriever {
             fileLocation = storageDAO.getPdfFileLocation(article.getPublisherPrefix(), article.getDoi(), article.getDownloadUrl());
         }
 
+        genericArticleFileDAO.insertNewArticle(article.getPublisherPrefix(), article.getDoi(),article.getMetadata());
+        
         genericArticleRetrieverService.retrieveUrlToFile(article.getDownloadUrl(), fileLocation);
 
         genericArticleFileDAO.updateMetadata(article.getDoi(), article.getMetadata());
