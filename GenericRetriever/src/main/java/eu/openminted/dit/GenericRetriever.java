@@ -6,6 +6,7 @@ import eu.openminted.toolkit.database.services.GenericArticleFileDAO;
 import eu.openminted.toolkit.queue.ScheduledArticle;
 import eu.openminted.toolkit.storage.StorageDAO;
 import eu.openminted.toolkit.storage.exceptions.StorageException;
+import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -61,25 +62,35 @@ public class GenericRetriever {
         if (article.getDownloadUrl() == null && article.getPublisherPrefix().equals("Springer-OA")) {
             article.setDownloadUrl("http://link.springer.com/" + article.getDoi() + ".pdf");
         }
-        String fileLocation = "";
-        if (article.getDownloadUrl().endsWith("xml") || article.getDownloadUrl().endsWith("html")) {
-            fileLocation = storageDAO.getMetadataFileLocation(article.getPublisherPrefix(), article.getDoi(), article.getDownloadUrl());
-        } else {
-            fileLocation = storageDAO.getPdfFileLocation(article.getPublisherPrefix(), article.getDoi(), article.getDownloadUrl());
-        }
+        String metaFileLocation = "";
+        String pdfFileLocation = "";
+//        if (article.getDownloadUrl().endsWith("xml") || article.getDownloadUrl().endsWith("html")) {
+        metaFileLocation = storageDAO.getMetadataFileLocation(article.getPublisherPrefix(), article.getDoi(), article.getDownloadUrl(),"json");
+//        } else {
+        pdfFileLocation = storageDAO.getPdfFileLocation(article.getPublisherPrefix(), article.getDoi(), article.getDownloadUrl());
+//        }
 
         genericArticleFileDAO.insertNewArticle(article.getPublisherPrefix(), article.getDoi(), article.getMetadata());
 
-        genericArticleRetrieverService.retrieveUrlToFile(article.getDownloadUrl(), fileLocation);
+        if (article.getDownloadUrl().endsWith("xml") || article.getDownloadUrl().endsWith("html")) {
+            genericArticleRetrieverService.retrieveUrlToFile(article.getDownloadUrl(), metaFileLocation);
+        } else {
+            genericArticleRetrieverService.retrieveUrlToFile(article.getDownloadUrl(), pdfFileLocation);
+            try {
+                storageDAO.storeFile(metaFileLocation, article.getMetadata());
+            }catch (IOException ioe){
+                logger.error("Cannot store metadata file to :"+metaFileLocation);
+            }
+        }
 
         genericArticleFileDAO.updateMetadata(article.getDoi(), article.getMetadata());
-        if (article.getDownloadUrl().endsWith("xml")
-                || article.getDownloadUrl().endsWith("html")) {
-            genericArticleFileDAO.updateMetaFileLocation(article.getDoi(), fileLocation);
+//        if (article.getDownloadUrl().endsWith("xml")
+//                || article.getDownloadUrl().endsWith("html")) {
+        genericArticleFileDAO.updateMetaFileLocation(article.getDoi(), metaFileLocation);
 
-        } else {
-            genericArticleFileDAO.updatePdfFileLocation(article.getDoi(), fileLocation);
-        }
+//        } else {
+        genericArticleFileDAO.updatePdfFileLocation(article.getDoi(), pdfFileLocation);
+//        }
 
     }
 }
