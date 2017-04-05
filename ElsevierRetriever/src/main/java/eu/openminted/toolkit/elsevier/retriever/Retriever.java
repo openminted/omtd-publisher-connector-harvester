@@ -46,7 +46,7 @@ public class Retriever {
             long dbId = articleUrlMessage.getDbId();
 
             logger.info("Processing url :" + articleUrl);
-            String metadataFileLocation = storageDAO.getMetadataFileLocation(articleUrl);
+            String metadataFileLocation = storageDAO.getMetadataFileLocation(articleUrl,"xml");
 
             //
             articleRetrieverService.retrieveArticleMetadata(articleUrl, metadataFileLocation);

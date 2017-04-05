@@ -16,15 +16,15 @@ public interface StorageDAO {
     
     public String getFileContents(String filename) throws FileDoesNotExistException,StorageException;
 
-    public String getMetadataFileLocation(String articleUrl);
+    public String getMetadataFileLocation(String articleUrl,String extension);
     
     public void storeFile(String fullFileName, String fileContent) throws IOException;
-    public String storeMetadataFile(String articleUrl, String articleMetadata) throws StorageException;
+    public String storeMetadataFile(String articleUrl, String articleMetadata, String extension) throws StorageException;
     
     public String getPdfFileLocation(String articleUrl);
     
     public String storePdfFile(String articleUrl, String articlePdf) throws StorageException;
     
     public String getPdfFileLocation(String publisherPrefix, String doi,String articleUrl) throws StorageException;
-    public String getMetadataFileLocation(String publisherPrefix, String doi,String articleUrl) throws StorageException;
+    public String getMetadataFileLocation(String publisherPrefix, String doi,String articleUrl, String extension) throws StorageException;
 }
