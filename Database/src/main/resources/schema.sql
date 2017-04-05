@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `elsevier`.`node_processing` (
     `time_started` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `time_finished` TIMESTAMP ,
     PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
+) ENGINE = InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- CREATE TABLE IF NOT EXISTS `elsevier`.`items` (
 --     `parent_url_id` INT(11) NOT NULL COMMENT 'id of the url from node_processing',
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `elsevier`.`files` (
     `doi` VARCHAR(512) NULL COMMENT '',
     `metadata_filename` VARCHAR(512) NULL COMMENT 'filename of metadata of article',
     `pdf_filename` VARCHAR(512) NULL COMMENT 'filename of pdf of article -if any'
-) ENGINE = InnoDB;
+) ENGINE = InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `elsevier`.`generic_files` (
     `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -50,5 +50,5 @@ CREATE TABLE IF NOT EXISTS `elsevier`.`generic_files` (
     `metadata_filename` VARCHAR(512) NULL COMMENT 'filename of metadata of article',
     `pdf_filename` VARCHAR(512) NULL COMMENT 'filename of pdf of article -if any',
     PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
+) ENGINE = InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
