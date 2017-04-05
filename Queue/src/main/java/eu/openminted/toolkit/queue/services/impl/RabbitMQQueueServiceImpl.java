@@ -6,6 +6,11 @@ import eu.openminted.toolkit.queue.LeafNode;
 import eu.openminted.toolkit.queue.QueueConstants;
 import eu.openminted.toolkit.queue.ScheduledArticle;
 import eu.openminted.toolkit.queue.services.QueueService;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +24,9 @@ public class RabbitMQQueueServiceImpl implements QueueService {
 
     @Autowired
     RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    RabbitAdmin rabbitAdmin;
 
     @Override
     public void pushLeafNode(LeafNode leafNode) {
@@ -52,12 +60,33 @@ public class RabbitMQQueueServiceImpl implements QueueService {
         ArticleUrl articleUrl = gson.fromJson(msgString, ArticleUrl.class);
         return articleUrl;
     }
-    
+
     @Override
-    public void scheduleArticle(ScheduledArticle scheduledArticle){
+    public void scheduleArticle(ScheduledArticle scheduledArticle) {
         Gson gson = new Gson();
         String message = gson.toJson(scheduledArticle);
         rabbitTemplate.convertAndSend(QueueConstants.SCHEDULED_ARTICLES_EXCHANGE, QueueConstants.SCHEDULED_ARTICLES_ROUTING_KEY, message);
+    }
+
+    @Override
+    public void declareDedicatedQueue(String queueName) {
+
+        Queue queue = new Queue(queueName, true, false, false);
+        rabbitAdmin.declareQueue(queue);
+        
+        TopicExchange dedicatedQueueExchange = new TopicExchange(QueueConstants.DEDICATED_QUEUES_EXCHANGE_NAME, true, false);
+        rabbitAdmin.declareExchange(dedicatedQueueExchange);
+        
+        Binding binding = BindingBuilder.bind(queue).to(dedicatedQueueExchange).with(queueName);
+        rabbitAdmin.declareBinding(binding);
+    }
+
+    @Override
+    public void scheduleArticleToDedicatedQueue(String queueName, ScheduledArticle scheduledArticle) {
+        Gson gson = new Gson();
+        String message = gson.toJson(scheduledArticle);
+        rabbitTemplate.convertAndSend(QueueConstants.DEDICATED_QUEUES_EXCHANGE_NAME, queueName, message);
+
     }
 
 }

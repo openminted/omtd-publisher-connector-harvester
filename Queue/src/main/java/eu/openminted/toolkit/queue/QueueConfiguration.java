@@ -39,6 +39,7 @@ public class QueueConfiguration {
         // declare queues, exchanges, binding
         TopicExchange exchange = new TopicExchange(QueueConstants.EXCHANGE_NAME, true, false);
         TopicExchange aExchange = new TopicExchange(QueueConstants.SCHEDULED_ARTICLES_EXCHANGE, true, false);
+        TopicExchange dedicatedQueueExchange = new TopicExchange(QueueConstants.DEDICATED_QUEUES_EXCHANGE_NAME, true, false);
 
         Queue queue = new Queue(QueueConstants.QUEUE_NAME, true, false, false);
         Queue articlesQueue = new Queue(QueueConstants.ARTICLES_URLS_QUEUE_NAME, true, false, false);

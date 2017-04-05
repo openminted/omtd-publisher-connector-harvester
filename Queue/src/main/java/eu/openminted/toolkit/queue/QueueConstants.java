@@ -15,4 +15,6 @@ public class QueueConstants {
     public final static String SCHEDULED_ARTICLES_EXCHANGE = "publisher-connector-exchange";
     public final static String SCHEDULED_ARTICLES_QUEUE_NAME = "publisher-connector-download-articles_queue";
     public final static String SCHEDULED_ARTICLES_ROUTING_KEY = "publisher-connector-routing-key";
+    
+    public final static String DEDICATED_QUEUES_EXCHANGE_NAME = "dedicated-queue-exchange";
 }
