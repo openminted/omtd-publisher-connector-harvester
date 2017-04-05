@@ -33,7 +33,7 @@ public class SpringerOAHarvester implements CommandLineRunner {
         String year = "2010";
 
 //        List<String> datesToHarvest = Utility.getDaysAsStringFromDateToDate(year + "-01-01", year + "-12-31");
-        List<String> datesToHarvest = Utility.getDaysAsStringFromDateToDate("2010-01-01", "2010-01-02");
+        List<String> datesToHarvest = Utility.getDaysAsStringFromDateToDate("2010-01-12", "2010-01-13");
 
         System.out.print("Going to harvest days : ");
         datesToHarvest.forEach(item -> System.out.print(item + ", "));
@@ -48,7 +48,7 @@ public class SpringerOAHarvester implements CommandLineRunner {
             records.forEach(item -> processRecord(item));
             
             doiDiscoveryLogServiceDAO.finishDoiDiscovery(dbID, "Springer-OA");
-            doiDiscoveryLogServiceDAO.updateDiscoveredDoisCount(dbID, dbID);
+            doiDiscoveryLogServiceDAO.updateDiscoveredDoisCount(dbID, records.size());
             
             System.out.println("");
         }
