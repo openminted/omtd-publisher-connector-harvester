@@ -47,8 +47,10 @@ public class GenericRetriever {
     }
 
     private boolean alreadyDownloaded(ScheduledArticle articleUrlMessage) {
+        String publisherPrefix = articleUrlMessage.getPublisherPrefix();
+
         try {
-            return genericArticleFileDAO.isArticleDownloaded(articleUrlMessage.getPublisherPrefix(), articleUrlMessage.getDoi());
+            return genericArticleFileDAO.isArticleDownloaded(publisherPrefix, articleUrlMessage.getDoi());
         } catch (DatabaseException de) {
             logger.error("database exception", de);
             return false;
@@ -56,6 +58,9 @@ public class GenericRetriever {
     }
 
     private void downloadAndStore(ScheduledArticle article) throws StorageException, GenericRetrieverException, DatabaseException {
+        if (article.getDownloadUrl() == null && article.getPublisherPrefix().equals("Springer-OA")) {
+            article.setDownloadUrl("http://link.springer.com/" + article.getDoi() + ".pdf");
+        }
         String fileLocation = "";
         if (article.getDownloadUrl().endsWith("xml") || article.getDownloadUrl().endsWith("html")) {
             fileLocation = storageDAO.getMetadataFileLocation(article.getPublisherPrefix(), article.getDoi(), article.getDownloadUrl());
@@ -63,8 +68,8 @@ public class GenericRetriever {
             fileLocation = storageDAO.getPdfFileLocation(article.getPublisherPrefix(), article.getDoi(), article.getDownloadUrl());
         }
 
-        genericArticleFileDAO.insertNewArticle(article.getPublisherPrefix(), article.getDoi(),article.getMetadata());
-        
+        genericArticleFileDAO.insertNewArticle(article.getPublisherPrefix(), article.getDoi(), article.getMetadata());
+
         genericArticleRetrieverService.retrieveUrlToFile(article.getDownloadUrl(), fileLocation);
 
         genericArticleFileDAO.updateMetadata(article.getDoi(), article.getMetadata());

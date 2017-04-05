@@ -49,6 +49,17 @@ CREATE TABLE IF NOT EXISTS `elsevier`.`generic_files` (
     `metadata` TEXT NULL,
     `metadata_filename` VARCHAR(512) NULL COMMENT 'filename of metadata of article',
     `pdf_filename` VARCHAR(512) NULL COMMENT 'filename of pdf of article -if any',
+    `time_accessed` timestamp,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `elsevier`.`publisher-doi-discovery-log` (
+    `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+    `publisher` VARCHAR(128) NOT NULL,
+    `day` VARCHAR(16) NOT NULL,
+    `time_commenced` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `time_finished` timestamp NOT NULL,
+    `retrieved_count` INT,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

@@ -19,6 +19,7 @@
         <module>SpringerHarvester</module>
         <module>dit-api</module>
         <module>GenericRetriever</module>
+        <module>SpringerAPIHarvester</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
