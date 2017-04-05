@@ -2,6 +2,7 @@ package eu.openminted.toolkit.storage;
 
 import eu.openminted.toolkit.storage.exceptions.FileDoesNotExistException;
 import eu.openminted.toolkit.storage.exceptions.StorageException;
+import java.io.IOException;
 
 /**
  *
@@ -17,6 +18,7 @@ public interface StorageDAO {
 
     public String getMetadataFileLocation(String articleUrl);
     
+    public void storeFile(String fullFileName, String fileContent) throws IOException;
     public String storeMetadataFile(String articleUrl, String articleMetadata) throws StorageException;
     
     public String getPdfFileLocation(String articleUrl);

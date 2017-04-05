@@ -51,6 +51,10 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
         return sfilename;
     }
 
+    public void storeFile(String fullFileName, String fileContent) throws IOException {
+        FileUtils.writeStringToFile(new File(fullFileName), fileContent, "UTF-8");
+    }
+
     private void storeFile(String directoryPath, String filename, String fileContent) throws IOException {
         System.out.println("Storing in " + directoryPath + " " + filename + " ");
 
