@@ -163,7 +163,7 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
     private void createFolderIfNotExists(String subFolder) {
         File dir = new File(subFolder);
         if (!dir.exists()) {
-            dir.mkdir();
+            dir.mkdirs();
         }
     }
 
