@@ -30,7 +30,7 @@ public class MySQLDoiDiscoveryLogServiceDAO implements DoiDiscoveryLogServiceDAO
 
     @Override
     public long insertNewDiscovery(String publisher, String day) throws DatabaseException {
-        String INSERT_NEW_DOI_DISCOVERY_SQL = "INSERT INTO publisher-doi-discovery-log(publisher, day, time_commenced) VALUES(?,?,NOW())";
+        String INSERT_NEW_DOI_DISCOVERY_SQL = "INSERT INTO publisher_doi_discovery_log(publisher, day, time_commenced) VALUES(?,?,CURRENT_TIMESTAMP)";
         try {
             PreparedStatementCreator psc = new PreparedStatementCreator() {
                 @Override
@@ -52,7 +52,7 @@ public class MySQLDoiDiscoveryLogServiceDAO implements DoiDiscoveryLogServiceDAO
 
     @Override
     public void finishDoiDiscovery(long id, String publisher) throws DatabaseException {
-        String SQL = "UPDATE publisher-doi-discovery-log SET time_finished=NOW() WHERE id=? AND publisher=?";
+        String SQL = "UPDATE publisher_doi_discovery_log SET time_finished=NOW() WHERE id=? AND publisher=?";
         try {
             jdbcTemplate.update(SQL, id, publisher);
         } catch (DataAccessException e) {
@@ -63,7 +63,7 @@ public class MySQLDoiDiscoveryLogServiceDAO implements DoiDiscoveryLogServiceDAO
 
     @Override
     public void updateDiscoveredDoisCount(long id, long count) throws DatabaseException {
-        String SQL = "UPDATE publisher-doi-discovery-log SET retrieved_count=? WHERE id=?";
+        String SQL = "UPDATE publisher_doi_discovery_log SET retrieved_count=? WHERE id=?";
         try {
             jdbcTemplate.update(SQL, count, id);
         } catch (DataAccessException e) {
