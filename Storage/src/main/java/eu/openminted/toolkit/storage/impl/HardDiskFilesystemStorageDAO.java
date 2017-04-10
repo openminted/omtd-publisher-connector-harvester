@@ -51,6 +51,10 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
         return sfilename;
     }
 
+    public void storeFile(String fullFileName, String fileContent) throws IOException {
+        FileUtils.writeStringToFile(new File(fullFileName), fileContent, "UTF-8");
+    }
+
     private void storeFile(String directoryPath, String filename, String fileContent) throws IOException {
         System.out.println("Storing in " + directoryPath + " " + filename + " ");
 
@@ -92,8 +96,8 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
         return filename;
     }
 
-    private String generateMetadataFilesystemFilename(String articleUrl) {
-        String filename = encodeToFilesystemSafe(articleUrl) + ".xml";
+    private String generateMetadataFilesystemFilename(String articleUrl, String extension) {
+        String filename = encodeToFilesystemSafe(articleUrl) + "." + extension;
         return filename;
     }
 
@@ -168,8 +172,8 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
     }
 
     @Override
-    public String storeMetadataFile(String articleUrl, String articleMetadata) throws StorageException {
-        String sfilename = generateMetadataFilesystemFilename(articleUrl);
+    public String storeMetadataFile(String articleUrl, String articleMetadata, String extension) throws StorageException {
+        String sfilename = generateMetadataFilesystemFilename(articleUrl, extension);
         String subFolder = selectBucket(articleUrl);
         try {
             storeFile(STORAGE_BASE_PATH + STORAGE_METADATA_PATH + subFolder, sfilename, articleMetadata);
@@ -194,8 +198,8 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
     }
 
     @Override
-    public String getMetadataFileLocation(String articleUrl) {
-        String sfilename = generateMetadataFilesystemFilename(articleUrl);
+    public String getMetadataFileLocation(String articleUrl, String extension) {
+        String sfilename = generateMetadataFilesystemFilename(articleUrl, extension);
         String subFolder = selectBucket(articleUrl);
 
         //create subfolder if does not exist
@@ -225,8 +229,9 @@ public class HardDiskFilesystemStorageDAO implements StorageDAO {
     }
 
     @Override
-    public String getMetadataFileLocation(String publisherPrefix, String doi, String articleUrl) throws StorageException {
-        String sfilename = generateMetadataFilesystemFilename(articleUrl);
+    public String getMetadataFileLocation(String publisherPrefix, String doi, String articleUrl, String extension) throws StorageException {
+        
+        String sfilename = generateMetadataFilesystemFilename(articleUrl, extension);
         String subFolder = selectBucket(articleUrl);
 
         this.createFolderIfNotExists(STORAGE_BASE_PATH + publisherPrefix + "/" + STORAGE_METADATA_PATH + subFolder);

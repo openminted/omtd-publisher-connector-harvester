@@ -26,12 +26,15 @@ public class GenericRetrieverConfiguration {
         return new MessageListenerAdapter(retriever, "receiveMessage");
     }
 
+    //
+    // make queue list injectable
     @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
             MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(QueueConstants.SCHEDULED_ARTICLES_QUEUE_NAME);
+//        container.setQueueNames(QueueConstants.SCHEDULED_ARTICLES_QUEUE_NAME);
+        container.setQueueNames("Springer-OA-download-queue");
         container.setMessageListener(listenerAdapter);
         return container;
     }

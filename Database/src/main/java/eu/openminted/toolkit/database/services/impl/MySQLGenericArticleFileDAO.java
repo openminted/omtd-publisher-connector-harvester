@@ -41,7 +41,7 @@ public class MySQLGenericArticleFileDAO implements GenericArticleFileDAO {
 
     @Override
     public void updatePdfFileLocation(String doi, String fileLocation) throws DatabaseException {
-        String SET_PDF_FILENAME_SQL = "UPDATE generic_files SET pdf_filename=? WHERE doi=?";
+        String SET_PDF_FILENAME_SQL = "UPDATE generic_files SET pdf_filename=?,time_accessed=NOW() WHERE doi=?";
         try {
             jdbcTemplate.update(SET_PDF_FILENAME_SQL, fileLocation, doi);
         } catch (DataAccessException e) {
@@ -52,7 +52,7 @@ public class MySQLGenericArticleFileDAO implements GenericArticleFileDAO {
     
     @Override
     public void updateMetaFileLocation(String doi, String fileLocation) throws DatabaseException {
-        String SET_META_FILENAME_SQL = "UPDATE generic_files SET metadata_filename=? WHERE doi=?";
+        String SET_META_FILENAME_SQL = "UPDATE generic_files SET metadata_filename=?,time_accessed=NOW() WHERE doi=?";
         try {
             jdbcTemplate.update(SET_META_FILENAME_SQL, fileLocation, doi);
         } catch (DataAccessException e) {
