@@ -1,0 +1,22 @@
+
+package eu.openminted.toolkit.crossref.model.works;
+
+import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class Issued {
+
+    @SerializedName("date-parts")
+    @Expose
+    private List<List<Integer>> dateParts = null;
+
+    public List<List<Integer>> getDateParts() {
+        return dateParts;
+    }
+
+    public void setDateParts(List<List<Integer>> dateParts) {
+        this.dateParts = dateParts;
+    }
+
+}

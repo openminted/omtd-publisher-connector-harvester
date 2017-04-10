@@ -1,0 +1,1359 @@
+swagger: '2.0'
+info:
+  title: Metadata API
+  description: Query Crossref metadata covering works, journals, publishers, funders and more.
+  version: "1.0.0"
+host: api.crossref.org
+schemes:
+  - https
+  - http
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /types:
+    get:
+      tags:
+        - Types
+        - List
+      responses:
+        200:
+          description: A list of work types
+          schema:
+            $ref: '#/definitions/TypeListMessage'
+  /types/{typeid}:
+    get:
+      tags:
+        - Types
+        - Identifier Lookup
+      parameters:
+        - name: typeid
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: A work type
+          schema:
+            $ref: '#/definitions/TypeMessage'
+  /types/{typeid}/works:
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+        - Types
+      parameters:
+        - name: typeid
+          in: path
+          required: true
+          type: string
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
+  /works:
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+      parameters:
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
+  /works/{doi}:
+    get:
+      tags:
+        - Works
+        - Identifier Lookup
+      parameters:
+        - name: doi
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: A work metadata record
+          schema:
+            $ref: '#/definitions/WorkMessage'
+  /works/{doi}/agency:
+    get:
+      tags:
+        - Works
+      parameters:
+        - name: doi
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: A registration agency
+          schema:
+            $ref: '#/definitions/WorkAgencyMessage'
+  /works/{doi}/transform/{representation}:
+    get:
+      tags:
+        - Works
+      parameters:
+        - name: doi
+          in: path
+          type: string
+          required: true
+        - name: representation
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: A work metadata record rendered in the specified representation
+          schema:
+            type: string
+  /works/{doi}.xml:
+    get:
+      tags:
+        - Works
+      parameters:
+        - name: doi
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: A work metadata record rendered as Crossref UNIXSD XML
+          schema:
+            type: string
+  /funders:
+    get:
+      summary: List and Search for Funders
+      tags:
+        - Funders
+        - List
+      parameters:
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/sample'
+      responses:
+        200:
+          description: A list of funders
+          schema:
+            $ref: '#/definitions/FunderListMessage'
+  /funders/{funderDoi}:
+    get:
+      summary: Look up a Funder
+      description: "Look up a funder by its [Open Funder Registry](http://www.crossref.org/fundingdata/registry.html) DOI"
+      tags:
+        - Funders
+        - Identifier Lookup
+      parameters:
+        - name: funderDoi
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: A funder record
+          schema:
+            $ref: '#/definitions/FunderMessage'
+  /funders/{funderDoi}/works:
+    get:
+      summary: List and Search on  Works for a Funder
+      tags:
+        - Works
+        - Query
+        - List
+        - Funders
+      parameters:
+        - name: funderDoi
+          in: path
+          required: true
+          type: string
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
+  /members:
+    get:
+      tags:
+        - Members
+        - List
+      parameters:
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/sample'
+      responses:
+        200:
+          description: A list of Crossref members
+          schema:
+            $ref: '#/definitions/MemberListMessage'
+  /members/{memberId}:
+    get:
+      tags:
+        - Members
+        - Identifier Lookup
+      parameters:
+        - name: memberId
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: A Crossref member record
+          schema:
+            $ref: '#/definitions/MemberMessage'
+  /members/{memberId}/works:
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+        - Members
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          type: string
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
+  /prefixes/{doiPrefix}:
+    get:
+      tags:
+        - Prefixes
+        - Identifier Lookup
+      parameters:
+        - name: doiPrefix
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: A DOI owner prefix record
+          schema:
+            $ref: '#/definitions/PrefixMessage'
+  /prefixes/{doiPrefix}/works:
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+        - Prefixes
+      parameters:
+        - name: doiPrefix
+          in: path
+          required: true
+          type: string
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
+  /journals:
+    get:
+      tags:
+        - Journals
+        - List
+      parameters:
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/sample'
+      responses:
+        200:
+          description: A list of journals
+          schema:
+            $ref: '#/definitions/JournalListMessage'
+  /prefixes:
+    get:
+      tags:
+        - Prefixes
+        - List
+      parameters:
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/sample'
+      responses:
+        200:
+          description: A list of DOI owner prefixes
+          schema:
+            $ref: '#/definitions/PrefixListMessage'
+  /journals/{issn}:
+    get:
+      tags:
+        - Journals
+        - Identifier Lookup
+      parameters:
+        - name: issn
+          required: true
+          in: path
+          type: string
+      responses:
+        200:
+          description: A journal record
+          schema:
+            $ref: '#/definitions/JournalMessage'
+  /journals/{issn}/works:
+    get:
+      tags:
+        - Works
+        - Query
+        - List
+        - Journals
+      parameters:
+        - name: issn
+          in: path
+          required: true
+          type: string
+        - $ref: '#/parameters/query'
+        - $ref: '#/parameters/query.title'
+        - $ref: '#/parameters/query.container-title'
+        - $ref: '#/parameters/query.author'
+        - $ref: '#/parameters/query.editor'
+        - $ref: '#/parameters/query.translator'
+        - $ref: '#/parameters/query.chair'
+        - $ref: '#/parameters/query.contributor'
+        - $ref: '#/parameters/filter'
+        - $ref: '#/parameters/facet'
+        - $ref: '#/parameters/sample'
+        - $ref: '#/parameters/rows'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/cursor'
+        - $ref: '#/parameters/sort'
+        - $ref: '#/parameters/order'
+      produces:
+        - application/json
+      schemes:
+        - http
+        - https
+      responses:
+        200:
+          description: A list of work metadata records
+          schema:
+            $ref: '#/definitions/WorkListMessage'
+  /licenses:
+    get:
+      summary: List licenses
+      description: List of licenses registered against works in the Crossref database
+      tags:
+        - Licenses
+        - List
+      responses:
+        200:
+          description: A list of license URLs
+          schema:
+            $ref: '#/definitions/LicenseListMessage'
+
+parameters:
+  query:
+    name: query
+    type: string
+    in: query
+  query.title:
+    name: query.title
+    type: string
+    in: query
+  query.container-title:
+    name: query.container-title
+    type: string
+    in: query
+  query.author:
+    name: query.author
+    type: string
+    in: query
+  query.editor:
+    name: query.editor
+    type: string
+    in: query
+  query.translator:
+    name: query.translator
+    type: string
+    in: query
+  query.chair:
+    name: query.chair
+    type: string
+    in: query
+  query.contributor:
+    name: query.contributor
+    type: string
+    in: query
+  filter:
+    name: filter
+    in: query
+    type: array
+    items:
+      $ref: '#/definitions/FilterDefinition'
+    collectionFormat: csv
+  facet:
+    name: facet
+    in: query
+    type: array
+    items:
+      $ref: '#/definitions/FacetDefinition'
+    collectionFormat: csv
+  sample:
+    name: sample
+    type: integer
+    in: query
+  rows:
+    name: rows
+    type: integer
+    in: query
+  offset:
+    name: offset
+    type: integer
+    in: query
+  cursor:
+    name: cursor
+    type: string
+    in: query
+  sort:
+    name: sort
+    in: query
+    type: string
+  order:
+    name: order
+    in: query
+    type: string
+    enum: ["asc", "desc"]
+  
+definitions:
+  FilterDefinition:
+    type: string
+
+  FacetDefinition:
+    type: string
+    
+  QueryInformation:
+    type: object
+    required:
+      - search-terms
+      - start-index
+    properties:
+      search-terms:
+        type: string
+      start-index:
+        type: integer
+
+  FacetResults:
+    type: object
+
+  WorkMessage:
+    type: object
+    required:
+      - status
+      - message-type
+      - message-version
+      - message
+    properties:
+      status:
+        type: string
+      message-type:
+        type: string
+      message-version:
+        type: string
+      message:
+        $ref: '#/definitions/Work'
+
+  WorkAgencyMessage:
+    type: object
+
+  WorkListMessage:
+    type: object
+    required:
+      - status
+      - message-type
+      - message-version
+      - message
+    properties:
+      status:
+        type: string
+      message-type:
+        type: string
+      message-version:
+        type: string
+      message:
+        $ref: '#/definitions/WorkList'
+
+  Event:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      acronym:
+        type: string
+      sponsor:
+        type: array
+        items:
+          type: string
+      location:
+        type: string
+      theme:
+        type: string
+      number:
+        type: string
+      start:
+        $ref: '#/definitions/PartialDate'
+      end:
+        $ref: '#/definitions/PartialDate'
+
+  WorkList:
+    type: object
+    required:
+      - query
+      - items-per-page
+      - items
+      - total-results
+      - facets
+    properties:
+      query:
+        $ref: '#/definitions/QueryInformation'
+      items-per-page:
+        type: integer
+      total-results:
+        type: integer
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/Work'
+      facets:
+        $ref: '#/definitions/FacetResults'
+
+  Work:
+    type: object
+    required:
+      - publisher
+      - title
+      - reference-count
+      - source
+      - prefix
+      - DOI
+      - member
+      - created
+      - deposited
+      - indexed
+      - issued
+      - content-domains
+    properties:
+      publisher:
+        type: string
+      title:
+        type: array
+        items:
+          type: string
+      short-title:
+        type: array
+        items:
+          type: string
+      original-title:
+        type: array
+        items:
+          type: string
+      reference-count:
+        type: integer
+      source:
+        type: string
+      prefix:
+        type: string
+      DOI:
+        type: string
+      member:
+        type: string
+      type:
+        type: string
+      created:
+        $ref: '#/definitions/Date'
+      deposited:
+        $ref: '#/definitions/Date'      
+      indexed:
+        $ref: '#/definitions/Date'      
+      issued:
+        description:
+          Earliest of `posted`, `published`, `published-print`, `published-online` and `content-created`
+          (database / dataset only)
+        $ref: '#/definitions/PartialDate'
+      posted:
+        $ref: '#/definitions/PartialDate'
+      accepted:
+        $ref: '#/definitions/PartialDate'
+      content-created:
+        description:
+          Date a database or dataset was created
+        $ref: '#/definitions/PartialDate'
+      subtitle:
+        type: array
+        items:
+          type: string
+      container-title:
+        type: array
+        items:
+          type: string
+      short-container-title:
+        type: array
+        items:
+          type: string
+      abstract:
+        type: string
+        description: Abstract as an XML block containing JATS markup elements. Elements will appear with a namespace prefix `jats`.
+      issue:
+        type: string
+      volume:
+        type: string
+      page:
+        type: string
+      article-nuber:
+        type: string
+      published-print:
+        $ref: '#/definitions/PartialDate'
+      published-online:
+        $ref: '#/definitions/PartialDate'
+      subject:
+        type: array
+        items:
+          type: string
+      ISSN:
+        type: array
+        items:
+          type: string
+      ISBN:
+        type: array
+        items:
+          type: string
+      archive:
+        type: array
+        items:
+          type: string
+      license:
+        type: array
+        items:
+          $ref: '#/definitions/License'
+      funder:
+        type: array
+        items:
+          $ref: '#/definitions/Funder'
+      assertion:
+        type: array
+        items:
+          $ref: '#/definitions/Assertion'
+      author:
+        type: array
+        items:
+          $ref: '#/definitions/Contributor'
+      editor:
+        type: array
+        items:
+          $ref: '#/definitions/Contributor'
+      chair:
+        type: array
+        items:
+          $ref: '#/definitions/Contributor'
+      translator:
+        type: array
+        items:
+          $ref: '#/definitions/Contributor'
+      update-to:
+        type: array
+        items:
+          $ref: '#/definitions/Update'
+      update-policy:
+        type: string
+      link:
+        type: array
+        items:
+          $ref: '#/definitions/ResourceLink'
+      clinical-trial-number:
+        type: array
+        items:
+          $ref: '#/definitions/ClinicalTrialNumber'
+      alternative-id:
+        type: array
+        items:
+          type: string
+      content-domains:
+        $ref: '#/definitions/ContentDomains'
+      issn-type:
+        type: array
+        items:
+          $ref: '#/definitions/IssnWithType'
+      event:
+        $ref: '#/definitions/Event'
+
+  ContentDomains:
+    type: object
+    required:
+      - domains
+      - crossmark-restricted
+    properties:
+      domains:
+        type: array
+        items:
+          type: string
+      crossmark-restricted:
+        type: boolean
+
+  Funder:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      DOI:
+        type: string
+      award:
+        type: array
+        items:
+          type: string
+      doi-asserted-by:
+        type: string
+        enum: ['crossref', 'publisher']
+      allOf:
+      - $ref: '#/definitions/AbridgedFunder'
+      - $ref: '#/definitions/RestFunder'
+
+  ClinicalTrialNumber:
+    type: object
+    required:
+      - clinical-trial-number
+      - registry
+    properties:
+      clinical-trial-number:
+        type: string
+      registry:
+        type: string
+      type:
+        type: string
+        enum: ['preResults', 'results', 'postResults']
+
+  Contributor:
+    type: object
+    required:
+      - family-name
+    properties:
+      family-name:
+        type: string
+      given-name:
+        type: string
+      ORCID:
+        type: string
+      authenticated-orcid:
+        type: boolean
+        description:
+          If true, depositing member claims to have witnessed the ORCID
+          user successfully authenticate with ORCID.
+      affiliation:
+        type: array
+        items:
+          $ref: '#/definitions/Affiliation'
+
+  Affiliation:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        example: Department of Computer Science, University of Oxford; Oxford, UK
+        type: string
+
+  IssnWithType:
+    type: object
+    required:
+      - value
+      - type
+    properties:
+      value:
+        type: string
+      type:
+        type: string
+        enum: ['print', 'electronic', 'link']
+
+  Date:
+    type: object
+    required:
+      - date-parts
+      - timestamp
+      - date-time
+    properties:
+      date-parts:
+        type: array
+        items:
+          type: integer
+      timestamp:
+        type: integer
+      date-time:
+        type: string
+
+  PartialDate:
+    type: object
+    example: [ 2016, 8, 4 ]
+    required:
+      - date-parts
+    properties:
+      date-parts:
+        type: array
+        items:
+          type: integer
+
+  Update:
+    type: object
+    required:
+      - updated
+      - DOI
+      - type
+    properties:
+      updated:
+        $ref: '#/definitions/PartialDate'
+      DOI:
+        type: string
+      type:
+        type: string
+      label:
+        type: string
+        
+  Assertion:
+    type: object
+    required:
+      - name
+      - value
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+      URL:
+        type: string
+      explanation:
+        type: string
+      label:
+        type: string
+      order:
+        type: integer
+      group:
+        $ref: '#/definitions/AssertionGroup'
+
+  AssertionGroup:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      label:
+        type: string
+
+  License:
+    type: object
+    required:
+      - content-version
+      - delay-in-days
+      - start
+      - URL
+    properties:
+      content-version:
+        type: string
+        enum: ['vor', 'am', 'tdm', 'unspecified']
+      delay-in-days:
+        type: integer
+      start:
+        $ref: '#/definitions/PartialDate'
+      URL:
+        type: string
+
+  ResourceLink:
+    type: object
+    required:
+      - intended-application
+      - content-version
+      - URL
+    properties:
+      intended-application:
+        type: string
+        enum: ['text-mining', 'unspecified']
+      content-version:
+        type: string
+        enum: ['vor', 'am', 'tdm', 'unspecified']
+      URL:
+        type: string
+      content-type:
+        type: string
+
+  TypeMessage:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        $ref: '#/definitions/Type'
+
+  TypeListMessage:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: array
+        items:
+          $ref: '#/definitions/Type'
+        
+  Type:
+    type: object
+    required:
+      - id
+      - label
+    properties:
+      id:
+        type: string
+      label:
+        type: string
+
+  LicenseListMessage:
+    type: object
+
+  PrefixReferenceStatus:
+    type: object
+    required:
+      - value
+      - name
+      - public-references
+
+  AbridgedFunder:
+    type: object
+    required:
+      - id
+      - location
+      - name
+      - alt-names
+      - uri
+      - replaces
+      - replaced-by
+      - tokens
+    properties:
+      id:
+        type: integer
+      location:
+        type: string
+      name:
+        type: string
+      alt-names:
+        type: array
+        items:
+          type: string
+      uri:
+        type: string
+      replaces:
+        type: array
+        items:
+          type: string
+      replaced-by:
+        type: array
+        items:
+          type: string
+      tokens:
+        type: array
+        items:
+          type: string
+
+  RestFunder:
+    type: object
+    required:
+      - hierarchy-names
+      - hierarchy
+      - work-count
+      - descendants
+      - descendant-work-count
+    properties:
+      hierarchy-names:
+        type: object
+      hierarchy:
+        type: object
+      work-count:
+        type: integer
+      descendants:
+        type: array
+        items:
+          type: string
+      descendant-work-count:
+        type: integer
+
+
+  FunderMessage:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        $ref: '#/definitions/Funder'
+        
+  FunderListMessage:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: array
+        items:
+          $ref: '#/definitions/AbridgedFunder'
+
+  Member:
+    type: object
+    required:
+      - last-status-check-time
+      - primary-name
+      - counts
+      - breakdowns
+      - prefixes
+      - coverage
+      - prefix
+      - id
+      - tokens
+      - flags
+      - location
+      - names
+    properties:
+      last-status-check-time:
+        type: number
+      primary-name:
+        type: string
+      counts:
+        $ref: '#/definitions/WorkCounts'
+      breakdowns:
+        $ref: '#/definitions/WorkBreakdowns'
+      prefixes:
+        type: array
+        items:
+          type: string
+      coverage:
+        $ref: '#/definitions/WorkFeatureCoverage'
+      prefix:
+        type: array
+        items:
+          $ref: '#/definitions/PrefixReferenceStatus'
+      id:
+        type: number
+      tokens:
+        type: array
+        items:
+          type: string
+      flags:
+        $ref: '#/definitions/WorkFeatureFlags'
+      location:
+        type: string
+      names:
+        type: array
+        items:
+          type: string
+
+  MemberMessage:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        $ref: '#/definitions/Member'
+
+  MemberListMessage:
+    type: object
+
+  PrefixMessage:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        $ref: '#/definitions/Prefix'
+
+  LicenseListMessage:
+    type: object
+
+  WorkFeatureFlags:
+    type: object
+
+  WorkFeatureCoverage:
+    type: object
+    description:
+      Describes the percentage of DOIs associated with either a journal or publisher that
+      exhibit particular features. The features are calculated on a `current` and `backfile`
+      basis. Current refers to the most recent two years of published DOIs.
+    required:
+      - funders-backfile
+      - licenses-backfile
+      - funders-current
+      - resource-links-backfile
+      - orcids-backfile
+      - update-policies-current
+      - orcids-current
+      - references-backfile
+      - award-numbers-backfile
+      - update-policies-backfile
+      - licenses-current
+      - award-numbers-current
+      - resource-links-current
+      - references-current
+    properties:
+      funders-backfile:
+        type: number
+      licenses-backfile:
+        type: number
+      funders-current:
+        type: number
+      resource-links-backfile:
+        type: number
+      orcids-backfile:
+        type: number
+      update-policies-current:
+        type: number
+      orcids-current:
+        type: number
+      references-backfile:
+        type: number
+      award-numbers-backfile:
+        type: number
+      update-policies-backfile:
+        type: number
+      licenses-current:
+        type: number
+      award-numbers-current:
+        type: number
+      resource-links-current:
+        type: number
+      references-current:
+        type: number
+
+  WorkBreakdowns:
+    type: object
+    required:
+      - dois-issued-by-year
+    properties:
+      dois-issued-by-year:
+        type: array
+        items:
+          type: array
+          items:
+            type: integer
+            example: [2014, 27431]
+        description: "`[year, count]` tuples counting the number of associated DOIs issued (published) each year"
+
+  WorkCounts:
+    type: object
+    required:
+      - total-dois
+      - current-dois
+      - backfile-dois
+    properties:
+      total-dois:
+        description: "Total number of associated DOIs"
+        type: integer
+      current-dois:
+        description: "Number of associated DOIs published in the last two years"
+        type: integer
+      backfile-dois:
+        description: "Number of associated DOIs published more than two years ago"
+        type: integer
+
+  Journal:
+    type: object
+    required:
+      - title
+      - publisher
+      - ISSN
+      - flags
+      - coverage
+      - breakdowns
+      - counts
+      - last-status-check-time
+    properties:
+      title:
+        type: string
+        description: Primary title of the journal
+        example: Journal of Computer Documentation
+      publisher:
+        type: string
+        description: "Primary name of the journal's publisher"
+        example: ACM
+      ISSN:
+        type: array
+        items:
+          type: string
+        description: All ISSNs, print, electronic and link, for the journal
+        example: [ "1527-6805" ]
+      flags:
+        $ref: '#/definitions/WorkFeatureFlags'
+      coverage:
+        $ref: '#/definitions/WorkFeatureCoverage'
+      counts:
+        $ref: '#/definitions/WorkCounts'
+      breakdowns:
+        $ref: '#/definitions/WorkBreakdowns'
+      last-status-check-time:
+        type: integer
+
+  JournalListMessage:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: array
+        items:
+          $ref: '#/definitions/Journal'
+
+  JournalMessage:
+    type: object
+    required:
+      - status
+      - message
+      - message-version
+      - message-type
+    properties:
+      status:
+        type: string
+      message-type:
+        type: string
+      message-version:
+        type: string
+      message:
+        $ref: '#/definitions/Journal'
+
+  Prefix:
+    type: object
+    required:
+      - member
+      - name
+      - prefix
+    properties:
+      member:
+        description: Primary member with deposit permission for the owner prefix. Member URL of the form `http://id.crossref.org/member/{memberId}`
+        example: http://id.crossref.org/member/311
+        type: string
+      name:
+        description: Primary name of the owning organisation
+        example: PeerJ
+        type: string
+      prefix:
+        description: A prefix URL of the form `http://id.crossref.org/prefix/{prefix}`
+        example: http://id.crossref.org/prefix/10.1003
+        type: string
+
+  PrefixListMessage:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: array
+        items:
+          $ref: '#/definitions/Prefix'
