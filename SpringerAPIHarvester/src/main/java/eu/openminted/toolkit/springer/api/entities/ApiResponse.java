@@ -63,4 +63,10 @@ public class ApiResponse {
         this.facets = facets;
     }
 
+    @Override
+    public String toString() {
+        return "ApiResponse{" + "query=" + query + ", apiKey=" + apiKey + ", result=" + result + ", records=" + records + ", facets=" + facets + '}';
+    }
+    
+
 }

@@ -161,4 +161,10 @@ public class Record {
         this.copyright = copyright;
     }
 
+    @Override
+    public String toString() {
+        return "Record{" + "identifier=" + identifier + ", title=" + title + ", publicationName=" + publicationName + ", issn=" + issn + ", isbn=" + isbn + ", doi=" + doi + ", publisher=" + publisher + ", publicationDate=" + publicationDate + ", volume=" + volume + ", number=" + number + ", startingPage=" + startingPage + ", endingPage=" + endingPage + ", url=" + url + ", copyright=" + copyright + '}';
+    }
+
+    
 }
