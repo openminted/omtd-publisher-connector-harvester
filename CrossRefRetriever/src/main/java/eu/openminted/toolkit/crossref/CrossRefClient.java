@@ -105,6 +105,10 @@ public class CrossRefClient {
 //      
     }
 
+    public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherMonthItems(String publisherPrefix, String month) {
+        return getPublisherMonthItemsFilteredByLicense(publisherPrefix, month, null);
+    }
+
     /**
      * Deep scan (with cursor) all the items of a publisher with given prefix,
      * between the date provided and a month forward, filtered with the license
@@ -116,7 +120,7 @@ public class CrossRefClient {
      * @param license
      * @return
      */
-    public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherMonthsItemByLicense(String publisherPrefix, String month, String license) {
+    public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherMonthItemsFilteredByLicense(String publisherPrefix, String month, String license) {
         List<eu.openminted.toolkit.crossref.model.multiple_works.Item> resultItems = new ArrayList<>();
 
         String from_deposit_date = "from-pub-date:" + month;
@@ -126,7 +130,9 @@ public class CrossRefClient {
         List<String> filters = new ArrayList<>();
         filters.add(from_deposit_date);
         filters.add(until_deposit_date);
-        filters.add(license_filter);
+        if (license!=null){
+            filters.add(license_filter);
+        }
         String filterParam = String.join(",", filters);
 
         String nextCursor = "*";
