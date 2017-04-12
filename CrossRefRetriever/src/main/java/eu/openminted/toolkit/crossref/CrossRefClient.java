@@ -105,29 +105,31 @@ public class CrossRefClient {
 //      
     }
 
-    public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherMonthItems(String publisherPrefix, String month) {
-        return getPublisherMonthItemsFilteredByLicense(publisherPrefix, month, null);
+    public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherItemsOfDate(String publisherPrefix, String month) {
+        return getPublisherItemsOfDateFilteredByLicense(publisherPrefix, month, null);
     }
 
     /**
      * Deep scan (with cursor) all the items of a publisher with given prefix,
      * between the date provided and a month forward, filtered with the license
      * given. Essentially executing the following (example):
-     * http://api.crossref.org/works?filter=from-deposit-date:2012-01,until-deposit-date:2012-02,prefix:10.1891,icense.url:http://www.springer.com/tdm&cursor=*
+     * http://api.crossref.org/works?filter=from-deposit-date:2012-01,until-deposit-date:2012-02,prefix:10.1891,license.url:http://www.springer.com/tdm&cursor=*
      *
      * @param publisherPrefix
-     * @param month
+     * @param date
      * @param license
      * @return
      */
-    public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherMonthItemsFilteredByLicense(String publisherPrefix, String month, String license) {
+    public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherItemsOfDateFilteredByLicense(String publisherPrefix, String date, String license) {
         List<eu.openminted.toolkit.crossref.model.multiple_works.Item> resultItems = new ArrayList<>();
 
-        String from_deposit_date = "from-pub-date:" + month;
-        String until_deposit_date = "until-pub-date:" + month;
+        String publisher_prefix_param = "prefix:"+publisherPrefix;
+        String from_deposit_date = "from-created-date:" + date;
+        String until_deposit_date = "until-created-date:" + date;
         String license_filter = "license.url:" + license;
 
         List<String> filters = new ArrayList<>();
+        filters.add(publisher_prefix_param);
         filters.add(from_deposit_date);
         filters.add(until_deposit_date);
         if (license!=null){
@@ -139,7 +141,7 @@ public class CrossRefClient {
 
         while (true) {
             WebTarget webTarget = client.target(CROSSREF_ENDPOINT)
-                    .path("prefixes/" + publisherPrefix + "/works")
+                    .path("/works")
                     .queryParam("filter", filterParam)
                     .queryParam("cursor", nextCursor);
 
@@ -153,28 +155,35 @@ public class CrossRefClient {
             nextCursor = multipleWorksResponse.getMessage().getNextCursor();
 
             if (multipleWorksResponse == null) {
+                logger.info("multiple works response is null");
                 break;
             }
             if (multipleWorksResponse.getMessage() == null) {
+                logger.info("multiple works response message is null");
                 break;
             }
             if (multipleWorksResponse.getMessage().getItems() == null) {
+                logger.info("multiple works response message items is null");
                 break;
             }
 
             if (multipleWorksResponse.getMessage().getItems().isEmpty()) {
+                logger.info("multiple works response message items is empty");
                 break;
             }
 
-            multipleWorksResponse.getMessage().getItems().forEach(item -> {
-                if (item.getLink() != null && !item.getLink().isEmpty()) {
-//                    item.getLink().forEach(linkItem -> System.out.println("Scheduling ...:" + linkItem.getURL()));
-                    resultItems.add(item);
-                }
-            });
+            
+            resultItems.addAll(multipleWorksResponse.getMessage().getItems());
+//            multipleWorksResponse.getMessage().getItems().forEach(item -> {
+//                if (item.getLink() != null && !item.getLink().isEmpty()) {
+////                    item.getLink().forEach(linkItem -> System.out.println("Scheduling ...:" + linkItem.getURL()));
+//                    resultItems.add(item);
+//                }
+//            });
 
         }
 
+        
         return resultItems;
     }
 
