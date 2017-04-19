@@ -1,5 +1,6 @@
 package eu.openminted.toolkit.springer.harvester;
 
+import eu.openminted.toolkit.crossref.Utility;
 import com.google.gson.Gson;
 import eu.openminted.toolkit.database.services.DoiDiscoveryLogServiceDAO;
 import eu.openminted.toolkit.springer.api.SpringerAPIClient;
@@ -33,8 +34,7 @@ public class SpringerOAHarvester implements CommandLineRunner {
         String year = "2010";
 
 //        List<String> datesToHarvest = Utility.getDaysAsStringFromDateToDate(year + "-01-01", year + "-12-31");
-        List<String> datesToHarvest = Utility.getDaysAsStringFromDateToDate("2010-01-12", "2010-01-13");
-
+        List<String> datesToHarvest = Utility.getDaysAsStringFromDateToDate("1960-01-01", "1969-12-31");
         System.out.print("Going to harvest days : ");
         datesToHarvest.forEach(item -> System.out.print(item + ", "));
         System.out.println("");
@@ -44,8 +44,9 @@ public class SpringerOAHarvester implements CommandLineRunner {
         for (String day : datesToHarvest) {
             long dbID = (int)doiDiscoveryLogServiceDAO.insertNewDiscovery("Springer-OA", day);
             List<Record> records = springerAPIClient.getRecordsOfDay(day);
-            System.out.println("DOIS of " + day + " (total " + records.size() + " records)");
+            
             records.forEach(item -> processRecord(item));
+            System.out.println("DOIS of " + day + " (total " + records.size() + " records)");
             
             doiDiscoveryLogServiceDAO.finishDoiDiscovery(dbID, "Springer-OA");
             doiDiscoveryLogServiceDAO.updateDiscoveredDoisCount(dbID, records.size());
