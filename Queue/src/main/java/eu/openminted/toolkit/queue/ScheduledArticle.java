@@ -11,14 +11,16 @@ public class ScheduledArticle {
     public String doi;
     public String downloadUrl;
 
-    public ScheduledArticle(){}
+    public ScheduledArticle() {
+    }
+
     public ScheduledArticle(String metadata, String publisherPrefix, String doi, String downloadUrl) {
         this.metadata = metadata;
         this.publisherPrefix = publisherPrefix;
         this.doi = doi;
         this.downloadUrl = downloadUrl;
     }
-
+    
     public String getMetadata() {
         return metadata;
     }
@@ -55,5 +57,5 @@ public class ScheduledArticle {
     public String toString() {
         return "ScheduledArticle{" + "metadata=" + metadata + ", publisherPrefix=" + publisherPrefix + ", doi=" + doi + ", downloadUrl=" + downloadUrl + '}';
     }
-    
+
 }
