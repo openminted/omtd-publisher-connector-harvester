@@ -19,6 +19,6 @@ public class PMCHarvesterApp {
     private static final Logger LOGGER = Logger.getLogger(PMCHarvesterApp.class.getName());
     
     public static void main(String[] args) throws IOException {
-        SpringApplication.run(PMCHarvesterApp.class, args);
+        SpringApplication.run(PMCHarvesterApp.class, args).close();
     }
 }
