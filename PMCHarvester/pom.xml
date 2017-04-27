@@ -104,7 +104,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>eu.openminted.toolkit.wiley.harvester.WileyHarvesterApp</mainClass>
+                            <mainClass>eu.openminted.toolkit.pubmedcentral.harvester.PMCHarvesterApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
