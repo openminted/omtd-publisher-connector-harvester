@@ -1,36 +1,26 @@
 package eu.openminted.toolkit.pubmedcentral.harvester;
 
 import com.google.gson.Gson;
+import eu.openminted.pubmedcentral.api.RPubMedCentralOA;
+import eu.openminted.pubmedcentral.api.RResumptionToken;
 import eu.openminted.toolkit.crossref.CrossRefClient;
-import eu.openminted.toolkit.crossref.Utility;
-import eu.openminted.toolkit.crossref.model.multiple_works.Item;
-import eu.openminted.toolkit.database.exceptions.DatabaseException;
 import eu.openminted.toolkit.database.services.DoiDiscoveryLogServiceDAO;
-import eu.openminted.toolkit.pubmedcentral.api.RPubMedCentralOA;
-import eu.openminted.toolkit.pubmedcentral.api.RResumptionToken;
-import eu.openminted.toolkit.pubmedcentral.harvester.saxparser.UpdatesSaxHandler;
+import eu.openminted.pubmedcentral.api.saxparser.UpdatesSaxHandler;
 import eu.openminted.toolkit.queue.ScheduledArticle;
 import eu.openminted.toolkit.queue.services.QueueService;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Component;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
-
 /**
  *
  * @author lucasanastasiou
@@ -49,9 +39,9 @@ public class PMCHarvester implements CommandLineRunner {
 
     private static final Logger logger = Logger.getLogger("PMCHarvester");
 
-    private String queueName = "PMC-download-queue";
+    public static String queueName = "PMC-download-queue";
 
-    private String publisher = "PMC";
+    private static String publisher = "PMC";
 
     @Override
     public void run(String... strings) throws Exception {
@@ -59,9 +49,9 @@ public class PMCHarvester implements CommandLineRunner {
 
         RPubMedCentralOA pubmedCentralOA = new RPubMedCentralOA("");
 
-        String earliest = pubmedCentralOA.status().earliest();
-        String until = pubmedCentralOA.status().latest();
-
+        String earliest = "2013-03-24 12:02:42";// pubmedCentralOA.status().earliest();
+        String until =  pubmedCentralOA.status().latest();
+       
         String body = pubmedCentralOA.updates().retrieve(earliest, until).fetch();
         logger.info(String.format("Retrieving %s to %s", earliest, until));
 

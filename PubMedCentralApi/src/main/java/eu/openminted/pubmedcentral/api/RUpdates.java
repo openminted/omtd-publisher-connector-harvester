@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eu.openminted.toolkit.pubmedcentral.api;
+package eu.openminted.pubmedcentral.api;
 
 import com.jcabi.http.Request;
 

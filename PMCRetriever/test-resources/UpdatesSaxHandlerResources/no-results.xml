@@ -1,0 +1,7 @@
+<OA>
+<responseDate>2017-04-27 05:42:08</responseDate>
+<request until="1900-01-02 07:00:00">
+http://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?until=1900-01-02%2007%3A00%3A00
+</request>
+<records returned-count="0" total-count="0"/>
+</OA>

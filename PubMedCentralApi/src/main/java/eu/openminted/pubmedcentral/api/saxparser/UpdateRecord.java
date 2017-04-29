@@ -1,5 +1,7 @@
 
-package eu.openminted.toolkit.pubmedcentral.harvester.saxparser;
+package eu.openminted.pubmedcentral.api.saxparser;
+
+import com.google.gson.Gson;
 
 /**
  * This DTO is populated with the xml data of a PubMed Update
@@ -14,6 +16,18 @@ public class UpdateRecord {
     private String linkHref;
     
     public UpdateRecord() {
+    }
+
+    public UpdateRecord(String id, String citation, String linkFormat, String linkUpdated, String linkHref) {
+        this.id = id;
+        this.citation = citation;
+        this.linkFormat = linkFormat;
+        this.linkUpdated = linkUpdated;
+        this.linkHref = linkHref;
+    }
+    
+    public static UpdateRecord newUpdateRecordFromGsonSerialisedString(String gsonSerialisedString) {
+        return new Gson().fromJson(gsonSerialisedString, UpdateRecord.class);
     }
 
     public String getId() {

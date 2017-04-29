@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackages = {"eu.openminted.toolkit"})
+
 public class PMCHarvesterConfiguration {
 
 }

@@ -1,0 +1,14 @@
+<OA>
+<responseDate>2017-04-26 11:27:47</responseDate>
+<request from="2004-10-05 12:49:55">
+http://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?from=2004-10-05%2012%3A49%3A55
+</request>
+<records returned-count="1000" total-count="1840100">
+	<record id="PMC3405500" citation="J Exp Med. 2012 Jul 2; 209(7):1325-1334">
+		<link format="tgz" updated="2013-01-02 00:20:58" href="ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_package/e3/77/PMC3405500.tar.gz"/>
+	</record>
+<resumption>
+<link token="70563!20041005124955!!!4a5f954e36e1f62c" href="http://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?resumptionToken=70563%2120041005124955%21%21%214a5f954e36e1f62c"/>
+</resumption>
+</records>
+</OA>

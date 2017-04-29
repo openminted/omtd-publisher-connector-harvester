@@ -6,9 +6,10 @@
         <artifactId>DataInteroperabilityToolkit</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>PMCHarvester</artifactId>
+    <artifactId>PMCRetriever</artifactId>
     <packaging>jar</packaging>
-    <name>DIT - PubMed Central Harvester</name>
+    
+    <name>DIT - PubMed Central Retriever</name>
     <dependencies>
         <dependency>
             <groupId>eu.openminted</groupId>
@@ -23,58 +24,32 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-http</artifactId>
-            <version>1.10.3</version>
-        </dependency>
-        <dependency>
             <groupId>eu.openminted</groupId>
             <artifactId>Database</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>javax.json</groupId>
-            <artifactId>javax.json-api</artifactId>
-            <version>1.0</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-xml</artifactId>
-            <version>0.18.1</version>
-            <type>jar</type>            
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-matchers</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-            <version>1.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <version>1.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
             <groupId>commons-net</groupId>
             <artifactId>commons-net</artifactId>
             <version>3.6</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>eu.openminted</groupId>
+            <artifactId>Storage</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.8.3</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -114,7 +89,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>eu.openminted.toolkit.pubmedcentral.harvester.PMCHarvesterApp</mainClass>
+                            <mainClass>eu.openminted.toolkit.pubmedcentral.retriever.PMCRetrieverApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

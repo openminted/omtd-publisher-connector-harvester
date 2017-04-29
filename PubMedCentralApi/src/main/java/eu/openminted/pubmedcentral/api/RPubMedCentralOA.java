@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eu.openminted.toolkit.pubmedcentral.api;
+package eu.openminted.pubmedcentral.api;
 
 import com.jcabi.http.Request;
 import com.jcabi.http.request.ApacheRequest;
-import com.jcabi.http.response.XmlResponse;
-import com.jcabi.manifests.Manifests;
 import java.io.IOException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;

@@ -5,16 +5,14 @@
  */
 package eu.openminted.toolkit.pubmedcentral.harvester.saxparser;
 
+import eu.openminted.pubmedcentral.api.saxparser.UpdatesSaxHandler;
+import eu.openminted.pubmedcentral.api.saxparser.UpdatesSaxHandlerCallback;
+import eu.openminted.pubmedcentral.api.saxparser.UpdateRecord;
 import java.io.File;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
