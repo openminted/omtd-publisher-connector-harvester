@@ -32,7 +32,7 @@ public class SpringerHarvester {
     public void scheduleMonthsPublications() {
         for (String prefix : SpringerConstants.SPRINGER_PREFIXES) {
             for (String month : this.getMonths()) {
-                List<Item> monthItems = crossRefClient.getPublisherMonthsItemByLicense(prefix, month, SpringerConstants.SPRINGER_TDM_LICENSE_URL);
+                List<Item> monthItems = crossRefClient.getPublisherItemsOfDateFilteredByLicense(prefix, month, SpringerConstants.SPRINGER_TDM_LICENSE_URL);
                 monthItems.forEach(item -> scheduleItem(prefix, item));
 
             }
@@ -41,7 +41,7 @@ public class SpringerHarvester {
 
     public void schedulePrefixMonthPublications(String prefix, String month) {
         logger.info(String.format("Harvesting for prefix : %s for month : %s", prefix, month));
-        List<Item> monthItems = crossRefClient.getPublisherMonthsItemByLicense(prefix, month, SpringerConstants.SPRINGER_TDM_LICENSE_URL);
+        List<Item> monthItems = crossRefClient.getPublisherItemsOfDateFilteredByLicense(prefix, month, SpringerConstants.SPRINGER_TDM_LICENSE_URL);
         monthItems.forEach(item -> scheduleItem(prefix, item));
     }
 
