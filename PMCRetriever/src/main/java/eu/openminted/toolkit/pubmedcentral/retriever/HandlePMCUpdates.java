@@ -109,6 +109,10 @@ public class HandlePMCUpdates implements MessageEventCallback {
                     RMetadata metadata = new RMetadata(xmlFile);
 
                     publisher = metadata.publisher().isEmpty() ? "pubmed_central" : metadata.publisher().toLowerCase().trim().replace(" ", "_").replaceAll("\\W+", "");
+                    int maxLength = 50;
+                    if (publisher.length() > maxLength) {
+                        publisher = publisher.substring(0, maxLength);
+                    }
                     pmcID = metadata.pmc();
                     File fileLocation = new File(this.storageDAO.getMetadataFileLocation(publisher, pmcID, updateRecord.getLinkHref(), ".xml"));
 
