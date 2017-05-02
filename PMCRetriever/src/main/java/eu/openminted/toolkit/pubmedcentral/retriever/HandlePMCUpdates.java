@@ -52,13 +52,24 @@ public class HandlePMCUpdates implements MessageEventCallback {
     public void callback(ScheduledArticle article) throws IOException, StorageException {
         UpdateRecord updateRecord = UpdateRecord.newUpdateRecordFromGsonSerialisedString(article.getMetadata());
 
+        if (!"tgz".equals(updateRecord.getLinkFormat())) {
+            logger.warn("Record item not a tar.gz file " + updateRecord.getId());
+            return;
+        }
+        
         URL url = new URL(updateRecord.getLinkHref());
 
-        File temp = File.createTempFile(updateRecord.getId(), "." + updateRecord.getLinkFormat());
+        final long startTime = System.currentTimeMillis();
 
+        File temp = File.createTempFile(updateRecord.getId(), "." + updateRecord.getLinkFormat());
+        File tempPdf = null;
+        File tempXml = null;
         PMCFtpFile file = new PMCFtpFile(new PMCFtpClient(), url);
 
         file.retrieve(new FileOutputStream(temp));
+        final long endTime = System.currentTimeMillis();
+
+        logger.info("Time to Download File: " + (endTime - startTime));
 
         Map<String, File> contents = new HashMap<>();
 
@@ -76,28 +87,30 @@ public class HandlePMCUpdates implements MessageEventCallback {
                     baos = new ByteArrayOutputStream();
 
                     if (entryName.endsWith("pdf")) {
-                        File tempPdf = File.createTempFile(updateRecord.getId(), ".pdf");
+                        tempPdf = File.createTempFile(updateRecord.getId(), ".pdf");
                         tis.copyEntryContents(new FileOutputStream(tempPdf));
                         contents.put("pdf", tempPdf);
                     }
 
                     if (entryName.endsWith("xml")) {
-                        File tempXml = File.createTempFile(updateRecord.getId(), ".xml");
+                        tempXml = File.createTempFile(updateRecord.getId(), ".xml");
                         tis.copyEntryContents(new FileOutputStream(tempXml));
                         contents.put("xml", tempXml);
                     }
                 }
             }
 
+            String publisher = "pubmed_central";
+            String pmcID = "";
             if (contents.containsKey("xml")) {
                 File xmlFile = contents.get("xml");
                 try {
 
                     RMetadata metadata = new RMetadata(xmlFile);
 
-                    String publisher = metadata.publisher().isEmpty() ? "PubMedCentral" : metadata.publisher();
-
-                    File fileLocation = new File(this.storageDAO.getMetadataFileLocation(publisher, metadata.pmc(), updateRecord.getLinkHref(), ".xml"));
+                    publisher = metadata.publisher().isEmpty() ? "pubmed_central" : metadata.publisher().toLowerCase().trim().replace(" ", "_").replaceAll("\\W+", "");
+                    pmcID = metadata.pmc();
+                    File fileLocation = new File(this.storageDAO.getMetadataFileLocation(publisher, pmcID, updateRecord.getLinkHref(), ".xml"));
 
                     FileUtils.copyFile(xmlFile, fileLocation);
                 } finally {
@@ -108,20 +121,24 @@ public class HandlePMCUpdates implements MessageEventCallback {
             if (contents.containsKey("pdf")) {
                 File pdfFile = contents.get("pdf");
                 try {
-                    RMetadata metadata = new RMetadata(pdfFile);
-
-                    String publisher = metadata.publisher().isEmpty() ? "PubMedCentral" : metadata.publisher();
-
-                    File fileLocation = new File(this.storageDAO.getPdfFileLocation(publisher, metadata.pmc(), updateRecord.getLinkHref()));
+                    File fileLocation = new File(this.storageDAO.getPdfFileLocation(publisher, pmcID, updateRecord.getLinkHref()));
 
                     FileUtils.copyFile(pdfFile, fileLocation);
                 } finally {
                     pdfFile.delete();
                 }
             }
+            final long endProcessTime = System.currentTimeMillis();
 
+            logger.info("Time to Process File: " + (endProcessTime - endTime));
         } finally {
             temp.delete();
+            if (tempPdf != null) {
+                tempPdf.delete();
+            }
+            if (tempXml != null) {
+                tempXml.delete();
+            }
         }
     }
 }
