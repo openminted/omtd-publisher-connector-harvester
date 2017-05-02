@@ -30,7 +30,7 @@ public class PMCFtpClient {
     
     public void retrieveFile(URL file, OutputStream outputStream) throws IOException {
         FTPClient client = new FTPClient();
-        client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+        //client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
         
         
         try {
