@@ -2,14 +2,15 @@ package eu.openminted.toolkit.pubmedcentral.retriever;
 
 import eu.openminted.toolkit.pubmedcentral.retriever.Message.MessageEvent;
 import com.google.gson.Gson;
+import eu.openminted.toolkit.database.services.ArticleFilesDAO;
+import eu.openminted.toolkit.pubmedcentral.retriever.Message.MessageEventCallback;
+import eu.openminted.toolkit.storage.StorageDAO;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 
 /**
  *
@@ -20,8 +21,13 @@ import org.springframework.context.annotation.FilterType;
 class RetrieverConfiguration {
 
     @Bean
-    MessageEvent messageEvent() {
-        return new MessageEvent(new Gson());
+    MessageEventCallback messageCallback(StorageDAO storageDOA, ArticleFilesDAO articleFilesDAO) {
+        return new HandlePMCUpdates(storageDOA, articleFilesDAO);
+    }
+    
+    @Bean
+    MessageEvent messageEvent(MessageEventCallback callback) {
+        return new MessageEvent(new Gson(), callback);
     }
 
     @Bean

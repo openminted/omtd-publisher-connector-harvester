@@ -20,12 +20,17 @@ public class MessageEvent {
 
     Gson gson;
 
-    public MessageEvent(Gson gson) {
+    MessageEventCallback eventCallback;
+    
+    public MessageEvent(Gson gson, MessageEventCallback callback) {
         this.gson = gson;
+        this.eventCallback = callback;
     }
 
-    public void receiveMessage(String message) {
+    public void receiveMessage(String message) throws Exception {
         ScheduledArticle article = this.gson.fromJson(message, ScheduledArticle.class);
+        
+        this.eventCallback.callback(article);
     }
 
 }
