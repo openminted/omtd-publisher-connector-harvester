@@ -73,10 +73,10 @@ public class HandlePMCUpdates implements MessageEventCallback {
 
         Map<String, File> contents = new HashMap<>();
 
+        FileInputStream fis = new FileInputStream(temp);
+        GZIPInputStream gis = new GZIPInputStream(fis);
+        TarInputStream tis = new TarInputStream(gis);
         try {
-            FileInputStream fis = new FileInputStream(temp);
-            GZIPInputStream gis = new GZIPInputStream(fis);
-            TarInputStream tis = new TarInputStream(gis);
 
             TarEntry entry;
             ByteArrayOutputStream baos;
@@ -143,6 +143,9 @@ public class HandlePMCUpdates implements MessageEventCallback {
             if (tempXml != null) {
                 tempXml.delete();
             }
+            fis.close();
+            gis.close();
+            tis.close();
         }
     }
 }
