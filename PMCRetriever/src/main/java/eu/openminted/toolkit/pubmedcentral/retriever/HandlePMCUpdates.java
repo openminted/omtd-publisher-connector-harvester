@@ -83,7 +83,7 @@ public class HandlePMCUpdates implements MessageEventCallback {
             while ((entry = tis.getNextEntry()) != null) {
                 String entryName = entry.getName();
 
-                if (entryName.endsWith("pdf") || entryName.endsWith("xml")) {
+                if (entryName.endsWith("pdf") || entryName.endsWith("nxml")) {
                     baos = new ByteArrayOutputStream();
 
                     if (entryName.endsWith("pdf")) {
@@ -92,7 +92,7 @@ public class HandlePMCUpdates implements MessageEventCallback {
                         contents.put("pdf", tempPdf);
                     }
 
-                    if (entryName.endsWith("xml")) {
+                    if (entryName.endsWith("nxml")) {
                         tempXml = File.createTempFile(updateRecord.getId(), ".xml");
                         tis.copyEntryContents(new FileOutputStream(tempXml));
                         contents.put("xml", tempXml);

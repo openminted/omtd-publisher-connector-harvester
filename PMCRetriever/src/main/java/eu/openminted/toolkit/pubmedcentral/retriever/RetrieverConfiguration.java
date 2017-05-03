@@ -2,7 +2,8 @@ package eu.openminted.toolkit.pubmedcentral.retriever;
 
 import eu.openminted.toolkit.pubmedcentral.retriever.Message.MessageEvent;
 import com.google.gson.Gson;
-import eu.openminted.toolkit.database.services.ArticleFilesDAO;
+import eu.openminted.dit.GenericArticleRetrieverService;
+import eu.openminted.toolkit.database.services.GenericArticleFileDAO;
 import eu.openminted.toolkit.pubmedcentral.retriever.Message.MessageEventCallback;
 import eu.openminted.toolkit.storage.StorageDAO;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -20,9 +21,15 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = {"eu.openminted.toolkit"})
 class RetrieverConfiguration {
 
+    // Service not registered by componentscan
     @Bean
-    MessageEventCallback messageCallback(StorageDAO storageDOA, ArticleFilesDAO articleFilesDAO) {
-        return new HandlePMCUpdates(storageDOA, articleFilesDAO);
+    GenericArticleRetrieverService genericArticleRetrieverService() {
+        return new GenericArticleRetrieverService();
+    }
+    
+    @Bean
+    MessageEventCallback messageCallback(StorageDAO storageDOA, GenericArticleFileDAO genericArticleFileDAO, GenericArticleRetrieverService genericArticleRetrieverService) {
+        return new HandlePMCUpdates(storageDOA, genericArticleFileDAO, genericArticleRetrieverService);
     }
     
     @Bean
