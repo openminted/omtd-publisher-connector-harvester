@@ -43,7 +43,7 @@ public class PMCFtpClient {
             client.setFileType(FTP.BINARY_FILE_TYPE);
 
             // ftp://ftp.ncbi.nlm.nih.gov/README.ftp says use 32MB
-            client.setBufferSize(32000000);
+            client.setBufferSize(33554432);
 
             client.pasv();
             client.user("anonymous");
