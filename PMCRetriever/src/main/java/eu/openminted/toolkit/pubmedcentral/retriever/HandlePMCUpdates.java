@@ -5,11 +5,14 @@
  */
 package eu.openminted.toolkit.pubmedcentral.retriever;
 
+import eu.openminted.dit.GenericArticleRetrieverService;
 import eu.openminted.pubmedcentral.api.RMetadata;
 import eu.openminted.pubmedcentral.api.ftp.PMCFtpClient;
 import eu.openminted.pubmedcentral.api.ftp.PMCFtpFile;
 import eu.openminted.pubmedcentral.api.saxparser.UpdateRecord;
+import eu.openminted.toolkit.database.exceptions.DatabaseException;
 import eu.openminted.toolkit.database.services.ArticleFilesDAO;
+import eu.openminted.toolkit.database.services.GenericArticleFileDAO;
 import eu.openminted.toolkit.pubmedcentral.retriever.Message.MessageEventCallback;
 import eu.openminted.toolkit.queue.ScheduledArticle;
 import eu.openminted.toolkit.storage.StorageDAO;
@@ -38,25 +41,28 @@ public class HandlePMCUpdates implements MessageEventCallback {
 
     StorageDAO storageDAO;
 
-    ArticleFilesDAO articleFilesDAO;
+    GenericArticleFileDAO genericArticleFileDAO;
+
+    GenericArticleRetrieverService genericArticleRetrieverService;
 
     Logger logger = LoggerFactory.getLogger("HandlePMCUpdates");
 
     @Autowired
-    public HandlePMCUpdates(StorageDAO storageDAO, ArticleFilesDAO articleFilesDAO) {
+    public HandlePMCUpdates(StorageDAO storageDAO, GenericArticleFileDAO genericArticleFileDAO, GenericArticleRetrieverService genericArticleRetrieverService) {
         this.storageDAO = storageDAO;
-        this.articleFilesDAO = articleFilesDAO;
+        this.genericArticleFileDAO = genericArticleFileDAO;
+        this.genericArticleRetrieverService = genericArticleRetrieverService;
     }
 
     @Override
-    public void callback(ScheduledArticle article) throws IOException, StorageException {
+    public void callback(ScheduledArticle article) throws IOException, StorageException, DatabaseException {
         UpdateRecord updateRecord = UpdateRecord.newUpdateRecordFromGsonSerialisedString(article.getMetadata());
 
         if (!"tgz".equals(updateRecord.getLinkFormat())) {
             logger.warn("Record item not a tar.gz file " + updateRecord.getId());
             return;
         }
-        
+
         URL url = new URL(updateRecord.getLinkHref());
 
         final long startTime = System.currentTimeMillis();
@@ -69,7 +75,7 @@ public class HandlePMCUpdates implements MessageEventCallback {
         file.retrieve(new FileOutputStream(temp));
         final long endTime = System.currentTimeMillis();
 
-        logger.info("Time to Download File: " + (endTime - startTime));
+        logger.info(updateRecord.getId() + "Time to Download File: " + (endTime - startTime));
 
         Map<String, File> contents = new HashMap<>();
 
@@ -116,7 +122,12 @@ public class HandlePMCUpdates implements MessageEventCallback {
                     pmcID = metadata.pmc();
                     File fileLocation = new File(this.storageDAO.getMetadataFileLocation(publisher, pmcID, updateRecord.getLinkHref(), ".xml"));
 
+                    this.genericArticleFileDAO.insertNewArticle("pubmed_central", pmcID, "");
+                    this.genericArticleFileDAO.updateMetaFileLocation(pmcID, fileLocation.getAbsolutePath());
+
                     FileUtils.copyFile(xmlFile, fileLocation);
+                } catch (Exception e) {
+                    logger.warn(e.getMessage(), e);
                 } finally {
                     xmlFile.delete();
                 }
@@ -128,13 +139,14 @@ public class HandlePMCUpdates implements MessageEventCallback {
                     File fileLocation = new File(this.storageDAO.getPdfFileLocation(publisher, pmcID, updateRecord.getLinkHref()));
 
                     FileUtils.copyFile(pdfFile, fileLocation);
+                    this.genericArticleFileDAO.updatePdfFileLocation(pmcID, fileLocation.getAbsolutePath());
                 } finally {
                     pdfFile.delete();
                 }
             }
             final long endProcessTime = System.currentTimeMillis();
 
-            logger.info("Time to Process File: " + (endProcessTime - endTime));
+            logger.info(updateRecord.getId() + "Time to Process File: " + (endProcessTime - endTime));
         } finally {
             temp.delete();
             if (tempPdf != null) {
