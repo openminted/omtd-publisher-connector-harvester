@@ -14,11 +14,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAutoConfiguration
 @ComponentScan(basePackages = {"eu.openminted.toolkit"})
 @EnableScheduling
-public class WileyHarvesterApp {
+public class main {
 
-    private static final Logger LOGGER = Logger.getLogger(WileyHarvesterApp.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(main.class.getName());
     
     public static void main(String[] args) throws IOException {
-        SpringApplication.run(WileyHarvesterApp.class, args);
+        SpringApplication.run(main.class, args);
     }
 }
