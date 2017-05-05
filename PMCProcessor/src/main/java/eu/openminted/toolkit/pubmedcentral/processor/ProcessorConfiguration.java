@@ -1,4 +1,4 @@
-package eu.openminted.toolkit.pubmedcentral.retriever;
+package eu.openminted.toolkit.pubmedcentral.processor;
 
 import eu.openminted.toolkit.pubmedcentral.retriever.Message.MessageEvent;
 import com.google.gson.Gson;
@@ -7,11 +7,6 @@ import eu.openminted.toolkit.database.services.GenericArticleFileDAO;
 import eu.openminted.toolkit.pubmedcentral.retriever.Message.MessageEventCallback;
 import eu.openminted.toolkit.queue.services.QueueService;
 import eu.openminted.toolkit.storage.StorageDAO;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import javax.annotation.PreDestroy;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
@@ -25,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackages = {"eu.openminted.toolkit"})
-class RetrieverConfiguration {
+class ProcessorConfiguration {
     
     // Service not registered by componentscan
     @Bean
@@ -34,8 +29,8 @@ class RetrieverConfiguration {
     }    
     
     @Bean
-    MessageEventCallback messageCallback(QueueService queueService, StorageDAO storageDAO) {
-        return new HandlePMCUpdates(queueService, storageDAO);
+    MessageEventCallback messageCallback(StorageDAO storageDAO, GenericArticleFileDAO genericArticleFileDAO , GenericArticleRetrieverService genericArticleRetrieverService) {
+        return new HandlePMCArchiveDownload(storageDAO, genericArticleFileDAO, genericArticleRetrieverService);
     }
     
     @Bean
@@ -48,7 +43,7 @@ class RetrieverConfiguration {
         return new MessageListenerAdapter(retriever, "receiveMessage");
     }
 
-    public static String queueName = "PMC-download-queue";
+    public static String queueName = "PMC-process-queue";
 
     @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
@@ -56,7 +51,7 @@ class RetrieverConfiguration {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queueName);
-        container.setPrefetchCount(50);
+        container.setPrefetchCount(2);
         container.setMessageListener(listenerAdapter);        
         return container;
     }

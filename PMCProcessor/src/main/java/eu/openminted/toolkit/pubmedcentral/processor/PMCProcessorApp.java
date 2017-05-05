@@ -1,4 +1,4 @@
-package eu.openminted.toolkit.pubmedcentral.retriever;
+package eu.openminted.toolkit.pubmedcentral.processor;
 
 import eu.openminted.toolkit.queue.services.QueueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +10,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-public class PMCRetrieverApp implements CommandLineRunner {
+public class PMCProcessorApp implements CommandLineRunner {
 
     @Autowired
     QueueService queueService;
-    
-    public final static String queueName = "PMC-process-queue";
-    
+   
     public static void main(String args[]) {
-        SpringApplication.run(PMCRetrieverApp.class, args);
+        SpringApplication.run(PMCProcessorApp.class, args);
     }
 
     @Override
     public void run(String... strings) throws Exception {
-        this.queueService.declareDedicatedQueue(this.queueName);
+        this.queueService.declareDedicatedQueue(ProcessorConfiguration.queueName);
     }
 }

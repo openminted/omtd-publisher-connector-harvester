@@ -5,7 +5,6 @@
  */
 package eu.openminted.toolkit.pubmedcentral.retriever;
 
-import com.google.common.io.Files;
 import eu.openminted.dit.GenericArticleRetrieverService;
 import eu.openminted.pubmedcentral.api.ftp.PMCFtpClient;
 import eu.openminted.pubmedcentral.api.ftp.PMCFtpFile;
@@ -14,6 +13,7 @@ import eu.openminted.toolkit.database.exceptions.DatabaseException;
 import eu.openminted.toolkit.database.services.GenericArticleFileDAO;
 import eu.openminted.toolkit.pubmedcentral.retriever.Message.MessageEventCallback;
 import eu.openminted.toolkit.queue.ScheduledArticle;
+import eu.openminted.toolkit.queue.services.QueueService;
 import eu.openminted.toolkit.storage.StorageDAO;
 import eu.openminted.toolkit.storage.exceptions.StorageException;
 import java.io.File;
@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,24 +32,17 @@ import org.slf4j.LoggerFactory;
  */
 public class HandlePMCUpdates implements MessageEventCallback {
 
-    StorageDAO storageDAO;
-
-    GenericArticleFileDAO genericArticleFileDAO;
-
-    GenericArticleRetrieverService genericArticleRetrieverService;
-
-    ExecutorService executorService;
-
     Logger logger = LoggerFactory.getLogger("HandlePMCUpdates");
 
-    @Autowired
-    public HandlePMCUpdates(StorageDAO storageDAO, GenericArticleFileDAO genericArticleFileDAO, GenericArticleRetrieverService genericArticleRetrieverService, ExecutorService executorService) {
-        this.storageDAO = storageDAO;
-        this.genericArticleFileDAO = genericArticleFileDAO;
-        this.genericArticleRetrieverService = genericArticleRetrieverService;
-        this.executorService = executorService;
-    }
+    private final QueueService queueService;
 
+    private final StorageDAO storageDAO;
+
+    public HandlePMCUpdates(QueueService queueService, StorageDAO storageDAO) {
+        this.queueService = queueService;
+        this.storageDAO = storageDAO;
+    }
+    
     @Override
     public void callback(ScheduledArticle article) throws IOException, StorageException, DatabaseException {
         UpdateRecord updateRecord = UpdateRecord.newUpdateRecordFromGsonSerialisedString(article.getMetadata());
@@ -60,24 +54,30 @@ public class HandlePMCUpdates implements MessageEventCallback {
             return;
         }
 
-        URL url = new URL(updateRecord.getLinkHref());
+        URL url = new URL(updateRecord.getLinkHref().replace("ftp://", "https://"));
 
         final long startTime = System.currentTimeMillis();
 
-        File temp = File.createTempFile(updateRecord.getId(), "." + updateRecord.getLinkFormat());
-
-        PMCFtpFile file = new PMCFtpFile(new PMCFtpClient(), url);
-
+        File temp = new File("/data/core/dit/tmp/" + updateRecord.getId() + "." + updateRecord.getLinkFormat());
+                
+//        PMCFtpFile file = new PMCFtpFile(new PMCFtpClient(), url);
         logger.info(updateRecord.getId() + " Downloading file Recieved " + url.toExternalForm());
-        file.retrieve(new FileOutputStream(temp));
+//        file.retrieve(new FileOutputStream(temp));
+        FileUtils.copyURLToFile(url, temp);
         logger.info(updateRecord.getId() + " Finished Downloading file Recieved " + url.toExternalForm());
 
         final long endTime = System.currentTimeMillis();
-
+        
+        // The API does not let us send our own object so we need to repurpose ScheduledArticle()
+        ScheduledArticle scheduledArticle = new ScheduledArticle();
+        scheduledArticle.setDownloadUrl(temp.getAbsolutePath());
+        scheduledArticle.setMetadata(article.getMetadata());
+        this.queueService.scheduleArticleToDedicatedQueue(PMCRetrieverApp.queueName, scheduledArticle);
+        
         logger.info(updateRecord.getId() + " Time to Download File: " + (endTime - startTime));
 
-        executorService.execute(new ProcessDownloadedDocument(temp, updateRecord, storageDAO, genericArticleFileDAO, genericArticleRetrieverService));        
-        logger.info(updateRecord.getId() + " Scheduled Processing");
+        //executorService.execute(new ProcessDownloadedDocument(temp, updateRecord, storageDAO, genericArticleFileDAO, genericArticleRetrieverService));        
+        //logger.info(updateRecord.getId() + " Scheduled Processing");
 
     }
 }
