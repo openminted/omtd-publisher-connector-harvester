@@ -56,7 +56,7 @@ class RetrieverConfiguration {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queueName);
-        container.setPrefetchCount(50);
+        container.setPrefetchCount(2);
         container.setMessageListener(listenerAdapter);        
         return container;
     }
