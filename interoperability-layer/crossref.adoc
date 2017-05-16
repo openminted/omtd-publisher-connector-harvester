@@ -1,7 +1,7 @@
-== CrossRef
+== Crossref
 
-=== Publisher API
-CrossRef is not a traditional publisher but the prominent DOI Registration Agency. 
+=== Crossref API
+Crossref is not a traditional publisher but the prominent DOI Registration Agency. 
 
 We use the CrossRef Metadata API to discover DOIs of published article. This method is used as a generic approach for DOI discovery task in several publishers. 
 
