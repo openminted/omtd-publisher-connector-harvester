@@ -33,7 +33,9 @@ We investigate, analyse and document the functionality exposed by publishers’ 
 
 === https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/taylorNFrancis.adoc[TaylorFrancis]
 
-=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/PLoS.adoc[PLoS]
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/plos.adoc[PLoS]
+
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central (PMC)]
 
 == Other publishers
 
