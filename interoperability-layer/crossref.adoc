@@ -1,58 +1,43 @@
 == CrossRef
 
-=== Publisher APIs
+=== Publisher API
+CrossRef is not a traditional publisher but the prominent DOI Registration Agency. 
 
-CrossRef is not a traditional publisher but the prominent DOI Registration Agency.
-iscovery of DOIs
-We use CrossRef Metadata API (CrossRef is the prominent DOI Registration Agency*) to discover doi s of published articles of the big publishers
-The way to do this:
+We use the CrossRef Metadata API to discover DOIs of published article. This method is used as a generic approach for DOI discovery task in several publishers. 
 
 
-Discover member, e.g. discover springer:
-http://api.crossref.org/members?query=springer
+=== Information provided by the publisher
+N/A
 
+=== Aggregation approach
+The DOI discovery task can be divided into the following steps:
+. Discover member, e.g. discover Springer: ]http://api.crossref.org/members?query=springer  and retrieve prefixes from results message→items[]→prefixes[] 
+. Retrieve works by that publisher, for example for Springer Nature (prefix:10.1891) http://api.crossref.org/works?filter=prefix:10.1891. 
+  ..You can paginate over results by rows and offset parameters: e.g. http://api.crossref.org/works?filter=prefix:10.1891,rows:10,offset:1000.
+  ..However if you try to navigate to more than 10k then you encounter the deep paging problem. In such case you can use a cursor to navigate into large result sets, e.g.: 1st request: http://api.crossref.org/works?filter=prefix:10.1891&cursor=* The response gives a next-cursor which, if followed, can retrieve the next page (then retrieve the next cursor to retrieve next page etc.). This is essentially the equivalent of resumptionToken of the OAI-PMH protocol http://api.crossref.org/works?filter=prefix:10.1891&cursor=AoE/CWh0dHA6Ly9keC5kb2kub3JnLzEwLjE4OTEvMDE5OC04Nzk0LjI4LjM=
 
-Retireve prefixes from results
-message->items[]->prefixes[]
-E.g. retrieve works by springer (springer different than Springer Nature)
-http://api.crossref.org/works?filter=prefix:10.1891
-You can paginate over results by rows and offset parameters e.g
-http://api.crossref.org/works?filter=prefix:10.1891,rows:10,offset:1000
-However if you try to navigate to more than 10k then you encounter the deep paging problem. In such case you can use a cursor to navigate into large result sets, e.g.:
-1st request:
-http://api.crossref.org/works?filter=prefix:10.1891&cursor=*
-The response gives a next-cursor which if followed can retrieve the next page (then retireve the next cursor to retrieve next page etc.). This is essentially the equivalent of resumptionToken of OAI-PMH protocol
-http://api.crossref.org/works?filter=prefix:10.1891&cursor=AoE/CWh0dHA6Ly9keC5kb2kub3JnLzEwLjE4OTEvMDE5OC04Nzk0LjI4LjM=
-
-
-
-=== Harvesting approach
-
-=== Limitations
-
+=== Features table
 [cols="2*"]
 |====
-|Task|Limitation
+|Task|Limitation|
 
-|Doi discovery
-|CrossRef as the de-facto doi registration agency naturaly imposes no restriction in discovering DOIs, offering quite handful methods to do so (e.g. by member, by native query, by funder) and utilising cursors to address deep-paging issues.
+|DOI discovery
+|CrossRef as the de-facto DOI registration agency naturally imposes no restriction in discovering DOIs, offering quite handful methods to do so (e.g. by member, by native query, by funder) and utilising cursors to address deep-paging issues.
 
-|Incremental updates
-|Result set from a certain date (or even between a time window) can be obtained via the from-XXX-date,until-XXX-date (XXX marks different dates in publication record lifecycle and can be deposit-date, index-date, update-date, created date, pub-date)
+
+|Incremental update
+|Result set from a certain date, or a time window, can be obtained via the from-XXX-date,until-XXX-date. XXX marks different dates in publication record lifecycle and can be deposit-date, index-date, update-date, created date, pub-date
+
 
 |Imposed limits
-|Though not explicitly enforced, CrossRef preserves the right to throttle requests to a limit that ensures that the service remains usable.From the website:
+|Though not explicitly enforced, CrossRef preserves the right to throttle requests to a limit in order to ensure that the service remains usable. From the website: _"From time to time Crossref needs to impose rate limits to ensure that the free API is usable by all. Any rate limits that are in effect will be advertised in the X-Rate-Limit-Limit and X-Rate-Limit-Interval HTTP headers."_
 
-----
 
-From time to time Crossref needs to impose rate limits to ensure that the free API is usable by all. Any rate limits that are in effect will be advertised in the X-Rate-Limit-Limit and X-Rate-Limit-Interval HTTP headers.
-
-----
 
 |Response formats
-|Results are returned in JSON format. Though Json natively avoids enforcing explicit schema (i.e. is schema free), results in CrossRef data model (documentation of this domain can be found https://github.com/CrossRef/rest-api-doc/blob/master/api_format.md[here] )
+|Results are returned in JSON format. Though JSON by nature avoids enforcing explicit structure (i.e. is schema free), results are structured in the CrossRef data https://github.com/CrossRef/rest-api-doc/blob/master/api_format.md[model].
+
 |====
 
-=== Proposed improvements
-
-
+=== Recommendations
+We have discovered that for a portion of resources exposed via CrossRef API, the metadata records is not complete. One of the most common fields omitted is the licensing field. We understand though that this relates more to how publishers provide data and is not fully CrossRef’s limitation.
