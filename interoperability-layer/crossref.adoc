@@ -15,7 +15,7 @@ The DOI discovery task can be divided into the following steps:
 * Discover member, e.g. discover Springer: http://api.crossref.org/members?query=springer  and retrieve prefixes from results message→items[]→prefixes[]
 * Retrieve works by that publisher, for example for Springer Nature (prefix:10.1891) http://api.crossref.org/works?filter=prefix:10.1891. 
 ** You can paginate over results by rows and offset parameters: e.g. http://api.crossref.org/works?filter=prefix:10.1891,rows:10,offset:1000.
-** However if you try to navigate to more than 10k then you encounter the deep paging problem. In such case you can use a cursor to navigate into large result sets, e.g.: 1st request: http://api.crossref.org/works?filter=prefix:10.1891&cursor=* The response gives a next-cursor which, if followed, can retrieve the next page (then retrieve the next cursor to retrieve next page etc.). This is essentially the equivalent of resumptionToken of the OAI-PMH protocol http://api.crossref.org/works?filter=prefix:10.1891&cursor=AoE/CWh0dHA6Ly9keC5kb2kub3JnLzEwLjE4OTEvMDE5OC04Nzk0LjI4LjM=
+** However if you try to navigate to more than 10k then you encounter the deep paging problem. In such case you can use a cursor to navigate into large result sets, e.g.: 1st request: http://api.crossref.org/works?filter=prefix:10.1891&cursor=*. The response gives a next-cursor which, if followed, can retrieve the next page (then retrieve the next cursor to retrieve next page etc.). This is essentially the equivalent of resumptionToken of the OAI-PMH protocol http://api.crossref.org/works?filter=prefix:10.1891&cursor=AoE/CWh0dHA6Ly9keC5kb2kub3JnLzEwLjE4OTEvMDE5OC04Nzk0LjI4LjM=
 
 === Features table
 [cols="2*"]
