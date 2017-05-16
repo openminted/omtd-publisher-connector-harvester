@@ -6,7 +6,7 @@ Crossref is not a traditional publisher but the prominent DOI Registration Agenc
 We use the Crossref Metadata API to discover DOIs of published article. This method is used as a generic approach for DOI discovery task in several publishers. 
 
 
-=== Information provided by the publisher
+=== Information provided by Crossref
 N/A
 
 === Aggregation approach
