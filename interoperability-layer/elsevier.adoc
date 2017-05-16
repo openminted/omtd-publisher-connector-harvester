@@ -105,7 +105,4 @@ Retrieving list of all items
 Increase the rate limits, provide a solution for the DOI discoverability, provide the necessary metadata fields, licensed metadata are missing in Crossref. 
 
 
-=== OMTD Schema Mapping
-
-The https://github.com/openminted/omtd-share_metadata_schema[OMTD-schema] is work in progress. Mappings between Elsevier's format and OMTD-schema will appear here upon completion.
 
