@@ -81,16 +81,23 @@ As described in the generic approach, to perform a full harvest we need as an in
 
 === Features table
 
-| Task  | Limitation | Solution |
+[cols="3*"]
+|====
+|Task|Limitation|Solution
 
-| -------------------------------------------- | --------------------------------- | ------------------------------- | 
+|Retrieving list of all items
+|No straightforward solution to retrieve full corpus 
+|Divide (horizontally) corpus into smaller chunks (in our approach we slice by day of publishing). Or enable cursor scrolling
 
-| Retrieving list of all items  | No straightforward solution to retrieve full corpus | Divide (horizontally) corpus into smaller chunks (in our approach we slice by day of publishing). Or enable cursor scrolling |
+| Updating a list of DOIs
+|Using the divided corpus approach, some previously harvested days may go out of sync because of deferred publications addition
+| Users need to periodically check if previously harvested days total counts have been changed
 
-| Updating a list of DOIs  | Using the divided corpus approach, some previously harvested days may go out of sync because of deferred publications addition | Users need to periodically check if previously harvested days total counts have been changed |
+|Imposed limits
+|API enforces a 5000 requests per day maximum limit 
+|Use available quota effectively 
 
-| Retrieval throttling | API enforces a 5000 requests per day maximum limit | Use available quota effectively |
-
+|====
 
 === Limitations
 The search only allows a maximum of 20 items per request. Also, it is impossible to retrieve the 10,000th page if we were to iterate over a query of * of 20 items / page.
