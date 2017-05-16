@@ -1,5 +1,5 @@
 == Elsevier
-=== Publisher APIs
+=== Publisher API
 Elsevier offers a license-based approach enabling researchers to text mine its content for noncommercial research purposes. The publisher recommends the registration of an API key, which can be found on the https://dev.elsevier.com/[developers portal]. An API key is necessary only for enabling access to premium content, such as ScienceDirect and Scopus, and tracking utilisation of the API, for example enforcing usage limitations.
 
 *Retrieval:* Even though the Open Access items can be retrieved without an API key, nonetheless the use of the key is recommended by the publisher. All items can be retrieved by a DOI identifier via the REST endpoint: http://api.elsevier.com/content/article/doi/DOI.
