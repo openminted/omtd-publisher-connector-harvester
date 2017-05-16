@@ -2,6 +2,8 @@
 === Publisher API
 Elsevier offers a license-based approach enabling researchers to text mine its content for noncommercial research purposes. The publisher recommends the registration of an API key, which can be found on the https://dev.elsevier.com/[developers portal]. An API key is necessary only for enabling access to premium content, such as ScienceDirect and Scopus, and tracking utilisation of the API, for example enforcing usage limitations.
 
+=== Information provided by the publisher
+
 *Retrieval:* Even though the Open Access items can be retrieved without an API key, nonetheless the use of the key is recommended by the publisher. All items can be retrieved by a DOI identifier via the REST endpoint: http://api.elsevier.com/content/article/doi/DOI.
 
 *Content discovery:* Elsevier’s API offers a search functionality. In it’s simplest form this looks like the following examples. 
@@ -34,9 +36,9 @@ Users can filter further their search request by using additional parameters. Fo
 
 However, the above method cannot be used to harvest the whole corpus, as it is bounded to deep pagination, which is a natural problem of any ranked search system. Attempts to partition the result sets to small subsets, which could be fully retrievable with pagination, was not successful and the observed limit was 50,000.
 
-=== Harvesting approach
+=== Aggregation approach
 
-To overcome the aforementioned  issue,  a different harvesting approach is proposed and implemented by the current release of the connector. This approach relies on the discovery of a full set of identifiers through traditional sitemap crawling. Sitemaps of journals and book titles are provided in the API’s webpage, providing a list of all items by journal title in alphabetical order. 
+To overcome the aforementioned  issue,  a different aggregation approach is proposed and implemented by the current release of the connector. This approach relies on the discovery of a full set of identifiers through traditional sitemap crawling. Sitemaps of journals and book titles are provided in the API’s webpage, providing a list of all items by journal title in alphabetical order. 
 
 Sitemaps can be retrieved from the following URL: http://api.elsevier.com/sitemap/page/sitemap/index.html and have the following structure: 
 
