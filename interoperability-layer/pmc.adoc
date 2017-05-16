@@ -50,7 +50,7 @@ https://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?from=2010-10-05%2000:22:02
 
 The caveat is that the list will start with the previously downloaded items updated at the same second. Therefore, users must ensure that these items are skipped and not reprocessed.
 
-An alternative method using the text file can be found on this page. 
+An alternative method using the text file can be found on this https://github.com/openminted/omtd-publisher-connector-harvester/tree/master/interoperability-layer[page]. 
 
 
 === Features table 
