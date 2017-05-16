@@ -82,9 +82,13 @@ As described in the generic approach, to perform a full harvest we need as an in
 === Features table
 
 | Task  | Limitation | Solution |
-| --- | --- | --- | 
+
+| -------------------------------------------- | --------------------------------- | ------------------------------- | 
+
 | Retrieving list of all items  | No straightforward solution to retrieve full corpus | Divide (horizontally) corpus into smaller chunks (in our approach we slice by day of publishing). Or enable cursor scrolling |
+
 | Updating a list of DOIs  | Using the divided corpus approach, some previously harvested days may go out of sync because of deferred publications addition | Users need to periodically check if previously harvested days total counts have been changed |
+
 | Retrieval throttling | API enforces a 5000 requests per day maximum limit | Use available quota effectively |
 
 
