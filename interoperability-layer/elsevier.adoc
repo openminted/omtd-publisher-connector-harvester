@@ -1,102 +1,105 @@
 == Elsevier
 === Publisher APIs
-Elsevier offers a license-based approach enabling researchers to text mine Elsevier content for non-commercial research purposes.
-//From: https://docs.google.com/document/d/1xFpoXGd0kQ-9FcjqgMe38pdsChvl2-JGAVXv09f3cZA
-//What does the publisher API actually offers
-Elsevier recommends the registration for an API key (through its http://dev.elsevier.com/[developers portal])
+Elsevier offers a license-based approach enabling researchers to text mine its content for noncommercial research purposes. The publisher recommends the registration of an API key, which can be found on the https://dev.elsevier.com/[developers portal]. An API key is necessary only for enabling access to premium content, such as ScienceDirect and Scopus, and tracking utilisation of the API, for example enforcing usage limitations.
 
-==== Retrieval
+*Retrieval:* Even though the Open Access items can be retrieved without an API key, nonetheless the use of the key is recommended by the publisher. All items can be retrieved by a DOI identifier via the REST endpoint: http://api.elsevier.com/content/article/doi/DOI.
 
-All items can be retrieved through the DOI retrieval function \http://api.elsevier.com/content/article/doi/[DOI] (even withouth the use of API).
+*Content discovery:* Elsevier’s API offers a search functionality. In it’s simplest form this looks like the following examples. 
 
-==== Content discovery
+ScienceDirect example request:
 
-Elsevier's API offers a search functionality. In it's simplest form this looks like:
+```
 
-\http://api.elsevier.com/content/search/scidir?query=[query]
-\http://api.elsevier.com/content/search/scopus?query=[query]
+GET http://api.elsevier.com/content/search/scidir?query=query 
 
-You can filter further your search request by additional parameters e.g. search within a metadata field:
-\http://api.elsevier.com/content/search/scidir?query=heart&field=dc:title,dc:creator,prism:publicationName,prism:coverDate,dc:description,prism:doi
-or get extented views of the bibliographic data:
-http://api.elsevier.com/content/search/scopus?query=heart&view=COMPLETE
-or set up the result set page size, etc.
+```
 
-However this method cannot be used to harvest the full (everything) corpus of it as it is bounded to (the natural problem of any ranked search system) deep pagination. Attempts to partition the result sets to small enough subsets (to be fully retrievable even with pagination) was not successfull (observed limit was 50000).
+Response:
 
+Scopus example request: 
 
+http://api.elsevier.com/content/search/scopus?query=query
 
-==== Initial data import
-To overcome the above issue a different approach can be followed, to discover full set of identifiers through traditionally crawling sitemaps. Sitemaps of journals and book titles are provided in API's webpage, providing a listing of all items by Journal (alphabetically) +
-http://api.elsevier.com/sitemap/page/sitemap/index.html
+Users can filter further their search request by using additional parameters. For example:
 
-The sitemap structure is:
+- search within a metadata field: http://api.elsevier.com/content/search/scidir?query=heart&field=dc:title,dc:creator,prism:publicationName,prism:coverDate,dc:description,prism:doi 
 
-* Titles starting with [a-z,0-9] > +
-    ** ‘List of Journal Titles’ > ‘List of *Volumes*’ > ‘List of Items in Volume’ > Metadata for Item +
-    ** ‘List of *Book Titles*’ > ‘Book ID’ > ‘List of Items in Book’ > Metadata for Item (usually per chapter) +
+- get extented views of the bibliographic data: http://api.elsevier.com/content/search/scopus?query=heart&view=COMPLETE 
 
-For accessing the sitemap, Metadata or Open Access Full-text items, there is no limit of the number of requests we can issue. We have found that we can make at least 10,000 requests/hour for downloading PDF’s.
+- or set up the result set page size, etc.
 
-An open access item can be determined by checking:
-[source,xml]
-<full-text-retrieval-response>
-  <coredata>
-	...
-    <openaccess>1</openaccess>
-    <openaccessArticle>true</openaccessArticle>
-    <openaccessType>Full</openaccessType>
-	...
-  </coredata>
-</full-text-retrieval-response>
-
-If those fields are all 1 or true, the item is truly open access and you can download the PDF by visiting the link with ?httpAccept=application/pdf appended.
-
-==== Keeping updated
-We recrawl the sitemaps up to the harvested journal *Volume* OR *Book Title*. If we have already crawled the file, we do not recrawl. We will always skip ‘Article in Press’ links until they are formed into a complete Volume/Issue.
-
-The Full-text can be retrieved by submitting the ‘Metadata for Item’ link with the http accept header as application/pdf.
-
-The metadata link example: +
-https://api.elsevier.com/content/article/pii/S0001-4575(15)30158-5
-
-Append ?httpAccept=application/xml for metadata +
-https://api.elsevier.com/content/article/pii/S0001-4575(15)30158-5?httpAccept=application/xml
-
-Append ?httpAccept=application/pdf for pdf +
-https://api.elsevier.com/content/article/pii/S0001-4575(15)30158-5?httpAccept=application/pdf
-
-The article metadata view states whether the item is Open Access as well as a detailed metadata view.
+However, the above method cannot be used to harvest the whole corpus, as it is bounded to deep pagination, which is a natural problem of any ranked search system. Attempts to partition the result sets to small subsets, which could be fully retrievable with pagination, was not successful and the observed limit was 50,000.
 
 === Harvesting approach
-Description of the approach we take to harvest the publisher
 
-=== Limitations
-//Limitations on doing what we need to do (recognizing something is OA, rate limits, discovery of new DOIS, access to PDFs, etc. ) - this will be presented as features in a table
+To overcome the aforementioned  issue,  a different harvesting approach is proposed and implemented by the current release of the connector. This approach relies on the discovery of a full set of identifiers through traditional sitemap crawling. Sitemaps of journals and book titles are provided in the API’s webpage, providing a list of all items by journal title in alphabetical order. 
 
-//From: https://docs.google.com/document/d/1tlrSEjDjKrUAZ00JR8FvJJFJMuT1UKM7iX7uUU4lFho
+Sitemaps can be retrieved from the following URL: http://api.elsevier.com/sitemap/page/sitemap/index.html and have the following structure: 
+
+* Titles starting with [a-z,0-9] >
+** ‘List of Journal Titles’ > ‘List of Volumes per journal title’ > ‘List of Items in the same Volume’ > Metadata for each Item.
+** ‘List of Book Titles’ > ‘Book identifier (e.g. ISBN)’ > ‘List of Items within a Book’ (e.g. chapters) > Metadata for each Item.
+
+In principle, the sitemap does not have a limit in the number of requests. However, we observed that we can make up to 10,000 requests per hour for downloading metadata and content records.
+Users can determine if an item is Open Access by checking its metadata record. When the XML tags <openaccess> </openaccess>, <openaccessArticle> </openaccessArticle> and <openaccessType></openaccessType> contain the values “1”, “true”, or “Full” respectively then the item is provided as open access.   
+
+```
+<full-text-retrieval-response>
+
+  <coredata>
+  
+	...
+	
+    <openaccess>1</openaccess>
+    
+    <openaccessArticle>true</openaccessArticle>
+    
+    <openaccessType>Full</openaccessType>
+    
+	...
+	
+  </coredata>
+  
+</full-text-retrieval-response>
+
+```
+The full text  PDF can be downloaded  by visiting the link with the ?httpAccept=application/pdf appended.
+
+Metadata link example:
+https://api.elsevier.com/content/article/pii/S0001-4575(15)30158-5
+
+Users can append ?httpAccept=application/xml to retrieve metadata in XML format:
+https://api.elsevier.com/content/article/pii/S0001-4575(15)30158-5?httpAccept=application/xml
+
+Users can append ?httpAccept=application/pdf to retrieve full text PDF:
+https://api.elsevier.com/content/article/pii/S0001-4575(15)30158-5?httpAccept=application/pdf
+
+*Keeping updated:* To discover the new items, for example new journal issues or books, we recrawl the sitemaps up to the level of journal volume or book title. We then compare the results with a local database. If we cannot find the item in the local database we schedule the item to be downloaded. We run this process periodically to keep the connector’s data synced.
+
+
+=== Features table 
 [cols="3*"]
 |====
 |Task|Limitation|Solution
 
-|Retrieving list of all items
-|To get a list of all items available in Elsevier, you must crawl sitemaps in order to get the list
+|
+Retrieving list of all items
+|To get a list of all items available in Elsevier, one  must crawl the sitemaps  - impossible by querying the API
 |Build a custom crawler to get all items in Elsevier.
 
-|Updating a list of DOI’s
+|Updating a list of DOIs
 |Once the sitemaps have been harvested, it is not easy to get a list of additions since the last harvest without re-crawling
 |
 
-|
+|Retrieval throttling
 |Elsevier API is has probably a throttling limit for the number of requests. We believe the limit is somewhere around 3 per second
 |
+
 |====
 
 === Proposed improvements
+Increase the rate limits, provide a solution for the DOI discoverability, provide the necessary metadata fields, licensed metadata are missing in Crossref. 
 
-Recommendations for the publisher on improvements (e.g. increase the rate limits,
-  provide a solution for discoverability of DOIs, provide these necessary metadata fields,
-  license metadata are missing in CrossRef)
 
 === OMTD Schema Mapping
 
