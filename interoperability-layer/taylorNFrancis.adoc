@@ -12,9 +12,6 @@ To use existing knowledge of the https://github.com/openminted/omtd-publisher-co
 === Features table
 See https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/crossref.adoc[Crossref].
 
-=== Limitations 
-N/A
-
 === Proposed improvements 
 To clearly state on public websites saying that any bulk downloads or API access is provided by https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/crossref.adoc[Crossref].
 
