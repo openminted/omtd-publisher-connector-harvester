@@ -37,7 +37,9 @@ Last downloaded:
 ```
 <record id="PMC2948689" citation="Med Hist. 2010 Oct; 54(4):553-555">
 
-<link format="tgz" updated="2010-10-05 00:22:02" href="ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_package/85/8c/PMC2948689.tar.gz"/>
+<link format="tgz" updated="2010-10-05 00:22:02"
+
+href="ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_package/85/8c/PMC2948689.tar.gz"/>
 
 </record>
 
