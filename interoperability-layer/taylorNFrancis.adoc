@@ -1,15 +1,21 @@
 == Taylor and Francis
 
-=== Publisher APIs
+=== Publisher API
+Taylor and Francis does not provide a public API. 
 
-Taylor and Francis appears to not offer an API or any programmatical method to access its publications. It is however one of the founding partners of CrossRef and its content appears there.
+=== Information provided by the publisher
+There is no information regarding an API on http://www.tandfonline.com/ or http://taylorandfrancis.com/. The only reference to any API for Taylor and Francis is on Crossref.
 
-=== Harvesting approach
+=== Aggregation approach
+To use existing knowledge of the Crossref API to retrieve publication metadata and full texts. See section on Crossref.
 
-Harvesting of Taylor and Francis can be approached through the generic CrossRef approach
+=== Features table
+See Crossref
 
-=== Limitations
+=== Limitations 
+N/A
 
-=== Proposed improvements
+=== Proposed improvements 
+To clearly state on public websites saying that any bulk downloads or API access is provided by Crossref.
 
-=== OMTD Schema Mapping
+
