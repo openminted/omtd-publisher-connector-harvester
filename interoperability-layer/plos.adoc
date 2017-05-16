@@ -9,7 +9,7 @@ N/A
 See https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central® (PMC)].
 
 === Features table 
-https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central® (PMC)].
+See https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central® (PMC)].
 
 === Recommendations 
-https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central® (PMC)].
+See https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central® (PMC)].
