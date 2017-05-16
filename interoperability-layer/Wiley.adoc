@@ -11,12 +11,12 @@ Wiley has a few pages on its website which point the user to their http://olabou
 To use existing knowledge of the Crossref API to retrieve publication metadata and full texts - see section on Crossref.
 
 === Features table
-See Crossref.
+See https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/crossref.adoc[Crossref].
 
 === Limitations 
 
 === Recommendations
-See Crossref.
+See https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/crossref.adoc[Crossref].
 
 
 
