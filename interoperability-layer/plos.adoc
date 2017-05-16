@@ -1,0 +1,15 @@
+== PLoS
+=== Publisher API
+PLoS provides an API but suggests that bulk download users use the PubMed Central® (PMC) API. 
+
+=== Information provided by the publisher
+N/A
+
+=== Aggregation approach
+N/A
+
+=== Features table 
+N/A
+
+=== Recommendations 
+N/A
