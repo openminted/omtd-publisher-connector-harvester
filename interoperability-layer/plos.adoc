@@ -6,10 +6,10 @@ PLoS provides an API but suggests that bulk download users use the https://githu
 N/A
 
 === Aggregation approach
-N/A
+See https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central® (PMC)].
 
 === Features table 
-N/A
+https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central® (PMC)].
 
 === Recommendations 
-N/A
+https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central® (PMC)].
