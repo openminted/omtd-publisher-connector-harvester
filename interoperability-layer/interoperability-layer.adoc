@@ -35,11 +35,12 @@ We investigate, analyse and document the functionality exposed by publishers’ 
 
 === https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/plos.adoc[PLoS]
 
-=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central (PMC)]
 
 == Other publishers
 
-The content from many publishers not covered in the section above can still be collected using an approach in which we make use of the CrossRef service.
+The content from many publishers not covered in the section above can still be collected using an approach in which we make use of the Crossref service and PubMed Central (PMC).
 
 === https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/crossref.adoc[CrossRef]
+
+=== https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central (PMC)]
 
