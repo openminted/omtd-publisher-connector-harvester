@@ -2,7 +2,7 @@
 === PMC API
 PMC provides an HTTP API and data dumps to their Open Access subset. File downloads are provided over FTP. It is also possible to download files over HTTP although this is not mentioned on their website. Bulk downloading via any other means (e.g. crawling their main website) is prohibited. In addition, PMC does not provide DOI’s in their metadata.
 
-=== Information provided by the publisher
+=== Information provided by PMC
 PMC provides clear https://www.ncbi.nlm.nih.gov/pmc/tools/textmining/[text mining instructions], explaining how to use their API and any restrictions they impose. 
 
 Data dumps are updated weekly, each Saturday. 
