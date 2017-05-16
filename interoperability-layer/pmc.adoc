@@ -1,0 +1,78 @@
+== PubMed Central® (PMC)
+=== Publisher API
+PubMed Central® (PMC) provides an HTTP API and data dumps to their Open Access subset. File downloads are provided over FTP. It is also possible to download files over HTTP although this is not mentioned on their website. Bulk downloading via any other means (e.g. crawling their main website) is prohibited. In addition, PMC does not provide DOI’s in their metadata.
+
+=== Information provided by the publisher
+PMC provides clear https://www.ncbi.nlm.nih.gov/pmc/tools/textmining/[text mining instructions], explaining how to use their API and any restrictions they impose. 
+
+Data dumps are updated weekly, each Saturday. 
+
+PMC disallows concurrent requests made to their server. They also require HTTP requests to include the user’s application name and email address sent as part of the request parameters. However, neither requirement are technically enforced.
+
+=== Aggregation approach
+There are two main ways of downloading data from PMC; 
+
+1. Download a text file containing a list of articles, and their location on an FTP server
+
+2. query their Open Access Web Service (OAWS) for a list of files changed since a certain date. Up to 1000 changes are returned in the response body at a time.
+
+Downloading a single text file (1) is quicker than multiple smaller files (2). Using option 1 would therefore be quicker for bulk downloads. For future updates, we would need to redownload the whole text file and skip over previously downloaded files.
+
+Because of this, we felt that option 2 would be better. As the endpoint is updated more often than the single text file, we were able to download updates quickly and efficiently. It also has the advantage of being able to resume quicker upon an error and works for the initial import as well as future updates. Using the text file for the initial import would require to write new code for the updater.
+
+Our aggregation approach: Iterate over this list: https://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?from=1900-01-01
+
+1. For each item, download the tar.gz file associated with the record
+
+2. Extract the tar.gz file. The compressed file contains: metadata, full text PDF and any other accompanying data. Then,
+
+ a. process and store metadata,process and store PDF.
+ 
+ b. Continue with the next document.
+
+The final page does not return a resumptionToken entity. This is when we know when to finish processing the list.
+
+Last downloaded:
+
+```
+<record id="PMC2948689" citation="Med Hist. 2010 Oct; 54(4):553-555">
+
+<link format="tgz" updated="2010-10-05 00:22:02" href="ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_package/85/8c/PMC2948689.tar.gz"/>
+
+</record>
+
+```
+
+Each record contains an updated attribute. When we encounter the page with no resumptionToken, we query the OAWS using the date and time of the last record. 
+
+For example,
+https://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?from=2010-10-05%2000:22:02
+
+The caveat is that the list will start with the previously downloaded items updated at the same second. Therefore, users must ensure that these items are skipped and not reprocessed.
+
+An alternative method using the text file can be found on this page. 
+
+
+=== Features table 
+[cols="3*"]
+|====
+|Task|Limitation|Solution
+
+|Retrieving list of all items
+|N/A
+|N/A
+
+|Updating a list of DOIs
+|N/A
+|N/A
+
+|Retrieval throttling
+|Although there is no known throttling, the FTP service is relatively slow
+|We suggest downloading via HTTP which means that update URL’s need to be rewritten replacing the protocol ftp:// with https://. We found the average time of download was 20Mb/s via FTP compared to 35Mb/s over HTTPS. On smaller files, this is even slower.
+
+|====
+
+=== Proposed improvements
+Publicise the HTTP endpoint for downloading data. 
+
+
