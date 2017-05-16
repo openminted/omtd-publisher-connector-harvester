@@ -1,32 +1,94 @@
 == Springer
 
-=== Publisher APIs
-The API provided by springer only allows 5,000 requests / API key / day.  Springer reports over 295,000 Open Access items.
-
-http://api.springer.com/openaccess/app?api_key=fdcc8721a1359724c6260b04d2ced9b2&q=*&s=10000&p=20&
-
-
-=== Harvesting approach
-
-As described in the generic approach to perform a full harvest we need as an initial step the full list of all identifiers (in case of incremental update since the last update). We propose here two different approaches:
-
-1. Crawling sitemaps (traditional approach similar to approach followed for other publishers e.g. Elsever)
-Springer's sitemaps (found http://link.springer.com/sitemap-index.xml[here]) lists daily sub-sitemaps (e.g. for Jan 1st 2017 : http://link.springer.com/sitemap_2017-01-01_1.txt) which in turn contain a full list of journal articles and book chapters entered in Springer database that day. From the list obtained from each sitemap the doi can easily be inferred.  Examples URLs look like:
-http://link.springer.com/article/10.1007/s11356-016-8315-4 (infered doi : 10.1007/s11356-016-8315-4)
-http://link.springer.com/book/10.1057/9781137476449 (infered doi : 10.1057/9781137476449)
+=== Publisher API
+Springer provides a RESTful API to its freely available content. Content can be retrieved either in XML, Json or Jsonp format. Authentication is required and is done via an API key. Registration for an API key is free and provides access to metadata even of closed access content. Openaccess content is exposed via a dedicated verb of the api, e.g.
+http://api.springer.com/openaccess/app?api_key=<API_KEY>&q=*
 
 
-2. Sliced harvesting from CrossRef
-In CrossRef section a method is described to discover each publisher's list of DOIs following a certain methodology. However due to Springer's enormous size, you will possibly encounter rate limit throttling and deep paging problems (if you apply a straight forward approach without cursors). You can extend this method via filtering in small-enough time periods to retrieve the full corpus by collecting small chunks (using only pagination and avoiding cursors). An example of such query - retrieving first page of "Springer Nature" indexed on 1st Jan 2017:
-http://api.crossref.org/members/297/works?filter=from-index-date:2017-01-01,until-index-date:2017-01-02
+Example response:
+```
+{
+
+  "query": "*",
+  
+  "apiKey": "fdcc8721a1359724c6260b04d2ced9b2",
+  
+  "result": [
+  
+    {
+    
+      "total": "443545",
+      
+      "start": "1",
+      
+      "pageLength": "10"
+      
+    }
+    
+  ],
+  
+  "records": [
+  
+    {
+    
+      "identifier": "doi:10.1186/s12966-017-0496-9",
+      
+      "title": "Menu-engineering in restaurants - adapting portion sizes on plates to enhance vegetable consumption: a real-life experiment",
+      
+      "publicationName": "International Journal of Behavioral Nutrition and Physical Activity",
+      
+      "issn": "1479-5868",
+      
+      "isbn": "",
+      
+      "doi": "10.1186/s12966-017-0496-9",
+      
+      "publisher": "BioMed Central",
+      
+      "publicationDate": "2017-12-25",
+      
+      "volume": "14",
+      
+     
+      "number": "1",
+      
+      "startingPage": "1",
+      
+      "endingPage": "11",
+      
+      "url": "http://dx.doi.org/10.1186/s12966-017-0496-9",
+      
+      "copyright": "©2017 The Author(s)."
+      
+    },
+    
+…
+
+}
+```
+
+=== Information provided by the publisher 
+N/A
+
+
+=== Aggregation approach
+
+As described in the generic approach, to perform a full harvest we need as an initial step the full list of all identifiers, in case of incremental update since the last update. We propose here two different approaches:
+- Crawling sitemaps: Springer’s sitemaps (https://link.springer.com/sitemap-index.xml) list daily sub-sitemaps, for example 1st January 2017 http://link.springer.com/sitemap_2017-01-01_1.txt, which in turn contains a full list of journal articles and book chapters entered in Springer database that day. From the list obtained from each sitemap the DOI can easily be inferred. More examples of URLs look like: http://link.springer.com/article/10.1007/s11356-016-8315-4 (inferred DOI : 10.1007/s11356-016-8315-4), http://link.springer.com/book/10.1057/9781137476449(inferred DOI : 10.1057/9781137476449). 
+
+=== Features table
+| Task  | Limitation | Solution
+| ------------- | ------------- | ------------- | 
+| Retrieving list of all items  | No straightforward solution to retrieve full corpus | Divide (horizontally) corpus into smaller chunks (in our approach we slice by day of publishing). Or enable cursor scrolling 
+| Updating a list of DOIs  | Using the divided corpus approach, some previously harvested days may go out of sync because of deferred publications addition | Users need to periodically check if previously harvested days total counts have been changed
+| Retrieval throttling | API enforces a 5000 requests per day maximum limit | Use available quota effectively
 
 
 === Limitations
-
 The search only allows a maximum of 20 items per request. Also, it is impossible to retrieve the 10,000th page if we were to iterate over a query of * of 20 items / page.
 
 === Proposed improvements
-
+Enable cursor scrolling over a resultset to overcome deep paging problem. 
 
 
 
