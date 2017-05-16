@@ -1,6 +1,6 @@
 == PLoS
 === Publisher API
-PLoS provides an API but suggests that bulk download users use the PubMed Central® (PMC) API. 
+PLoS provides an API but suggests that bulk download users use the https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/pmc.adoc[PubMed Central® (PMC)] API. 
 
 === Information provided by the publisher
 N/A
