@@ -1,33 +1,24 @@
 == Wiley
 
-=== Publisher APIs
+=== Publisher API
+Access to the API is maintained by Crossref's https://apps.crossref.org/clickthrough/researchers[Click-through] service. The click-through service manages access to both the publisher's and CrossRef's APIs. Authentication to the Click-through service is provided by https://orcid.org/[ORCID]. To access Wiley’s API, one must read and agree to the http://olabout.wiley.com/WileyCDA/Section/id-826542.html[Wiley TDM] license by clicking 'accept' on the Click-through service. Once accepted, API keys linked to the account can be used to download Wiley content according to the license terms and conditions. Once a Crossref TDM license is accepted, it is irrevocable. 
 
-=== Harvesting approach
 
-=== Limitations
+=== Information provided by the publisher
+Wiley has a few pages on its website which point the user to their http://olabout.wiley.com/WileyCDA/Section/id-826542.html[TDM Policy], the agreement and how to get started with the API using Crossref. Wiley delegates API access to Crossref and leaves the user to investigate how the Crossref API works using its documentation. 
 
-[cols="3*"]
-|====
-|Task|Limitation|Solution
+=== Aggregation approach
+To use existing knowledge of the Crossref API to retrieve publication metadata and full texts - see section on Crossref.
 
-|Doi discovery
-|a
-|aa
+=== Features table
+See Crossref.
 
-|Incremental update
-|b
-|bb
+=== Limitations 
 
-|Imposed limits
-|c
-|cc
+=== Recommendations
+See Crossref.
 
-|Response formats
-|d
-|dd
 
-|====
 
-=== Proposed improvements
 
-=== OMTD Schema Mapping
+
