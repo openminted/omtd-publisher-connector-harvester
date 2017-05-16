@@ -18,7 +18,11 @@ Response:
 
 Scopus example request: 
 
+```
+
 http://api.elsevier.com/content/search/scopus?query=query
+
+```
 
 Users can filter further their search request by using additional parameters. For example:
 
@@ -63,15 +67,15 @@ Users can determine if an item is Open Access by checking its metadata record. W
 </full-text-retrieval-response>
 
 ```
-The full text  PDF can be downloaded  by visiting the link with the ?httpAccept=application/pdf appended.
+The full text  PDF can be downloaded  by visiting the link with the *?httpAccept=application/pdf* appended.
 
 Metadata link example:
 https://api.elsevier.com/content/article/pii/S0001-4575(15)30158-5
 
-Users can append ?httpAccept=application/xml to retrieve metadata in XML format:
+Users can append *?httpAccept=application/xml* to retrieve metadata in XML format:
 https://api.elsevier.com/content/article/pii/S0001-4575(15)30158-5?httpAccept=application/xml
 
-Users can append ?httpAccept=application/pdf to retrieve full text PDF:
+Users can append *?httpAccept=application/pdf* to retrieve full text PDF:
 https://api.elsevier.com/content/article/pii/S0001-4575(15)30158-5?httpAccept=application/pdf
 
 *Keeping updated:* To discover the new items, for example new journal issues or books, we recrawl the sitemaps up to the level of journal volume or book title. We then compare the results with a local database. If we cannot find the item in the local database we schedule the item to be downloaded. We run this process periodically to keep the connector’s data synced.
@@ -103,5 +107,5 @@ Increase the rate limits, provide a solution for the DOI discoverability, provid
 
 === OMTD Schema Mapping
 
-OMTD-schema (described https://github.com/openminted/omtd-share_metadata_schema[here]) is work in progress. Mappings between Elsevier's format and OMTD-schema will appear here upon completion.
+The https://github.com/openminted/omtd-share_metadata_schema[OMTD-schema] is work in progress. Mappings between Elsevier's format and OMTD-schema will appear here upon completion.
 
