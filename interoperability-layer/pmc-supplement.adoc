@@ -1,0 +1,17 @@
+An alternative method for downloading files from PMC is as follows:
+
+1. download the FTP file oa_file_list.txt 
+2. Iterate over the list, filtering out items that have already been downloaded
+3. For each item, download the tar.gz file associated with the record
+4. Extract the tar.gz file. The compressed file contains: metadata, full text PDF and any other accompanying data. Then,
+  ** process and store metadata,
+  ** process and store PDF.
+5. Continue with the next document.
+
+For updating, one can either:
+
+1. Redownload the FTP file weekly and reprocess (skipping previously downloaded items)
+2. Use the API to get a changeset since last download using the OAWS (see https://www.ncbi.nlm.nih.gov/pmc/tools/oa-service/) and only download the changes. 
+
+We did not choose this method due to the fact that although the initial download might be faster we would be duplicating our work; we would either have to redownload the file and process it weekly, which would be slower than a changeset, or implement the OAWS method anyway. 
+
