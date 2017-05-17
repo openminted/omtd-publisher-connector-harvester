@@ -11,7 +11,7 @@ Example response:
 
   "query": "*",
   
-  "apiKey": "fdcc8721a1359724c6260b04d2ced9b2",
+  "apiKey": <API_KEY>,
   
   "result": [
   
