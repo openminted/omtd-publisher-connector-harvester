@@ -95,11 +95,11 @@ Retrieving list of all items
 
 |Updating a list of DOIs
 |Once the sitemaps have been harvested, it is not easy to get a list of additions since the last harvest without re-crawling
-|
+|Though far from optimal solution, reharvesting sitemaps and comparing with old copy to discover new content (by the difference of both) is the solution followed by the current implementation. 
 
 |Retrieval throttling
-|Elsevier API is has probably a throttling limit for the number of requests. We believe the limit is somewhere around 3 per second
-|
+|Elsevier API is has probably a throttling limit for the number of requests. We believe the limit is somewhere around 3 per second.
+|Unrestricitng API usage; do not impose throttling limits.
 
 |====
 
