@@ -1,6 +1,7 @@
 package eu.openminted.toolkit.crossref;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import eu.openminted.toolkit.crossref.model.member.Item;
 import eu.openminted.toolkit.crossref.model.member.MemberResponse;
 import eu.openminted.toolkit.crossref.model.member.Prefix;
@@ -81,18 +82,28 @@ public class CrossRefClient {
 //    }
 
     public WorksResponse getByDoi(String doi) {
+        logger.info("Fetching from crossref : " + doi);
         // http://api.crossref.org/works?filter=license.url:http://www.springer.com/tdm
         WebTarget webTarget = client.target(CROSSREF_ENDPOINT)
                 .path("works")
                 .path(doi);
         Response worksResponse = webTarget.request().get();
+
+        if (worksResponse.getStatus() >= 400) {
+            logger.info("Crossref does not have doi : " + doi);
+            return null;
+        }
         String responseString = worksResponse.readEntity(String.class);
         Gson gson = new Gson();
-        WorksResponse worksResponse1 = gson.fromJson(responseString, WorksResponse.class);
+        try {
+            WorksResponse worksResponse1 = gson.fromJson(responseString, WorksResponse.class);
+            logger.info("Returning works_response for " + doi);
+            return worksResponse1;
+        } catch (JsonSyntaxException e) {
+            logger.info("Json exception :" + e.getMessage());
+            return null;
+        }
 
-        System.out.println("url = " + worksResponse1.getMessage().getURL());
-        System.out.println("link = " + worksResponse1.getMessage().getLink());
-        return worksResponse1;
     }
 
     public void populateQueue() {
@@ -105,35 +116,43 @@ public class CrossRefClient {
 //      
     }
 
+    public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherItemsOfDate(String publisherPrefix, String month) {
+        return getPublisherItemsOfDateFilteredByLicense(publisherPrefix, month, null);
+    }
+
     /**
      * Deep scan (with cursor) all the items of a publisher with given prefix,
      * between the date provided and a month forward, filtered with the license
      * given. Essentially executing the following (example):
-     * http://api.crossref.org/works?filter=from-deposit-date:2012-01,until-deposit-date:2012-02,prefix:10.1891,icense.url:http://www.springer.com/tdm&cursor=*
+     * http://api.crossref.org/works?filter=from-deposit-date:2012-01,until-deposit-date:2012-02,prefix:10.1891,license.url:http://www.springer.com/tdm&cursor=*
      *
      * @param publisherPrefix
-     * @param month
+     * @param date
      * @param license
      * @return
      */
-    public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherMonthsItemByLicense(String publisherPrefix, String month, String license) {
+    public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherItemsOfDateFilteredByLicense(String publisherPrefix, String date, String license) {
         List<eu.openminted.toolkit.crossref.model.multiple_works.Item> resultItems = new ArrayList<>();
 
-        String from_deposit_date = "from-pub-date:" + month;
-        String until_deposit_date = "until-pub-date:" + month;
+        String publisher_prefix_param = "prefix:" + publisherPrefix;
+        String from_deposit_date = "from-created-date:" + date;
+        String until_deposit_date = "until-created-date:" + date;
         String license_filter = "license.url:" + license;
 
         List<String> filters = new ArrayList<>();
+        filters.add(publisher_prefix_param);
         filters.add(from_deposit_date);
         filters.add(until_deposit_date);
-        filters.add(license_filter);
+        if (license != null) {
+            filters.add(license_filter);
+        }
         String filterParam = String.join(",", filters);
 
         String nextCursor = "*";
 
         while (true) {
             WebTarget webTarget = client.target(CROSSREF_ENDPOINT)
-                    .path("prefixes/" + publisherPrefix + "/works")
+                    .path("/works")
                     .queryParam("filter", filterParam)
                     .queryParam("cursor", nextCursor);
 
@@ -147,25 +166,30 @@ public class CrossRefClient {
             nextCursor = multipleWorksResponse.getMessage().getNextCursor();
 
             if (multipleWorksResponse == null) {
+                logger.info("multiple works response is null");
                 break;
             }
             if (multipleWorksResponse.getMessage() == null) {
+                logger.info("multiple works response message is null");
                 break;
             }
             if (multipleWorksResponse.getMessage().getItems() == null) {
+                logger.info("multiple works response message items is null");
                 break;
             }
 
             if (multipleWorksResponse.getMessage().getItems().isEmpty()) {
+                logger.info("multiple works response message items is empty");
                 break;
             }
 
-            multipleWorksResponse.getMessage().getItems().forEach(item -> {
-                if (item.getLink() != null && !item.getLink().isEmpty()) {
-//                    item.getLink().forEach(linkItem -> System.out.println("Scheduling ...:" + linkItem.getURL()));
-                    resultItems.add(item);
-                }
-            });
+            resultItems.addAll(multipleWorksResponse.getMessage().getItems());
+//            multipleWorksResponse.getMessage().getItems().forEach(item -> {
+//                if (item.getLink() != null && !item.getLink().isEmpty()) {
+////                    item.getLink().forEach(linkItem -> System.out.println("Scheduling ...:" + linkItem.getURL()));
+//                    resultItems.add(item);
+//                }
+//            });
 
         }
 

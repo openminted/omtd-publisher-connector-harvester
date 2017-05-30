@@ -62,6 +62,9 @@ public class GenericRetriever {
         if (article.getDownloadUrl() == null && article.getPublisherPrefix().equals("Springer-OA")) {
             article.setDownloadUrl("http://link.springer.com/" + article.getDoi() + ".pdf");
         }
+        if (article.getDownloadUrl() == null && article.getPublisherPrefix().equals("Frontiers")){
+            article.setDownloadUrl("http://journal.frontiersin.org/article/"+article.getDoi()+"/pdf");
+        }
         String metaFileLocation = "";
         String pdfFileLocation = "";
 //        if (article.getDownloadUrl().endsWith("xml") || article.getDownloadUrl().endsWith("html")) {
