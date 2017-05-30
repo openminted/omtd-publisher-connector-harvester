@@ -1,6 +1,7 @@
 package eu.openminted.toolkit.crossref;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import eu.openminted.toolkit.crossref.model.member.Item;
 import eu.openminted.toolkit.crossref.model.member.MemberResponse;
 import eu.openminted.toolkit.crossref.model.member.Prefix;
@@ -81,18 +82,28 @@ public class CrossRefClient {
 //    }
 
     public WorksResponse getByDoi(String doi) {
+        logger.info("Fetching from crossref : " + doi);
         // http://api.crossref.org/works?filter=license.url:http://www.springer.com/tdm
         WebTarget webTarget = client.target(CROSSREF_ENDPOINT)
                 .path("works")
                 .path(doi);
         Response worksResponse = webTarget.request().get();
+
+        if (worksResponse.getStatus() >= 400) {
+            logger.info("Crossref does not have doi : " + doi);
+            return null;
+        }
         String responseString = worksResponse.readEntity(String.class);
         Gson gson = new Gson();
-        WorksResponse worksResponse1 = gson.fromJson(responseString, WorksResponse.class);
+        try {
+            WorksResponse worksResponse1 = gson.fromJson(responseString, WorksResponse.class);
+            logger.info("Returning works_response for " + doi);
+            return worksResponse1;
+        } catch (JsonSyntaxException e) {
+            logger.info("Json exception :" + e.getMessage());
+            return null;
+        }
 
-        System.out.println("url = " + worksResponse1.getMessage().getURL());
-        System.out.println("link = " + worksResponse1.getMessage().getLink());
-        return worksResponse1;
     }
 
     public void populateQueue() {
@@ -123,7 +134,7 @@ public class CrossRefClient {
     public List<eu.openminted.toolkit.crossref.model.multiple_works.Item> getPublisherItemsOfDateFilteredByLicense(String publisherPrefix, String date, String license) {
         List<eu.openminted.toolkit.crossref.model.multiple_works.Item> resultItems = new ArrayList<>();
 
-        String publisher_prefix_param = "prefix:"+publisherPrefix;
+        String publisher_prefix_param = "prefix:" + publisherPrefix;
         String from_deposit_date = "from-created-date:" + date;
         String until_deposit_date = "until-created-date:" + date;
         String license_filter = "license.url:" + license;
@@ -132,7 +143,7 @@ public class CrossRefClient {
         filters.add(publisher_prefix_param);
         filters.add(from_deposit_date);
         filters.add(until_deposit_date);
-        if (license!=null){
+        if (license != null) {
             filters.add(license_filter);
         }
         String filterParam = String.join(",", filters);
@@ -172,7 +183,6 @@ public class CrossRefClient {
                 break;
             }
 
-            
             resultItems.addAll(multipleWorksResponse.getMessage().getItems());
 //            multipleWorksResponse.getMessage().getItems().forEach(item -> {
 //                if (item.getLink() != null && !item.getLink().isEmpty()) {
@@ -183,7 +193,6 @@ public class CrossRefClient {
 
         }
 
-        
         return resultItems;
     }
 

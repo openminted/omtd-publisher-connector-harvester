@@ -65,7 +65,7 @@ public class FrontiersHarvesterService implements CommandLineRunner {
     }
 
     private List<String> getDays() {
-        return Utility.getDaysAsStringFromDateToDate("2010-10-01", "2017-04-12");
+        return Utility.getDaysAsStringFromDateToDate("2013-06-25", "2017-04-12");
     }
 
     private void scheduleItem(String publisherPrefix, Item item) {

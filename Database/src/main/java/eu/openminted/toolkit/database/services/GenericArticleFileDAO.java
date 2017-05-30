@@ -1,6 +1,8 @@
 package eu.openminted.toolkit.database.services;
 
 import eu.openminted.toolkit.database.exceptions.DatabaseException;
+import eu.openminted.toolkit.database.model.GenericFile;
+import java.util.List;
 
 /**
  *
@@ -18,4 +20,6 @@ public interface GenericArticleFileDAO {
     public void updateMetaFileLocation(String doi, String metaFileLocation) throws DatabaseException;
 
     public void updateMetadata(String doi, String metadata) throws DatabaseException;
+    
+    public List<GenericFile> retrievePublisherGenericFilePage(String publisherPrefix, Integer start, Integer end) throws DatabaseException;
 }

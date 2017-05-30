@@ -1,6 +1,5 @@
 package eu.openminted.dit;
 
-import eu.openminted.toolkit.queue.QueueConstants;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
@@ -34,7 +33,8 @@ public class GenericRetrieverConfiguration {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
 //        container.setQueueNames(QueueConstants.SCHEDULED_ARTICLES_QUEUE_NAME);
-        container.setQueueNames("Springer-OA-download-queue");
+//        container.setQueueNames("Springer-OA-download-queue");
+        container.setQueueNames("Frontiers-download-queue");
         container.setMessageListener(listenerAdapter);
         return container;
     }
