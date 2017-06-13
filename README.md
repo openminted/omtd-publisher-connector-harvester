@@ -1,7 +1,7 @@
 # Publisher connector harvester
 
 ## Technical documentation
-In this section you will find all the related [documentation](tech-documentation/Documentation.md) on how to work with the connector; how to build the software modules, instantiate, deploy and run the connector.  
+In this section you will find all the related documentation on how to work with the connector; how to build the software modules, instantiate, deploy and run the connector.  
 
 
 ## Expertise directory on Machine Access to Scholarly Publications
