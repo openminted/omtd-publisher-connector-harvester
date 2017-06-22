@@ -1,6 +1,7 @@
 how to deploy
 
-1. create dirs
+1. create directories for retrieved contents. You can pick your preferred names/hierarchy for these directories since
+they are configurable in storage.properties and elsevier-harvester.properties (see section 2)
 
 mkdir -p /data/dit/data/elsevier/sitemaps-storage/
 mkdir -p /data/dit/data/elsevier/metadata/
@@ -9,10 +10,18 @@ mkdir -p /data/dit/data/elsevier/crawler-storage
 
 sudo chmod -R 777 /data/dit/data/elsevier/
 
+1.2
+Install RabbitMQ from https://www.rabbitmq.com/
+
+1.3
+Create database and database user
+CREATE DATABASE elsevier DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
+CREATE USER 'elsevier'@'localhost' IDENTIFIED BY 'elsevier';
+GRANT ALL PRIVILEGES ON elsevier.* to 'elsevier'@'localhost';
 
 2. change properties in:
 
-queue.properties (Queue module)
+queue.properties (Queue module) according to your RabbitMQ installation
 storage.properties (Storage module)
 database.properties (Database module)
 elsevier-harvester.properties (ElsevierHarvester module)
@@ -30,4 +39,4 @@ rename exisiting tables in db
 6. 
 start processes:
 java -jar /data/dit/bin/ElsevierHarvester-1.0-SNAPSHOT-shaded.jar >> /data/dit/bin/elsevier_harvester.log
-java -jar /data/dit/bin/ElsevierProcessor-1.0-SNAPSHOT-shaded.jar > /data/dit/bin/elsevier_processor_5.log
+java -jar /data/dit/bin/ElsevierProcessor-1.0-SNAPSHOT-shaded.jar > /data/dit/bin/elsevier_processor.log
