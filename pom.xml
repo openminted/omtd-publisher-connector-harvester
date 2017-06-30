@@ -21,6 +21,11 @@
         <module>GenericRetriever</module>
         <module>SpringerAPIHarvester</module>
         <module>FrontiersHarvester</module>
+        <module>WileyHarvester</module>
+        <module>PMCHarvester</module>
+        <module>PMCRetriever</module>
+        <module>PubMedCentralApi</module>
+        <module>PMCProcessor</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

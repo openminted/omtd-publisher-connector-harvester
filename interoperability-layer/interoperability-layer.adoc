@@ -1,21 +1,29 @@
 = Expertise directory on machine access to content from publishers - Mechanisms and limitations
 
-== Overview
+== Overview 
 
-Purpose of this document is to present harvesting capabilities of major scientific literature publishers and data providers via machine protocols and highlight limitations of accessing content in large scale through these interfaces. A possible harvesting approach is presented for each publisher. Ultimate goal is to create an  interoperable layer for machine access to OA content from publishers for TDM purposes.
-
-This is an dynamic page, should be updated every time a machine interface of a publisher is altered.
+This document investigates the harvesting allowances of the most popular scientific literature publishers and data providers with regards to the open access scientific research outputs published via their platforms. After exploring the publishers’ machine interfaces and protocols (their APIs), we provide a detailed guide on how the open access content can be programmatically accessed for each publisher. We also highlight the limitations of accessing content in large scale through these interfaces. 
+Our goal is to create an interoperable layer of machine accessibility of the open access scientific research outputs published by major publishers for text and data mining (TDM) purposes. 
+This is a live documentation page, we expect to be updated every time a publisher machine interface changes.
 
 == Why is this needed?
 
-- Creating a seamless layer for accessing content across publishers.
-- Many TDM applications require local access to a large (or even full) corpus of scientific publications. These applications often cannot rely on TDM APIs already provided by some publishers.
-- Harvesting large datasets of scientific content takes considerable time and computational resources. Creating an up-to-date cache of scientific documents readily available for processing lowers the barriers for TDM of scientific literature.
+The global corpus of all research papers, i.e. the collection of human knowledge is so large no one can ever read in their lifetime, represents one of the most exciting opportunities for TDM. A study into the Value and Benefits of Text Mining authorised by Jisc in 2012 concluded that text-mining of research outputs offers the potential to provide significant benefits to the economy and the society in the form of increased research efficiency, by unlocking hidden and developing new knowledge and improving the research process and its evidence base. These benefits will result in significant cost savings and productivity gains, innovative new service developments, new business models, new medical treatments, etc. 
+
+Although the TDM benefits listed here are important, nonetheless there are barriers that need to overcome; legal, policies, technological and infrastructure barriers. With regards to the latter two, we have implemented a publisher connector, which will harvest/aggregate the openly available resources from each publisher and will expose them using a standardised and harmonised API.  
+
+The aim of the connector is to:
+
+* **Create a seamless layer for accessing content across publishers**. Addresses the issue with the increasingly heterogenous nature of publisher APIs and saves time to a TDM miner in collecting data.
+* **Provide a generic centralised point of access to all the available resources**. This is essential as many TDM applications require local access to a large (or even full) corpus of scientific publications therefore cannot rely on TDM APIs already provided by some publishers. 
+* **Provide a high performance and up-to-date access interface**. Harvesting large datasets of scientific content takes considerable time and computational resources. Creating an up-to-date cache of scientific documents readily available for processing lowers the barriers for TDM of scientific literature.
+
 
 
 == Key publishers
 
-We investigate, analyse and document the functionality exposed by APIs of publishers with respect to being able to aggregate open access content from them. We aim at implementing custom solutions for aggregating content from the following key publishers:
+We investigate, analyse and document the functionality exposed by publishers’ APIs with respect to whether and how someone can aggregate open access content and implement custom solutions for aggregating content from the following key publishers:
+
 
 === https://github.com/openminted/omtd-publisher-connector-harvester/blob/master/interoperability-layer/elsevier.adoc[Elsevier]
 
