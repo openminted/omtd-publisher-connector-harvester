@@ -5,6 +5,7 @@
  */
 package eu.openminted.toolkit.wiley.harvester;
 
+import com.jcabi.http.request.JdkRequest;
 import eu.openminted.toolkit.database.exceptions.DatabaseException;
 import eu.openminted.toolkit.database.services.GenericArticleFileDAO;
 import eu.openminted.toolkit.pubmedcentral.retriever.Message.MessageEventCallback;
@@ -45,19 +46,16 @@ public class HandleWileyMessage implements MessageEventCallback {
 
         this.genericArticleFileDAO.insertNewArticle(this.publisherPrefix, article.getDoi(), article.getMetadata());
 
-        
         // Store metadata into file
         this.storageDAO.storeMetadataFile(url.toString(), article.getMetadata(), ".json");
         String metadataLocation = this.storageDAO.getMetadataFileLocation(this.publisherPrefix, article.getDoi(), url.toString(), ".json");
         this.genericArticleFileDAO.updateMetaFileLocation(article.getDoi(), metadataLocation);
-                
+
         // Download PDF into file
-        
-        
         String pdfLocation = this.storageDAO.getPdfFileLocation(publisherPrefix, article.getDoi(), url.toString());
-        this.genericArticleFileDAO.updateMetaFileLocation(article.getDoi(), pdfLocation);
-        
-        
-        
+
+
+        this.genericArticleFileDAO.updatePdfFileLocation(article.getDoi(), pdfLocation);
+
     }
 }
