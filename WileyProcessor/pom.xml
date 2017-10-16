@@ -110,7 +110,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>eu.openminted.toolkit.wiley.processor.main</mainClass>
+                            <mainClass>eu.openminted.toolkit.wiley.harvester.main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

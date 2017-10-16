@@ -10,6 +10,7 @@ import eu.openminted.toolkit.storage.StorageDAO;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,8 +30,8 @@ public class WileyHarvesterConfiguration {
     }    
     
     @Bean
-    MessageEventCallback messageCallback(QueueService queueService, GenericArticleFileDAO genericArticleFileDAO, StorageDAO storageDAO) {
-        return new HandleWileyMessage(queueService, genericArticleFileDAO, storageDAO);
+    MessageEventCallback messageCallback(QueueService queueService, GenericArticleFileDAO genericArticleFileDAO, StorageDAO storageDAO, @Value("${crossrefkey}") String apikey ) {
+        return new HandleWileyMessage(queueService, genericArticleFileDAO, storageDAO, apikey);
     }
     
     @Bean
@@ -43,7 +44,7 @@ public class WileyHarvesterConfiguration {
         return new MessageListenerAdapter(retriever, "receiveMessage");
     }
 
-    public static String queueName = "PMC-process-queue";
+    public static String queueName = "Wiley-download-queue";
 
     @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
