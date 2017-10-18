@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.logging.Level;
 import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -43,6 +44,11 @@ public class HandleWileyMessage implements MessageEventCallback {
     private final String publisherPrefix = "Wiley";
 
     private final String crossrefKey;
+
+    private int rateLimit = 0;
+    private int limitRemaining = 0;
+    // I can't make sense of this limit (it seems to be set before the current time)
+    private long limitReset = 0;
 
     @Autowired
     public HandleWileyMessage(QueueService queueService, GenericArticleFileDAO genericArticleFileDAO, StorageDAO storageDAO, String apiKey) {
@@ -104,7 +110,7 @@ public class HandleWileyMessage implements MessageEventCallback {
             InputStream is = null;
             try {
                 is = con.getErrorStream();
-                String theString = IOUtils.toString(is, "UTF-8"); 
+                String theString = IOUtils.toString(is, "UTF-8");
                 logger.warn(theString);
             } finally {
                 IOUtils.closeQuietly(is);
@@ -112,6 +118,28 @@ public class HandleWileyMessage implements MessageEventCallback {
         }
 
         System.out.println("Response Code ... " + status);
+
+        if (null == con.getHeaderField("CR-TDM-Rate-Limit")) {
+            this.rateLimit = 999;
+        } else {
+            logger.info(con.getHeaderField("CR-TDM-Rate-Limit"));
+            this.rateLimit = Integer.parseInt(con.getHeaderField("CR-TDM-Rate-Limit"));
+        }
+        if (null == con.getHeaderField("CR-TDM-Rate-Limit-Remaining")) {
+            this.limitRemaining = 999;
+        } else {
+            this.limitRemaining = Integer.parseInt(con.getHeaderField("CR-TDM-Rate-Limit-Remaining"));
+        }
+        if (null == con.getHeaderField("CR-TDM-Rate-Limit-Reset")) {
+            this.limitReset = 999;
+        } else {
+            this.limitReset = Long.parseLong(con.getHeaderField("CR-TDM-Rate-Limit-Reset"));
+        }
+
+        logger.info("Rate Limit: " + this.rateLimit);
+        logger.info("Limit Remaining: " + this.limitRemaining);
+        logger.info("Limit Reset: " + Long.toString(this.limitReset));
+        logger.info("Current Time: " + System.currentTimeMillis());
 
         if (redirect) {
 
@@ -152,5 +180,20 @@ public class HandleWileyMessage implements MessageEventCallback {
                 IOUtils.closeQuietly(fos);
             }
         }
+        if (this.limitRemaining < 10) {
+            try {
+                logger.info("Waiting for 10 seconds due to limitRemaining > 10");
+                Thread.sleep(10000);
+            } catch (InterruptedException ex) {
+                java.util.logging.Logger.getLogger(HandleWileyMessage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                java.util.logging.Logger.getLogger(HandleWileyMessage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 }
