@@ -32,6 +32,7 @@ public class WileyWorks {
                 .path("/311")
                 .path("/works")
                 .queryParam("filter", "has-full-text:true,full-text.type:application/pdf")
+                .queryParam("rows", "1000")
                 .queryParam("cursor", cursor).back()
                 .method(Request.GET);
                 
