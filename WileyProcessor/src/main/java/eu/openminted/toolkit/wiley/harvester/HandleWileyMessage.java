@@ -63,18 +63,23 @@ public class HandleWileyMessage implements MessageEventCallback {
 
         URL url = new URL("https://api.wiley.com/onlinelibrary/tdm/v1/articles/" + URLEncoder.encode(article.getDoi(), "UTF-8"));
 
-        this.genericArticleFileDAO.insertNewArticle(this.publisherPrefix, article.getDoi(), article.getMetadata());
-
-        // Store metadata into file
-        this.storageDAO.storeMetadataFile(url.toString(), article.getMetadata(), ".json");
-        String metadataLocation = this.storageDAO.getMetadataFileLocation(this.publisherPrefix, article.getDoi(), url.toString(), "json");
-        this.genericArticleFileDAO.updateMetaFileLocation(article.getDoi(), metadataLocation);
-
-        // Download PDF into file
         String pdfLocation = this.storageDAO.getPdfFileLocation(publisherPrefix, article.getDoi(), url.toString());
-        retrieveUrlToFile(url.toString(), pdfLocation);
-        this.genericArticleFileDAO.updatePdfFileLocation(article.getDoi(), pdfLocation);
 
+        if (new File(pdfLocation).exists()) {
+            logger.warn("File already exists: " + pdfLocation);
+        } else {
+            this.genericArticleFileDAO.insertNewArticle(this.publisherPrefix, article.getDoi(), article.getMetadata());
+
+            // Store metadata into file
+            this.storageDAO.storeMetadataFile(url.toString(), article.getMetadata(), "json");
+            String metadataLocation = this.storageDAO.getMetadataFileLocation(this.publisherPrefix, article.getDoi(), url.toString(), "json");
+            this.genericArticleFileDAO.updateMetaFileLocation(article.getDoi(), metadataLocation);
+
+            // Download PDF into file
+            retrieveUrlToFile(url.toString(), pdfLocation);
+            this.genericArticleFileDAO.updatePdfFileLocation(article.getDoi(), pdfLocation);
+
+        }
     }
 
     private void retrieveUrlToFile(String articleUrl, String fileLocation) throws MalformedURLException, IOException {

@@ -9,13 +9,16 @@ import eu.openminted.toolkit.database.services.DoiDiscoveryLogServiceDAO;
 import eu.openminted.toolkit.queue.ScheduledArticle;
 import eu.openminted.toolkit.queue.services.QueueService;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -39,9 +42,12 @@ public class WileyHarvester implements CommandLineRunner {
 
     private static final Logger logger = Logger.getLogger("WileyHarvester");
 
-    private String queueName = "Wiley-download-queue";
+    private final String queueName = "Wiley-download-queue";
 
-    private String publisher = "Wiley";
+    private final String publisher = "Wiley";
+
+    @Value("${cursor:*}")
+    private String cursorInput;
 
     @Override
     public void run(String... strings) throws Exception {
@@ -56,23 +62,39 @@ public class WileyHarvester implements CommandLineRunner {
 
         WileyWorks works = new WileyWorks();
 
-        String cursor = "*";
+        String cursor = URLDecoder.decode(this.cursorInput, "UTF-8");
+        AtomicInteger failCount = new AtomicInteger(0);
         do {
-            final long startTime = System.currentTimeMillis();
-            JsonObject response = works.getWorks(cursor);
-            final long endTime = System.currentTimeMillis();
-            cursor = response.getString("next-cursor");
-            JsonArray items = response.getJsonArray("items");
-            items.forEach(item -> scheduleItem(this.publisher, item));
             try {
-                Long delay = Math.round((endTime - startTime) * 0.75);
-                if (delay < 1000) {
-                    delay = 1000L;
+                final long startTime = System.currentTimeMillis();
+                JsonObject response = works.getWorks(cursor);
+                final long endTime = System.currentTimeMillis();
+                final String localCursor = response.getString("next-cursor");
+                JsonArray items = response.getJsonArray("items");
+                items.forEach(item -> scheduleItem(this.publisher, item));
+                try {
+                    Long delay = Math.round((endTime - startTime) * 0.75);
+                    if (delay < 1000) {
+                        delay = 1000L;
+                    }
+                    logger.info(String.format("Sleeping for ms " + delay));
+                    Thread.sleep(delay);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(WileyHarvester.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                logger.info(String.format("Sleeping for ms " + delay));
-                Thread.sleep(delay);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(WileyHarvester.class.getName()).log(Level.SEVERE, null, ex);
+
+                cursor = localCursor;
+            } catch (Exception ex) {
+                Logger.getLogger(WileyHarvester.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                failCount.addAndGet(1);
+                if (failCount.get() > 4) {
+                    throw ex;
+                }                
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException ex1) {
+                    Logger.getLogger(WileyHarvester.class.getName()).log(Level.SEVERE, null, ex1);
+                }
             }
         } while (cursor != null && !cursor.isEmpty());
 
