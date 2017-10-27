@@ -64,14 +64,15 @@ public class WileyHarvester implements CommandLineRunner {
 
         String cursor = URLDecoder.decode(this.cursorInput, "UTF-8");
         AtomicInteger failCount = new AtomicInteger(0);
+        JsonArray items = null;
         do {
             try {
                 final long startTime = System.currentTimeMillis();
                 JsonObject response = works.getWorks(cursor);
                 final long endTime = System.currentTimeMillis();
                 final String localCursor = response.getString("next-cursor");
-                JsonArray items = response.getJsonArray("items");
-                items.forEach(item -> scheduleItem(this.publisher, item));
+                items = response.getJsonArray("items");
+                items.forEach(item -> scheduleItem(this.publisher, item));                
                 try {
                     Long delay = Math.round((endTime - startTime) * 0.75);
                     if (delay < 1000) {
@@ -96,7 +97,7 @@ public class WileyHarvester implements CommandLineRunner {
                     Logger.getLogger(WileyHarvester.class.getName()).log(Level.SEVERE, null, ex1);
                 }
             }
-        } while (cursor != null && !cursor.isEmpty());
+        } while (cursor != null && !cursor.isEmpty() && (null != items && !items.isEmpty()));
 
     }
 
